@@ -19,6 +19,7 @@
             </li>
             <li><a href="{{ route('admin.collection') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Collection Center</span></a></li>
             <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Data</span></a></li>
+            <li><a href="{{ route('admin.snf.fat') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Snf & Fats</span></a></li>
             <li><a href="{{ route('logout') }}" class="waves-effect waves-block" target="_top"><i class="zmdi zmdi-power"></i><span>Sign Out</span></a></li>
         </ul>
     </div>

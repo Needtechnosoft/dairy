@@ -24,9 +24,9 @@
                 </thead>
                 <tbody id="farmerData">
                     @foreach(\App\Models\User::all() as $u)
-                    <tr data-name="{{ $u->name }}">
+                    <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
                         <td class="p-1">{{ $u->id }}</td>
-                        <td class="p-1">{{ $u->name }}</td>
+                        <td class="p-1" style="cursor: grab;">{{ $u->name }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -69,12 +69,14 @@
                 </div>
 
                 <div class="col-md-2 mt-4">
-                    <span class="btn btn-primary btn-block" onclick="loadData();">Load</span>
+                    <span class="btn btn-primary btn-block" onclick="loadData();" id="loaddata">Load</span>
+                    <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
 
                 <div class="col-md-4 add-section">
                     <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control" min="1">
                 </div>
+                
                 <div class="col-md-4 add-section">
                     <input type="number" name="milk_amount" id="m_amt" step="0.001" min="0.001" placeholder="Milk in liter" class="form-control">
                 </div>
@@ -238,7 +240,32 @@
         }
     }
 
+    function disableTopPanel(method){
+        $('#nepali-datepicker').css('pointer-events',method);
+        $('#center_id').css('pointer-events',method);
+        $('#session').css('pointer-events',method);
+        $('#loaddata').css('pointer-events',method);
+        if(method=='none'){
+            $('#resetdata').removeClass('d-none').addClass('d-block');
+        }else{
+            $('#resetdata').removeClass('d-block').addClass('d-none');
+            
+        }
+    }
+
+    function resetData(){
+        $('#milkDataBody').empty();
+       $('#milkData')[0].reset();
+       disableTopPanel('auto');
+       $('.add-section').hide();
+       $('#loaddata').show();
+
+    }
+
+
     function loadData() {
+        disableTopPanel('none');
+        $('#loaddata').hide();
         if ($('#nepali-datepicker').val() == '' || $('#center_id').val() == '' || $('#session').val() == '') {
             alert('Please fill empty field !');
             if ($('#nepali-datepicker').val() == '') {
@@ -251,8 +278,8 @@
                 $('#session').focus();
                 return false;
             }
+            disableTopPanel('auto');
         } else {
-           
             var fdata = new FormData(document.getElementById('milkData'));
             // store.milk
             $('.add-section').show();
@@ -274,6 +301,10 @@
                     console.log(response);
                 });
         }
+    }
+
+    function farmerId(id){
+        $('#u_id').val(id);
     }
 
     window.onload = function() {

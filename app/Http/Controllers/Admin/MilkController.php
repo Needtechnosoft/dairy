@@ -53,11 +53,7 @@ class MilkController extends Controller
 
     public function milkDataLoad(Request $request){
         $date = str_replace('-', '', $request->date);
-        // if($request->session == 0){
-        //     $milkData = Milkdata::where(['date'=>$date,'center_id'=>$request->center_id])->select('m_amount','user_id')->get();
-        // }else{
-           $milkData = Milkdata::where(['date'=>$date,'center_id'=>$request->center_id])->get();
-        // }
+        $milkData = Milkdata::where(['date'=>$date,'center_id'=>$request->center_id])->get();
         return view('admin.milk.dataload',['milkdatas'=>$milkData]);
     }
 

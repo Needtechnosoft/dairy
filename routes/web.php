@@ -49,4 +49,10 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('milk-data-save/{type}','Admin\MilkController@saveMilkData')->name('store.milk');
     Route::post('milk-data-load','Admin\MilkController@milkDataLoad')->name('load.milk.data');
 
+    // snf and fats
+    Route::get('snf-fats','Admin\SnffatController@index')->name('admin.snf.fat');
+    Route::post('snf-fats-data','Admin\SnffatController@snffatDataLoad')->name('load.snffat.data');
+    Route::post('snf-fats-save','Admin\SnffatController@saveSnffatData')->name('store.snffat');
+
+
 });
