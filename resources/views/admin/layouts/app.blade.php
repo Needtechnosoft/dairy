@@ -36,10 +36,40 @@
 
     <!-- Left Sidebar -->
     @include('admin.layouts.menu')
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>
+                            @yield('head-title','')
+                        </h2>
+                        <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+                    </div>
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Main Content -->
-    @yield('content')
-
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <div>
+                                    @yield('toobar')
+                                </div>
+                            </div>
+                            <div class="body">
+                                @yield('content')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Jquery Core Js -->
     <script src="{{ asset('backend/bundles/libscripts.bundle.js') }}"></script> <!-- Lib Scripts Plugin Js ( jquery.v3.2.1, Bootstrap4 js) -->
@@ -49,10 +79,18 @@
     <script src="{{ asset('backend/bundles/sparkline.bundle.js') }}"></script> <!-- Sparkline Plugin Js -->
     <script src="{{ asset('backend/bundles/c3.bundle.js') }}"></script>
 
+    <script src="{{ asset('backend/plugins/jquery-validation/jquery.validate.js') }}"></script> <!-- Jquery Validation Plugin Css -->
+    <script src="{{ asset('backend/plugins/bootstrap-notify/bootstrap-notify.js') }}"></script> <!-- Bootstrap Notify Plugin Js -->
 
     <script src="{{ asset('backend/bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('backend/js/pages/forms/form-validation.js') }}"></script>
+    <script src="{{ asset('backend/js/pages/ui/notifications.js') }}"></script> <!-- Custom Js -->
 
-    <script src="{{ asset('backend/js/pages/index.js') }}"></script>
+
+    <!-- <script src="{{ asset('backend/js/pages/index.js') }}"></script> -->
+    <script src="{{ asset('backend/js/axios.js') }}"></script>
+    <script src="{{ asset('backend/js/table.js') }}"></script>
     @yield('js')
 </body>
+
 </html>

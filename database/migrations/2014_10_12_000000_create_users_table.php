@@ -18,7 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('address');
+            $table->integer('role');
             $table->string('password');
+            $table->decimal('amount',8,2)->default(0);
+            $table->integer('amounttype')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

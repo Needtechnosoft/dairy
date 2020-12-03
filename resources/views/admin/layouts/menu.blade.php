@@ -15,15 +15,11 @@
                 </div>
             </li>
             <li class="active open"><a href=""><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>App</span></a>
-                <ul class="ml-menu">
-                    <li><a href="mail-inbox.html">Email</a></li>
-                    <li><a href="chat.html">Chat Apps</a></li>
-                    <li><a href="events.html">Calendar</a></li>
-                </ul>
+            <li><a href="{{ route('add.farmer') }}" class="waves-effect waves-block"><i class="zmdi zmdi-apps"></i><span>Farmer</span></a>
             </li>
-            <li><a href="" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Orders</span></a></li>
-            <li><a href="" class="waves-effect waves-block" target="_top"><i class="zmdi zmdi-power"></i><span>Sign Out</span></a></li>
+            <li><a href="{{ route('admin.collection') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Collection Center</span></a></li>
+            <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Data</span></a></li>
+            <li><a href="{{ route('logout') }}" class="waves-effect waves-block" target="_top"><i class="zmdi zmdi-power"></i><span>Sign Out</span></a></li>
         </ul>
     </div>
 </aside>
