@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody id="farmerData">
-                    @foreach(\App\Models\User::all() as $u)
+                    @foreach(\App\Models\User::where('role',1)->get() as $u)
                     <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
                         <td class="p-1">{{ $u->id }}</td>
                         <td class="p-1" style="cursor: grab;">{{ $u->name }}</td>

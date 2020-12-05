@@ -33,6 +33,7 @@ class SnffatController extends Controller
   
     }
 
+    
     public function snffatDataLoad(Request $request){
         $date = str_replace('-', '', $request->date);
         $data = Snffat::where(['date'=>$date, 'user_id'=>$request->user_id, 'center_id'=>$request->center_id])->get();

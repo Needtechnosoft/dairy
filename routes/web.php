@@ -54,5 +54,34 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('snf-fats-data','Admin\SnffatController@snffatDataLoad')->name('load.snffat.data');
     Route::post('snf-fats-save','Admin\SnffatController@saveSnffatData')->name('store.snffat');
 
+    // items
+    Route::get('items','Admin\ItemController@index')->name('admin.item');
+    Route::post('item-add','Admin\ItemController@saveItems')->name('admin.item.save');
+    Route::get('item-delete/{id}','Admin\ItemController@deleteItem')->name('admin.item.delete');
+    Route::post('item-update','Admin\ItemController@updateItem');
+
+    // expensess
+    Route::get('expenses', 'Admin\ExpenseController@index')->name('admin.exp');
+
+    // suppliers
+    Route::get('suppliers', 'Admin\SupplierController@index')->name('admin.sup');
+    Route::post('add-supplier','Admin\SupplierController@addSupplier')->name('admin.sup.add');
+    Route::get('supplier-list', 'Admin\SupplierController@supplierList')->name('admin.sup.list');
+    Route::get('supplier-delete/{id}', 'Admin\SupplierController@deleteSupplier');
+    Route::post('supplier/update','Admin\SupplierController@updateSupplier');
+
+
+    // distributer
+    Route::get('distributers', 'Admin\DistributerController@index')->name('admin.dis');
+    Route::post('distributer-add', 'Admin\DistributerController@addDistributer')->name('admin.dis.add');
+
+
+    // employees 
+    Route::get('employees', 'Admin\EmployeeController@index')->name('admin.emp');
+    Route::post('employee-add', 'Admin\EmployeeController@addEmployee')->name('admin.emp.add');
+    Route::post('employee/update', 'Admin\EmployeeController@updateEmployee');
+    Route::get('employee-list', 'Admin\EmployeeController@employeeList')->name('admin.emp.list');
+    Route::get('employee/delete/{id}', 'Admin\EmployeeController@employeeDelete');
+
 
 });

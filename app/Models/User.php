@@ -57,4 +57,8 @@ class User extends Authenticatable
             return "employee";
         }
     }
+
+    public function employee(){
+        return Employee::where('user_id',$this->id)->first();
+    }
 }
