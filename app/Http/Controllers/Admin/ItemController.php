@@ -18,6 +18,7 @@ class ItemController extends Controller
     public function saveItems(Request $request){
         $item = new Item();
         $item->title = $request->name;
+        $item->number = $request->number;
         $item->cost_price = $request->cost_price;
         $item->sell_price = $request->sell_price;
         $item->stock = $request->stock;
@@ -29,6 +30,7 @@ class ItemController extends Controller
     public function updateItem(Request $request){
         $item = Item::where('id',$request->id)->first();
         $item->title = $request->name;
+        $item->number = $request->number;
         $item->cost_price = $request->cost_price;
         $item->sell_price = $request->sell_price;
         $item->stock = $request->stock;

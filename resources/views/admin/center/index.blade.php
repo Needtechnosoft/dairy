@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('title','Collection Centers')
-@section('head-title','Create Farmer')
+@section('head-title','Collection Center')
 @section('toobar')
 <button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Create New Center</button>
 @endsection
@@ -26,7 +26,7 @@
                     <input type="hidden" name="id" value="{{$c->id}}">
                     <td><input type="text" value="{{ $c->name }}" class="form-control" name="name" form="collectionForm-{{ $c->id }}"></td>
                     <td><input type="text" value="{{ $c->addresss }}" class="form-control" name="address" form="collectionForm-{{ $c->id }}"></td>
-                    <td><span onclick="editCollection({{$c->id}});" form="collectionForm-{{ $c->id }}" class="btn btn-primary"> Update </span> | <span class="btn btn-danger" onclick="removeCenter({{$c->id}});">Delete</span></td>
+                    <td><span onclick="editCollection({{$c->id}});" form="collectionForm-{{ $c->id }}" class="btn btn-primary btn-sm"> Update </span> | <span class="btn btn-danger btn-sm" onclick="removeCenter({{$c->id}});">Delete</span></td>
                 </form>
             </tr>
             @endforeach
@@ -38,7 +38,7 @@
 
 <!-- modal -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="name">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -53,7 +53,7 @@
                             <div class="col-lg-6">
                                 <label for="name">Collection Center Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Collection Center Name" required>
+                                    <input type="text" id="name" name="name" class="form-control next" data-next="address" placeholder="Collection Center Name" required>
                                 </div>
                             </div>
 

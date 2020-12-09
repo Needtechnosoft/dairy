@@ -6,8 +6,8 @@
     <td>{{ $user->address }}</td>
     <td>{{ $user->employee()->salary }}</td>
     <td>
-        <button  type="button" data-employee="{{$user->toJson()}}" data-salary="{{ $user->employee()->salary }}" class="badge badge-primary editfarmer" onclick="initEdit(this);" >Edit</button>
+        <button  type="button" data-employee="{{$user->toJson()}}" data-salary="{{ $user->employee()->salary }}" class="btn btn-primary btn-sm" onclick="initEdit(this);" >Edit</button>
         |
-        <button class="badge badge-danger" onclick="removeData({{$user->id}});">Delete</button></td>
+        <button class="btn btn-danger btn-sm" onclick="removeData({{$user->id}});">Delete</button></td>
 </tr>
 @endforeach

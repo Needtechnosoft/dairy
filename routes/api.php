@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/*
+$issue=Library::join('students','students.id','=','libraries.student_id')
+->join('books','books.id','=','libraries.book_id')->get();
+
+*/

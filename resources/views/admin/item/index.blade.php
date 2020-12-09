@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>Item Name</th>
+                <th>Item Number</th>
                 <th>Cost Price</th>
                 <th>sell Price </th>
                 <th>Stock </th>
@@ -24,13 +25,14 @@
             @foreach($items as $item)
             <tr id="item-{{ $item->id }}" data-name="{{ $item->title }}">
                 <td>{{$item->title}}</td>
+                <td>{{$item->number}}</td>
                 <td>{{$item->cost_price}}</td>
                 <td>{{$item->sell_price}}</td>
                 <td>{{$item->stock}}</td>
                 <td>{{$item->unit}}</td>
                 <td>
-                    <button class="btn btn-primary" data-item="{{$item->toJson()}}" onclick="initEdit(this);">Edit</button>
-                    <button class="btn btn-danger" onclick="removeData({{$item->id}});">Delete</button>
+                    <button class="btn btn-primary btn-sm" data-item="{{$item->toJson()}}" onclick="initEdit(this);">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="removeData({{$item->id}});">Delete</button>
                 </td>
             </tr>
             @endforeach
@@ -40,7 +42,7 @@
 
 <!-- modal -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="iname">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,31 +54,38 @@
                     <form id="form_validation" onsubmit="return saveData(event);">
                         @csrf
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <label for="name">Item Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="iname" name="name" class="form-control" placeholder="Enter item name" required>
+                                    <input type="text" id="iname" name="name" class="form-control next" data-next="inum" placeholder="Enter item name" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="name">Item Number</label>
+                                <div class="form-group">
+                                    <input type="text" id="inum" name="number" class="form-control next" data-next="cprice" placeholder="Enter unique item number" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="cprice">Cost Price</label>
                                 <div class="form-group">
-                                    <input type="number" id="cprice" name="cost_price" min="0" class="form-control" placeholder="Enter cost price" required>
+                                    <input type="number" id="cprice" name="cost_price" min="0" class="form-control next" data-next="sprice" placeholder="Enter cost price" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="sprice">Sell Price</label>
                                 <div class="form-group">
-                                    <input type="number" id="sprice" name="sell_price" min="0" class="form-control" placeholder="Enter sell price" required>
+                                    <input type="number" id="sprice" name="sell_price" min="0" class="form-control next" data-next="stock" placeholder="Enter sell price" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="stock">Stock</label>
                                 <div class="form-group">
-                                    <input type="number" id="stock" name="stock" min="0" class="form-control" placeholder="Enter stock" required>
+                                    <input type="number" id="stock" name="stock" min="0" class="form-control next" data-next="unit" placeholder="Enter stock" required>
                                 </div>
                             </div>
 
@@ -100,12 +109,11 @@
 
 <!-- edit modal -->
 
-
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="ename">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="title" id="largeModalLabel">Edit Farmer</h4>
+                <h4 class="title" id="largeModalLabel">Edit Item</h4>
             </div>
             <hr>
             <div class="card">
@@ -113,32 +121,39 @@
                     <form id="editform" onsubmit="return editData(event);">
                         @csrf
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <label for="name">Item Name</label>
                                 <input type="hidden" name="id" id="eid">
                                 <div class="form-group">
-                                    <input type="text" id="ename" name="name" class="form-control" placeholder="Enter item name" required>
+                                    <input type="text" id="ename" name="name" class="form-control next" data-next="einum" placeholder="Enter item name" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="name">Item Number</label>
+                                <div class="form-group">
+                                    <input type="text" id="einum" name="number" class="form-control next" data-next="ecprice" placeholder="Enter unique item number" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="cprice">Cost Price</label>
                                 <div class="form-group">
-                                    <input type="number" id="ecprice" name="cost_price" min="0" class="form-control" placeholder="Enter cost price" required>
+                                    <input type="number" id="ecprice" name="cost_price" min="0" class="form-control next" data-next="esprice" placeholder="Enter cost price" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="sprice">Sell Price</label>
                                 <div class="form-group">
-                                    <input type="number" id="esprice" name="sell_price" min="0" class="form-control" placeholder="Enter sell price" required>
+                                    <input type="number" id="esprice" name="sell_price" min="0" class="form-control next" data-next="estock" placeholder="Enter sell price" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="stock">Stock</label>
                                 <div class="form-group">
-                                    <input type="number" id="estock" name="stock" min="0" class="form-control" placeholder="Enter stock" required>
+                                    <input type="number" id="estock" name="stock" min="0" class="form-control next" data-next="eunit" placeholder="Enter stock" required>
                                 </div>
                             </div>
 
@@ -183,6 +198,7 @@
                 $('#itemData').prepend(response.data);
             })
             .catch(function(response) {
+                showNotification('bg-danger','Item Number already exist!');
                 //handle error
                 console.log(response);
             });
@@ -197,6 +213,7 @@
         $('#esprice').val(item.sell_price);
         $('#estock').val(item.stock);
         $('#eunit').val(item.unit);
+        $('#einum').val(item.number);
         $('#editModal').modal('show');
     }
 

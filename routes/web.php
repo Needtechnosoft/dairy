@@ -60,6 +60,12 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('item-delete/{id}','Admin\ItemController@deleteItem')->name('admin.item.delete');
     Route::post('item-update','Admin\ItemController@updateItem');
 
+    // sell items
+    Route::get('sell-items','Admin\SellitemController@index')->name('admin.sell.item');
+    Route::post('sell-item-add','Admin\SellitemController@addSellItem')->name('admin.sell.item.add');
+    Route::get('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
+
+
     // expensess
     Route::get('expenses', 'Admin\ExpenseController@index')->name('admin.exp');
 
@@ -70,10 +76,25 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('supplier-delete/{id}', 'Admin\SupplierController@deleteSupplier');
     Route::post('supplier/update','Admin\SupplierController@updateSupplier');
 
+    // supplier bills
+
+    Route::get('supplier-bills', 'Admin\SupplierController@indexBill')->name('admin.sup.bill');
+    Route::post('supplier-bill-add', 'Admin\SupplierController@addBill')->name('admin.sup.bill.add');
+    Route::get('supplier-bill-list', 'Admin\SupplierController@listBill')->name('admin.sup.bill.list');
+    Route::post('supplier-bill-update', 'Admin\SupplierController@updateBill')->name('admin.sup.bill.update');
+    Route::get('supplier-bill-delete/{id}', 'Admin\SupplierController@deleteBill');
+
+
+
+
 
     // distributer
     Route::get('distributers', 'Admin\DistributerController@index')->name('admin.dis');
     Route::post('distributer-add', 'Admin\DistributerController@addDistributer')->name('admin.dis.add');
+    Route::get('distributer-list', 'Admin\DistributerController@DistributerList')->name('admin.dis.list');
+    Route::post('distributer-update', 'Admin\DistributerController@updateDistributer')->name('admin.dis.update');
+    Route::get('distributer/delete/{id}', 'Admin\DistributerController@DistributerDelete');
+
 
 
     // employees 
@@ -85,3 +106,5 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
 
 });
+
+

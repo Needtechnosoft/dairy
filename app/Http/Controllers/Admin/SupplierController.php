@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Supplierbill;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -46,4 +47,46 @@ class SupplierController extends Controller
         $user->delete();
         return response()->json('Delete successfully !');
     }
+
+    // bill controllers
+
+    public function indexBill(){
+        return view('admin.supplier.bill.index');
+    }
+
+    public function addBill(Request $request){
+        $date = str_replace('-','',$request->date);
+        $bill = new Supplierbill();
+        $bill->billno = $request->billno;
+        $bill->date = $date;
+        $bill->total = $request->total;
+        $bill->paid = $request->paid;
+        $bill->due = $request->total - $request->paid;
+        $bill->user_id = $request->user_id;
+        $bill->save();
+        return view('admin.supplier.bill.single',compact('bill'));
+    }
+
+    public function listBill(){
+        $bills = Supplierbill::latest()->get();
+        return view('admin.supplier.bill.list',compact('bills'));
+    }
+
+    public function updateBill(Request $request){
+        $date = str_replace('-','',$request->date);
+        $bill = Supplierbill::find($request->id);
+        $bill->billno = $request->billno;
+        $bill->date = $date;
+        $bill->total = $request->total;
+        $bill->paid = $request->paid;
+        $bill->due = $request->total - $request->paid;
+        $bill->user_id = $request->user_id;
+        $bill->save();
+        return view('admin.supplier.bill.single',compact('bill'));
+    }
+
+    public function deleteBill($id){
+        Supplierbill::find($id)->delete();
+    }
+
 }

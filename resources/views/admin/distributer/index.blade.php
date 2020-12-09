@@ -29,7 +29,7 @@
 
 <!-- modal -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="name">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -44,28 +44,28 @@
                             <div class="col-lg-6">
                                 <label for="name">Distributer Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter distributer name" required>
+                                    <input type="text" id="name" name="name" class="form-control next" data-next="phone" placeholder="Enter distributer name" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="name">Distributer Phone</label>
                                 <div class="form-group">
-                                    <input type="number" id="phone" name="phone" class="form-control" placeholder="Enter distributer phone" required>
+                                    <input type="number" id="phone" name="phone" class="form-control next" data-next="address" placeholder="Enter distributer phone" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
                                 <label for="name">Distributer Address</label>
                                 <div class="form-group">
-                                    <input type="text" id="address" name="address" class="form-control" placeholder="Enter distributer address" required>
+                                    <input type="text" id="address" name="address" class="form-control next" data-next="rate" placeholder="Enter distributer address" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="rate">Rate</label>
                                 <div class="form-group">
-                                    <input type="number" id="rate" name="rate" step="0.001" min="0.001" class="form-control" placeholder="Enter rate" required>
+                                    <input type="number" id="rate" name="rate" step="0.001" min="0.001" class="form-control next" data-next="amt" placeholder="Enter rate" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -89,7 +89,7 @@
 <!-- edit modal -->
 
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="ename">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,21 +105,34 @@
                             <div class="col-lg-6">
                                 <label for="name">Distributer Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="ename" name="name" class="form-control" placeholder="Enter distributer name" required>
+                                    <input type="text" id="ename" name="name" class="form-control next" data-next="ephone" placeholder="Enter distributer name" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="name">Distributer Phone</label>
                                 <div class="form-group">
-                                    <input type="number" id="ephone" name="phone" class="form-control" placeholder="Enter distributer phone" required>
+                                    <input type="number" id="ephone" name="phone" class="form-control next" data-next="eaddress" placeholder="Enter distributer phone" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
                                 <label for="name">Distributer Address</label>
                                 <div class="form-group">
-                                    <input type="text" id="eaddress" name="address" value="" class="form-control" placeholder="Enter distributer address" required>
+                                    <input type="text" id="eaddress" name="address" value="" class="form-control next" data-next="erate" placeholder="Enter distributer address" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="rate">Rate</label>
+                                <div class="form-group">
+                                    <input type="number" id="erate" name="rate" step="0.001" min="0.001" class="form-control next" data-next="eamt" placeholder="Enter rate" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="amt">Amount(Qty)</label>
+                                <div class="form-group">
+                                    <input type="number" id="eamt" name="amount" step="0.001" min="0.001" class="form-control" placeholder="Enter amount" required>
                                 </div>
                             </div>
                         </div>
@@ -142,6 +155,8 @@
         $('#ename').val(distributer.name);
         $('#ephone').val(distributer.phone);
         $('#eaddress').val(distributer.address);
+        $('#erate').val(ele.dataset.rate);
+        $('#eamt').val(ele.dataset.amount);
         $('#eid').val(distributer.id);
         $('#editModal').modal('show');
     }
@@ -151,7 +166,7 @@
         var bodyFormData = new FormData(document.getElementById('form_validation'));
         axios({
                 method: 'post',
-                url: '{{ route("add.farmer")}}',
+                url: '{{ route("admin.dis.add")}}',
                 data: bodyFormData,
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -159,7 +174,7 @@
             })
             .then(function(response) {
                 console.log(response);
-                showNotification('bg-success', 'Farmer added successfully!');
+                showNotification('bg-success', 'Distributer added successfully!');
                 $('#largeModal').modal('toggle');
                 $('#form_validation').trigger("reset")
                 $('#distributerData').prepend(response.data);
@@ -177,7 +192,7 @@
         var bodyFormData = new FormData(document.getElementById('editform'));
         axios({
                 method: 'post',
-                url: '/admin/farmer/update',
+                url: '{{ route("admin.dis.update")}}',
                 data: bodyFormData,
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -187,7 +202,7 @@
                 console.log(response);
                 showNotification('bg-success', 'Updated successfully!');
                 $('#editModal').modal('toggle');
-                $('#farmer-' + rowid).replaceWith(response.data);
+                $('#distributer-' + rowid).replaceWith(response.data);
             })
             .catch(function(response) {
                 //handle error
@@ -197,11 +212,11 @@
 
     axios({
             method: 'get',
-            url: '{{ route("list.farmer")}}',
+            url: '{{ route("admin.dis.list")}}',
         })
         .then(function(response) {
             // console.log(response.data);
-            // $('#distributerData').html(response.data);
+            $('#distributerData').html(response.data);
             initTableSearch('sid', 'distributerData', ['name']);
         })
         .catch(function(response) {
@@ -215,11 +230,11 @@
         if (confirm('Are you sure?')) {
             axios({
                     method: 'get',
-                    url: '/admin/farmer/delete/' + dataid,
+                    url: '/admin/distributer/delete/' + dataid,
                 })
                 .then(function(response) {
                     // console.log(response.data);
-                    $('#farmer-' + dataid).remove();
+                    $('#distributer-' + dataid).remove();
                     showNotification('bg-danger', 'Deleted Successfully !');
                 })
                 .catch(function(response) {

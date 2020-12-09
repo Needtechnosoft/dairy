@@ -27,7 +27,7 @@
 
 <!-- modal -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="name">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -42,14 +42,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Farmer Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter farmer name" required>
+                                    <input type="text" id="name" name="name" class="form-control next" data-next="phone" placeholder="Enter farmer name" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="name">Farmer Phone</label>
                                 <div class="form-group">
-                                    <input type="number" id="phone" name="phone" class="form-control" placeholder="Enter farmer phone" required>
+                                    <input type="number" id="phone" name="phone" class="form-control next" data-next="address" placeholder="Enter farmer phone" required>
                                 </div>
                             </div>
 

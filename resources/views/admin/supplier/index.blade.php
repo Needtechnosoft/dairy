@@ -27,7 +27,7 @@
 
 <!-- modal -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="name">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -42,14 +42,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Supplier Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter supplier name" required>
+                                    <input type="text" id="name" name="name" class="form-control next" data-next="phone" placeholder="Enter supplier name" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="name">Supplier Phone</label>
                                 <div class="form-group">
-                                    <input type="number" id="phone" name="phone" class="form-control" placeholder="Enter supplier phone" required>
+                                    <input type="number" id="phone" name="phone" class="form-control next" data-next="address" placeholder="Enter supplier phone" required>
                                 </div>
                             </div>
 
@@ -74,7 +74,7 @@
 <!-- edit modal -->
 
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="ename">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,14 +90,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Supplier Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="ename" name="name" class="form-control" placeholder="Enter supplier name" required>
+                                    <input type="text" id="ename" name="name" class="form-control next" data-next="ephone" placeholder="Enter supplier name" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="name">Supplier Phone</label>
                                 <div class="form-group">
-                                    <input type="number" id="ephone" name="phone" class="form-control" placeholder="Enter supplier phone" required>
+                                    <input type="number" id="ephone" name="phone" class="form-control next" data-next="eaddress" placeholder="Enter supplier phone" required>
                                 </div>
                             </div>
 

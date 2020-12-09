@@ -61,4 +61,8 @@ class User extends Authenticatable
     public function employee(){
         return Employee::where('user_id',$this->id)->first();
     }
+
+    public function distributer(){
+        return Distributer::where('user_id',$this->id)->first();
+    }
 }

@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="{{ asset('backend/plugins/dropify/css/dropify.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('backend/css/style.min.css') }}">
+    @include('admin.layouts.css')
     @yield('css')
+
 </head>
 
 <body class="theme-blush">
@@ -90,6 +92,7 @@
     <!-- <script src="{{ asset('backend/js/pages/index.js') }}"></script> -->
     <script src="{{ asset('backend/js/axios.js') }}"></script>
     <script src="{{ asset('backend/js/table.js') }}"></script>
+    <script src="{{ asset('backend/js/input.js') }}"></script>
     @yield('js')
 </body>
 

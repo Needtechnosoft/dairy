@@ -5,9 +5,9 @@
     <td>{{ $f->phone }}</td>
     <td>{{ $f->address }}</td>
     <td>
-        <button  type="button" data-farmer="{{$f->toJson()}}" data-id="{{$f->id}}"  data-phone="{{ $f->address }}" class="badge badge-primary editfarmer" onclick="initEdit(this);" >Edit</button>
+        <button  type="button" data-farmer="{{$f->toJson()}}" data-id="{{$f->id}}"  data-phone="{{ $f->address }}" class="btn btn-primary btn-sm editfarmer" onclick="initEdit(this);" >Edit</button>
         |
-        <button class="badge badge-danger" onclick="removeData({{$f->id}});">Delete</button>
+        <button class="btn btn-danger btn-sm" onclick="removeData({{$f->id}});">Delete</button>
     </td>
 </tr>
 @endforeach

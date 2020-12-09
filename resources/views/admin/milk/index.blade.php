@@ -41,14 +41,14 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="date">Date</label>
-                        <input type="text" name="date" id="nepali-datepicker" class="form-control" placeholder="Date">
+                        <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="center_id" placeholder="Date">
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="date">Collection Center</label>
-                        <select name="center_id" id="center_id" class="form-control show-tick ms">
+                        <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="session">
                             <option></option>
                             @foreach(\App\Models\Center::all() as $c)
                             <option value="{{$c->id}}">{{ $c->name }}</option>
