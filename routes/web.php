@@ -36,6 +36,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('farmer-list','Admin\FarmerController@listFarmer')->name('list.farmer');
     Route::match(['get', 'post'],'farmer/update','Admin\FarmerController@updateFarmer')->name('update.farmer');
     Route::get('farmer/delete/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer');
+    //detail
+    Route::get('farmer/detail/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer');
 
     // farmer advance
     Route::get('farmer-advances', 'Admin\AdvanceController@index')->name('admin.farmer.advance');
