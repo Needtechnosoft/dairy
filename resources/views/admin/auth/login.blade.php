@@ -28,7 +28,7 @@
                             <img class="logo" src="{{ asset('backend/images/logo.svg') }}" alt="">
                             <h5>Log in</h5>
                         </div>
-                        
+
                         <div class="body">
                             @if ($errors->any())
                             <div class="alert alert-danger">
@@ -56,12 +56,6 @@
                                 <label for="remember_me">Remember Me</label>
                             </div>
                             <button class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
-                            <div class="signin_with mt-3">
-                                <p class="mb-0">or Sign Up using</p>
-                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round facebook"><i class="zmdi zmdi-facebook"></i></button>
-                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i class="zmdi zmdi-twitter"></i></button>
-                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i class="zmdi zmdi-google-plus"></i></button>
-                            </div>
                         </div>
                     </form>
                     <div class="copyright text-center">
@@ -69,7 +63,7 @@
                         <script>
                             document.write(new Date().getFullYear())
                         </script>,
-                        <span><a href="templatespoint.net">Templates Point</a></span>
+                        <span><a href="#">Need Technosoft</a></span>
                     </div>
                 </div>
                 <div class="col-lg-8 col-sm-12">
