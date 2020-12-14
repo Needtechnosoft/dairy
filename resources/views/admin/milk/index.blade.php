@@ -60,7 +60,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="date">Session</label>
-                        <select name="session" id="session" class="form-control show-tick ms">
+                        <select name="session" id="session" class="form-control show-tick ms next" data-next="loaddata">
                             <option></option>
                             <option value="0">Morning</option>
                             <option value="1">Evening</option>
@@ -69,20 +69,22 @@
                 </div>
 
                 <div class="col-md-2 mt-4">
-                    <span class="btn btn-primary btn-block" onclick="loadData();" id="loaddata">Load</span>
+                    <input type="button" class="btn btn-primary btn-block next" data-next="u_id" onkeydown="loadData();" id="loaddata" value="Load">
+                    {{-- <span>Load</span> --}}
                     <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control" min="1">
-                </div>
-                
-                <div class="col-md-4 add-section">
-                    <input type="number" name="milk_amount" id="m_amt" step="0.001" min="0.001" placeholder="Milk in liter" class="form-control">
+                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control next" data-next="m_amt" min="1">
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <span class="btn btn-primary btn-block" onclick="saveDate();">Save</span>
+                    <input type="number" name="milk_amount" id="m_amt" step="0.001" min="0.001" placeholder="Milk in liter" class="form-control next" data-next="saveData">
+                </div>
+
+                <div class="col-md-4 add-section">
+                    <input type="button" class="btn btn-primary btn-block" onclick="saveDate();" id="saveData" value="Save">
+                    {{-- <span >Save</span> --}}
                 </div>
 
             </div>
@@ -121,7 +123,7 @@
                 <button class="btn btn-primary" onclick="savedefault(0)">Update Current Data</button>
                 <button class="btn btn-primary" onclick="savedefault(1)">Add To Current Data</button>
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
@@ -133,7 +135,7 @@
 <script src="{{ asset('backend/js/pages/forms/advanced-form-elements.js') }}"></script>
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
 <script>
-    
+
     // $('#defaultModal').modal('show');
     $('.add-section').hide();
     // $( "#x" ).prop( "disabled", true );
@@ -161,7 +163,7 @@
                 showNotification('bg-success', 'Milk data added Successfully !');
                 $('#u_id').val('');
                 $('#m_amt').val('');
-                
+
                 if(session==0){
                         document.querySelector('#milk-'+id).dataset.m_amount=response.data.m_amount;
                         $('#m_milk-'+id).text(response.data.m_amount);
@@ -170,15 +172,15 @@
                         $('#e_milk-'+id).text(response.data.e_amount);
                 }
                 $('#defaultModal').modal('hide');
-               
+
             })
             .catch(function(response) {
                 //handle error
                 console.log(response);
             });
     }
-        
-    
+
+
     function saveDate() {
         if($('#u_id').val()==""){
             alert('Please enter farmer number');
@@ -250,7 +252,7 @@
             $('#resetdata').removeClass('d-none').addClass('d-block');
         }else{
             $('#resetdata').removeClass('d-block').addClass('d-none');
-            
+
         }
     }
 
@@ -306,11 +308,17 @@
 
     function farmerId(id){
         $('#u_id').val(id);
+        $('#u_id').focus();
     }
+
+    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
+        $('#center_id').focus();
     };
 </script>
 @endsection

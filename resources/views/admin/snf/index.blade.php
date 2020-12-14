@@ -25,8 +25,8 @@
                 <tbody id="farmerData">
                     @foreach(\App\Models\User::where('role',1)->get() as $u)
                     <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
-                        <td class="p-1">{{ $u->id }}</td>
-                        <td class="p-1" style="cursor: grab;">{{ $u->name }}</td>
+                        <td class="p-1"><span style="cursor: pointer;">{{ $u->id }}</span></td>
+                        <td class="p-1"><span style="cursor: pointer;"> {{ $u->name }} </span></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -48,7 +48,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="date">Collection Center</label>
-                        <select name="center_id" id="center_id" class="form-control show-tick ms">
+                        <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="u_id">
                             <option></option>
                             @foreach(\App\Models\Center::all() as $c)
                             <option value="{{$c->id}}">{{ $c->name }}</option>
@@ -59,24 +59,26 @@
 
                 <div class="col-md-3">
                     <label for="farmer no">Farmer Number</label>
-                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control" min="1">
+                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control next" data-next="loaddata" min="1">
                 </div>
 
                 <div class="col-md-2 mt-4">
-                    <span class="btn btn-primary btn-block" onclick="loadData();" id="loaddata">Load</span>
+                    <input type="button" class="btn btn-primary btn-block next" data-next="snf" onkeydown="loadData();" id="loaddata" value="Load">
+                    {{-- <span >Load</span> --}}
                     <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <input type="number" name="snf" id="snf" step="0.001" min="0.001" placeholder="Snf" class="form-control">
+                    <input type="number" name="snf" id="snf" step="0.001" min="0.001" placeholder="Snf" class="form-control next" data-next="fat">
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <input type="number" name="fat" id="fat" step="0.001" min="0.001" placeholder="Fats" class="form-control">
+                    <input type="number" name="fat" id="fat" step="0.001" min="0.001" placeholder="Fats" class="form-control next" data-next="saveData">
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <span class="btn btn-primary btn-block" onclick="saveDate();">Save</span>
+                    <input type="button" class="btn btn-primary btn-block" onclick="saveDate();" value="Save" id="saveData">
+                    {{-- <span >Save</span> --}}
                 </div>
 
             </div>
@@ -131,6 +133,7 @@
 
     function farmerId(id) {
         $('#u_id').val(id);
+        $('#u_id').focus();
     }
 
     function disableTopPanel(method) {
@@ -210,12 +213,12 @@
             if(document.querySelectorAll('#snf-'+id).length>0){
                 _snf=document.querySelector('#snf-'+id).dataset.snf;
                 _fat=document.querySelector('#snf-'+id).dataset.fat;
-            
+
                     if(_snf>0){
                         $('#defaultModal').modal('show');
                         return;
                     }
-                
+
                     if(_fat>0){
                         $('#defaultModal').modal('show');
                         return;
@@ -275,10 +278,14 @@
             });
     }
 
+    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
+        $('#center_id').focus();
     };
 </script>
 @endsection

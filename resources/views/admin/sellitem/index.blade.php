@@ -83,11 +83,12 @@
 
                 <div class="col-md-3">
                     <label for="due">Due</label>
-                    <input type="number" name="due" id="due" step="0.001" placeholder="due" value="0" class="form-control" min="0.001" readonly>
+                    <input type="number" name="due" id="due" step="0.001" placeholder="due" value="0" class="form-control next" data-next="save" min="0" readonly>
                 </div>
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
-                    <span class="btn btn-primary btn-block" onclick="saveData();">Save</span>
+                    <input type="button" value="Save" class="btn btn-primary btn-block" onclick="saveData();" id="save">
+                    {{-- <span class="btn btn-primary btn-block" >Save</span> --}}
                 </div>
 
             </div>
@@ -147,7 +148,7 @@
 
 <!-- edit modal -->
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="ename">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="eu_id">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -166,7 +167,7 @@
                                 <input type="hidden" id="eid" name="id">
                                 <div class="form-group">
                                     <label for="date">Date</label>
-                                    <input type="text" name="date" id="enepali-datepicker" class="form-control next" data-next="user_id" placeholder="Date">
+                                    <input type="text" name="date" id="enepali-datepicker" class="form-control next" data-next="eu_id" placeholder="Date">
                                 </div>
                             </div>
 
@@ -174,7 +175,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="unumber">User Number</label>
-                                    <input type="number" name="user_id" id="eu_id" placeholder="User number" class="form-control next" data-next="item_id" min="1">
+                                    <input type="number" name="user_id" id="eu_id" placeholder="User number" class="form-control next" data-next="eitem_id" min="1">
                                 </div>
                             </div>
 
@@ -182,37 +183,38 @@
                                 <div class="form-group">
                                     <!-- <input type="hidden" name=""> -->
                                     <label for="unumber">Item Number</label>
-                                    <input type="text" id="eitem_id" name="number" placeholder="Item number" class="form-control next" data-next="rate" min="1">
+                                    <input type="text" id="eitem_id" name="number" placeholder="Item number" class="form-control next" data-next="erate" min="1">
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="rate">Rate</label>
-                                <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="erate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="qty" min="0.001">
+                                <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="erate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="eqty" min="0.001">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="qty">Quantity</label>
-                                <input type="number" name="qty" id="eqty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="total" min="0.001">
+                                <input type="number" name="qty" id="eqty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="etotal" min="0.001">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="total">Total</label>
-                                <input type="number" name="total" id="etotal" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="paid" min="0.001" readonly>
+                                <input type="number" name="total" id="etotal" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="epaid" min="0.001" readonly>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="paid">Paid</label>
-                                <input type="number" name="paid" onkeyup="paidTotal();" id="epaid" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="due" min="0.001">
+                                <input type="number" name="paid" onkeyup="paidTotal();" id="epaid" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="edue" min="0.001">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="due">Due</label>
-                                <input type="number" name="due" id="edue" step="0.001" placeholder="due" value="0" class="form-control" min="0.001" readonly>
+                                <input type="number" name="due" id="edue" step="0.001" placeholder="due" value="0" class="form-control next" data-next="udata" min="0" readonly>
                             </div>
 
                             <div class="col-md-12 d-flex justify-content-end mt-3">
-                                <span class="btn btn-primary btn-block" onclick="udateData();">Update Data</span>
+                                <input type="button" class="btn btn-primary btn-block" onclick="udateData();" id="udata" value="Update Data">
+                                {{-- <span >Update Data</span> --}}
                             </div>
                         </div>
                     </form>
@@ -370,11 +372,13 @@
 
     function farmerId(id) {
         $('#u_id').val(id);
+        $('#u_id').focus();
     }
 
     function itemId(id) {
         _number = document.querySelector('#item-' + id).dataset.number;
         $('#item_id').val(_number);
+        $('#item_id').focus();
     }
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
     var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
@@ -387,7 +391,7 @@
         edit.nepaliDatePicker();
         $('body').addClass('ls-toggle-menu');
         $('body').addClass('right_icon_toggle');
-
+        $('#u_id').focus();
     };
 
 </script>
