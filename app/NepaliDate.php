@@ -8,10 +8,10 @@ class NepaliDate{
     public $session;
     public function __construct($date)
     {
-        $this->year=$date/10000;
+        $this->year=(int)($date/10000);
         $date=$date%10000;
-        $this->month=$date/100;
-        $this->day=$date%100;
+        $this->month=(int)($date/100);
+        $this->day= (int)($date%100);
         if($this->day<16){
             $this->session=1;
         }else{

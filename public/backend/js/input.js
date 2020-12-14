@@ -13,6 +13,10 @@ $('.modal').each(function(){
     $(this).on('shown.bs.modal', function (e) {
         _id=$(this).data('ff');
         console.log('shown',_id);
-        $('#'+_id).focus();    
+        $('#'+_id).focus();
     });
+});
+
+$('.href').click(function(){
+    window.location.href=$(this).data('target');
 });

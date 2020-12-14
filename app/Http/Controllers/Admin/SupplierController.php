@@ -86,7 +86,8 @@ class SupplierController extends Controller
     }
 
     public function deleteBill($id){
-        Supplierbill::find($id)->delete();
+        $bill=Supplierbill::where('id',$id)->first();
+        $bill->delete();
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\LedgerManage;
 use App\Models\Milkdata;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class MilkController extends Controller
         $actiontype=0;
         $date = str_replace('-', '', $request->date);
         $milkData=Milkdata::where('user_id',$request->user_id)->where('date',$date)->first();
-        
+
         if($milkData==null){
             $milkData = new Milkdata();
             $milkData->date = $date;
@@ -25,7 +26,7 @@ class MilkController extends Controller
             $milkData->center_id = $request->center_id;
             $actiontype=1;
         }
-        
+
         //request->type 1=save/replace type=2 add
 
         if($request->session == 0){
@@ -43,7 +44,6 @@ class MilkController extends Controller
             }
         }
         $milkData->save();
-        
         if($actiontype==1){
             return view('admin.milk.single',['d'=>$milkData]);
         }else{

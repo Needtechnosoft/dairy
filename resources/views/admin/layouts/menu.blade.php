@@ -14,8 +14,12 @@
                     </div>
                 </div>
             </li>
-            <li class="active open"><a href=""><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
-            <li><a href="{{ route('add.farmer') }}" class="waves-effect waves-block"><i class="zmdi zmdi-apps"></i><span>Farmer</span></a>
+            <li class="active open"><a href="{{ route('admin.dashboard')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-apps"></i><span>Farmer</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('admin.farmer') }}" class="waves-effect waves-block">Farmer List</a></li>
+                    <li><a href="{{ route('admin.farmer.advance') }}" class="waves-effect waves-block">Advance</a></li>
+                </ul>
             </li>
             <li><a href="{{ route('admin.collection') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Collection Center</span></a></li>
             <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Data</span></a></li>

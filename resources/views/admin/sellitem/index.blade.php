@@ -63,12 +63,12 @@
 
                 <div class="col-md-3">
                     <label for="rate">Rate</label>
-                    <input type="number" name="rate" onkeyup="calTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="qty" min="0.001">
+                    <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="qty" min="0.001">
                 </div>
 
                 <div class="col-md-3">
                     <label for="qty">Quantity</label>
-                    <input type="number" name="qty" id="qty" onkeyup="calTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="total" min="0.001">
+                    <input type="number" name="qty" id="qty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="total" min="0.001">
                 </div>
 
                 <div class="col-md-3">
@@ -159,10 +159,11 @@
             <hr>
             <div class="card">
                 <div class="body">
-                    <form id="editform" onsubmit="return editData(event);">
+                    <form id="editform">
                         @csrf
                         <div class="row">
                             <div class="col-md-3">
+                                <input type="hidden" id="eid" name="id">
                                 <div class="form-group">
                                     <label for="date">Date</label>
                                     <input type="text" name="date" id="enepali-datepicker" class="form-control next" data-next="user_id" placeholder="Date">
@@ -187,12 +188,12 @@
 
                             <div class="col-md-3">
                                 <label for="rate">Rate</label>
-                                <input type="number" name="rate" onkeyup="calTotal();" id="erate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="qty" min="0.001">
+                                <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="erate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="qty" min="0.001">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="qty">Quantity</label>
-                                <input type="number" name="qty" id="eqty" onkeyup="calTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="total" min="0.001">
+                                <input type="number" name="qty" id="eqty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="total" min="0.001">
                             </div>
 
                             <div class="col-md-3">
@@ -229,7 +230,7 @@
     // $( "#x" ).prop( "disabled", true );
     initTableSearch('sid', 'farmerData', ['name']);
     initTableSearch('isid', 'itemData', ['number']);
-    initTableSearch('sellItemId', 'sellDataBody', ['user_id', 'item_number']);
+    initTableSearch('sellItemId', 'sellDataBody', ['id', 'item_number']);
 
     function initEdit(e) {
         var itemsell = JSON.parse(e.dataset.itemsell);
@@ -242,11 +243,12 @@
         $('#epaid').val(itemsell.paid);
         $('#etotal').val(itemsell.total);
         $('#edue').val(itemsell.due);
+        $('#eid').val(itemsell.id);
         $('#editModal').modal('show');
     }
 
     function saveData() {
-        if ($('#nepali-datepicker').val() == '' || $('#user_id').val() == '' || $('#item_id').val() == '' || $('#total').val() == 0) {
+        if ($('#nepali-datepicker').val() == '' || $('#u_id').val() == '' || $('#item_id').val() == '' || $('#total').val() == 0) {
             alert('Please enter data in empty field !');
             $('#nepali-datepicker').focus();
             return false;
@@ -262,7 +264,7 @@
                 })
                 .then(function(response) {
                     console.log(response.data);
-                    showNotification('bg-success', 'Item added successfully !');
+                    showNotification('bg-success', 'Sellitem added successfully !');
                     $('#sellDataBody').prepend(response.data);
                     $('#u_id').val('');
                     $('#item_id').val('');
@@ -280,8 +282,44 @@
         }
     }
 
-    // list 
+    function udateData() {
+        if ($('#enepali-datepicker').val() == '' || $('#eu_id').val() == '' || $('#eitem_id').val() == '' || $('#etotal').val() == 0) {
+            alert('Please enter data in empty field !');
+            $('#enepali-datepicker').focus();
+            return false;
+        } else {
+            var rowid = $('#eid').val();
+            var bodyFormData = new FormData(document.getElementById('editform'));
+            axios({
+                    method: 'post',
+                    url: '{{ route("admin.sell.item.update")}}',
+                    data: bodyFormData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(function(response) {
+                    console.log(response.data);
+                    showNotification('bg-success', 'Sellitem updated successfully !');
+                    $('#itemsell-'+rowid).replaceWith(response.data);
+                    $('#u_id').val('');
+                    $('#item_id').val('');
+                    $('#rate').val('');
+                    $('#qty').val(1);
+                    $('#total').val(0);
+                    $('#paid').val(0);
+                    $('#due').val(0);
+                    $('#editModal').modal('hide');
+                })
+                .catch(function(response) {
+                    showNotification('bg-danger', 'You have entered invalid data !');
+                    //handle error
+                    console.log(response);
+                });
+        }
+    }
 
+    // list
     axios({
             method: 'get',
             url: '{{ route("admin.sell.item.list")}}',
@@ -294,6 +332,24 @@
             //handle error
             console.log(response);
         });
+
+    // delete
+
+    function removeData(id) {
+        if (confirm('Are you sure?')) {
+            axios({
+                    method: 'get',
+                    url: '/admin/sell-item-delete/' + id,
+                })
+                .then(function(response) {
+                    showNotification('bg-danger', 'Sellitem deleted successfully!');
+                    $('#itemsell-' + id).remove();
+                })
+                .catch(function(response) {
+                    console.log(response)
+                })
+        }
+    }
 
 
     function calTotal() {
@@ -320,14 +376,19 @@
         _number = document.querySelector('#item-' + id).dataset.number;
         $('#item_id').val(_number);
     }
-    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + NepaliFunctions.GetCurrentBsMonth() + '-' + NepaliFunctions.GetCurrentBsDay());
+    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
-    };
-    window.onload = function() {
         var edit = document.getElementById("enepali-datepicker");
         edit.nepaliDatePicker();
+        $('body').addClass('ls-toggle-menu');
+        $('body').addClass('right_icon_toggle');
+
     };
+
 </script>
 @endsection

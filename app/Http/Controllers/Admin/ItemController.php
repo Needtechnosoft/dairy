@@ -23,6 +23,7 @@ class ItemController extends Controller
         $item->sell_price = $request->sell_price;
         $item->stock = $request->stock;
         $item->unit = $request->unit;
+        $item->reward_percentage = $request->reward;
         $item->save();
         return view('admin.item.single',compact('item'));
     }
@@ -35,6 +36,7 @@ class ItemController extends Controller
         $item->sell_price = $request->sell_price;
         $item->stock = $request->stock;
         $item->unit = $request->unit;
+        $item->reward_percentage = $request->reward;
         $item->save();
         return view('admin.item.single',compact('item'));
     }

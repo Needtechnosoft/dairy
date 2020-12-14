@@ -44,7 +44,7 @@
                 <div class="row">
                     <div class="col-lg-7 col-md-6 col-sm-12">
                         <h2>
-                            @yield('head-title','')
+                            <a href="{{route('admin.dashboard')}}">Dashboard</a> / @yield('head-title','')
                         </h2>
                         <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
                     </div>

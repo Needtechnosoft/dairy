@@ -133,6 +133,7 @@
 <script src="{{ asset('backend/js/pages/forms/advanced-form-elements.js') }}"></script>
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
 <script>
+    
     // $('#defaultModal').modal('show');
     $('.add-section').hide();
     // $( "#x" ).prop( "disabled", true );

@@ -65,4 +65,9 @@ class User extends Authenticatable
     public function distributer(){
         return Distributer::where('user_id',$this->id)->first();
     }
+
+    public function advance(){
+        return Advance::where('user_id',$this->id)->first();
+    }
+
 }

@@ -18,6 +18,7 @@
                 <th>sell Price </th>
                 <th>Stock </th>
                 <th>Unit Type</th>
+                <th>Reward (%)</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
                 <td>{{$item->sell_price}}</td>
                 <td>{{$item->stock}}</td>
                 <td>{{$item->unit}}</td>
+                <td>{{ $item->reward_percentage }}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" data-item="{{$item->toJson()}}" onclick="initEdit(this);">Edit</button>
                     <button class="btn btn-danger btn-sm" onclick="removeData({{$item->id}});">Delete</button>
@@ -82,17 +84,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="stock">Stock</label>
                                 <div class="form-group">
                                     <input type="number" id="stock" name="stock" min="0" class="form-control next" data-next="unit" placeholder="Enter stock" required>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="unit">Unit Type</label>
                                 <div class="form-group">
-                                    <input type="text" id="unit" name="unit" class="form-control" placeholder="Enter unit type" required>
+                                    <input type="text" id="unit" name="unit" class="form-control next" data-next="reward" placeholder="Enter unit type" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="unit">Reward (%)</label>
+                                <div class="form-group">
+                                    <input type="number" id="reward" name="reward" step="0.001" min="0" value="0" class="form-control" placeholder="Enter item reward percentage" >
                                 </div>
                             </div>
                         </div>
@@ -150,17 +159,23 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="stock">Stock</label>
                                 <div class="form-group">
                                     <input type="number" id="estock" name="stock" min="0" class="form-control next" data-next="eunit" placeholder="Enter stock" required>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="stock">Unit Type</label>
                                 <div class="form-group">
                                     <input type="text" id="eunit" name="unit" class="form-control" placeholder="Enter unit type" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="unit">Reward (%)</label>
+                                <div class="form-group">
+                                    <input type="number" id="ereward" name="reward" step="0.001" min="0" class="form-control" placeholder="Enter item reward percentage" >
                                 </div>
                             </div>
 
@@ -214,6 +229,7 @@
         $('#estock').val(item.stock);
         $('#eunit').val(item.unit);
         $('#einum').val(item.number);
+        $('#ereward').val(item.reward_percentage);
         $('#editModal').modal('show');
     }
 
@@ -235,7 +251,7 @@
                 console.log(response);
             })
     }
-   
+
     // delete item
     function removeData(id) {
         if (confirm('Are you sure?')) {

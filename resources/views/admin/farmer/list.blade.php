@@ -5,7 +5,14 @@
     <td>{{ $f->phone }}</td>
     <td>{{ $f->address }}</td>
     <td>
-        <button  type="button" data-farmer="{{$f->toJson()}}" data-id="{{$f->id}}"  data-phone="{{ $f->address }}" class="btn btn-primary btn-sm editfarmer" onclick="initEdit(this);" >Edit</button>
+        @if($f->amount > 0)
+            {{ $f->amount}}   ( {{$f->amounttype==1?"Cr":"Dr"}} )
+        @else
+            --
+        @endif
+    </td>
+    <td>
+        <button  type="button" data-farmer="{{$f->toJson()}}" class="btn btn-primary btn-sm editfarmer" onclick="initEdit(this);" >Edit</button>
         |
         <button class="btn btn-danger btn-sm" onclick="removeData({{$f->id}});">Delete</button>
     </td>
