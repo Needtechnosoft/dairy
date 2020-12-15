@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{ asset('backend/plugins/dropify/css/dropify.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('backend/css/style.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/local.css') }}">
+
     @include('admin.layouts.css')
     @yield('css')
 
@@ -44,12 +46,12 @@
                 <div class="row">
                     <div class="col-lg-7 col-md-6 col-sm-12">
                         <h2>
-                            <a href="{{route('admin.dashboard')}}">Dashboard</a> / @yield('head-title','')
+                            <button class="btn btn-primary mr-3 " type="button" data-toggle="modal" data-target="#menumodal">Menu</button> <a href="{{route('admin.dashboard')}}">Dashboard</a> / @yield('head-title','')
                         </h2>
                         <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
                     </div>
                     <div class="col-lg-5 col-md-6 col-sm-12">
-                        <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+
                     </div>
                 </div>
             </div>
@@ -73,6 +75,21 @@
         </div>
     </section>
 
+
+    <div class="modal fade" id="menumodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg p-0 m-0" role="document" style="max-width:100vw;">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top:10px;">
+                  <span aria-hidden="true" >&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @include('admin.modalmenu')
+            </div>
+          </div>
+        </div>
+      </div>
     <!-- Jquery Core Js -->
     <script src="{{ asset('backend/bundles/libscripts.bundle.js') }}"></script> <!-- Lib Scripts Plugin Js ( jquery.v3.2.1, Bootstrap4 js) -->
     <script src="{{ asset('backend/bundles/vendorscripts.bundle.js') }}"></script> <!-- slimscroll, waves Scripts Plugin Js -->

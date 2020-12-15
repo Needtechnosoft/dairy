@@ -1,8 +1,5 @@
 @extends('admin.layouts.app')
 @section('title','Dashboard')
-@section('css')
-    <link rel="stylesheet" href="{{ asset('backend/css/local.css') }}">
-@endsection
 @section('content')
     <div class="row">
         <div class="col-md-2 section href" data-target="{{route('admin.farmer')}}">

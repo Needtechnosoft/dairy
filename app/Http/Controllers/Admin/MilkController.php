@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Milkdata;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MilkController extends Controller
@@ -17,12 +18,23 @@ class MilkController extends Controller
         // dd($request->all());
         $actiontype=0;
         $date = str_replace('-', '', $request->date);
-        $milkData=Milkdata::where('user_id',$request->user_id)->where('date',$date)->first();
+        $user=User::where('no',$request->user_id)->first();
+        // dd($user,$request);
+        if($user==null ){
+            return response("Farmer Not Found",400);
+        }else{
+            if($user->no==null){
+            return response("Farmer Not Found",500);
+
+            }
+        }
+
+        $milkData=Milkdata::where('user_id',$user->id)->where('date',$date)->first();
 
         if($milkData==null){
             $milkData = new Milkdata();
             $milkData->date = $date;
-            $milkData->user_id = $request->user_id;
+            $milkData->user_id = $user->id;
             $milkData->center_id = $request->center_id;
             $actiontype=1;
         }
@@ -44,6 +56,7 @@ class MilkController extends Controller
             }
         }
         $milkData->save();
+        $milkData->no=$user->no;
         if($actiontype==1){
             return view('admin.milk.single',['d'=>$milkData]);
         }else{

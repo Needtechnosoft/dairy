@@ -3,6 +3,17 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
+<style>
+    .selectable{
+        cursor: pointer;
+
+    }
+
+    .selectable:hover{
+        background:rgb(21, 21, 228);
+        color:white;
+    }
+</style>
 @endsection
 @section('head-title','Milk Data')
 @section('toobar')
@@ -24,9 +35,9 @@
                 </thead>
                 <tbody id="farmerData">
                     @foreach(\App\Models\User::where('role',1)->get() as $u)
-                    <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
-                        <td class="p-1">{{ $u->id }}</td>
-                        <td class="p-1" style="cursor: grab;">{{ $u->name }}</td>
+                    <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->no }});" class="selectable">
+                        <td class="p-1">{{ $u->no }}</td>
+                        <td class="p-1">{{ $u->name }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -69,7 +80,7 @@
                 </div>
 
                 <div class="col-md-2 mt-4">
-                    <input type="button" class="btn btn-primary btn-block next" data-next="u_id" onkeydown="loadData();" id="loaddata" value="Load">
+                    <input type="button" class="btn btn-primary btn-block next" data-next="u_id" onkeydown="loadData();" onclick="loadData();" id="loaddata" value="Load">
                     {{-- <span>Load</span> --}}
                     <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
@@ -79,7 +90,7 @@
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <input type="number" name="milk_amount" id="m_amt" step="0.001" min="0.001" placeholder="Milk in liter" class="form-control next" data-next="saveData">
+                    <input type="number" name="milk_amount" id="m_amt" step="0.001" min="0.001" placeholder="Milk in liter" class="form-control next" data-next="saveData" >
                 </div>
 
                 <div class="col-md-4 add-section">
@@ -221,7 +232,6 @@
             })
             .then(function(response) {
                 console.log(response.data);
-                showNotification('bg-success', 'Milk data added Successfully !');
                 $('#u_id').val('');
                 $('#m_amt').val('');
                 if(document.querySelectorAll('#milk-'+id).length>0){
@@ -235,9 +245,13 @@
                 }else{
                     $('#milkDataBody').prepend(response.data);
                 }
+                $('#u_id').focus();
+                showNotification('bg-success', 'Milk data added Successfully !');
+
             })
             .catch(function(response) {
                 //handle error
+                alert(response);
                 console.log(response);
             });
         }
@@ -320,5 +334,9 @@
         mainInput.nepaliDatePicker();
         $('#center_id').focus();
     };
+
+    $('#m_amt').bind('keydown', 'return', function(e){
+       saveDate(e);
+    });
 </script>
 @endsection
