@@ -2,7 +2,7 @@
 @section('title','Farmer-add')
 @section('head-title','Create Farmer')
 @section('toobar')
-<button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Create Farmer</button>
+<button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Create Farmer (alt+n)</button>
 @endsection
 @section('content')
 <div class="pt-2 pb-2">
@@ -35,7 +35,7 @@
                 <h4 class="title" id="largeModalLabel">Create Farmer</h4>
             </div>
             <hr>
-            <div class="card">
+            <div class="card mb-0">
                 <div class="body">
                     <form id="form_validation" method="POST" onsubmit="return saveData(event);">
                         @csrf
@@ -72,14 +72,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <span>
 
-                    <input type="checkbox" id="another"> Add Another
-                </span>
-                <button class="btn btn-raised btn-primary waves-effect" type="submit">Submit Data</button>
+                <button class="btn btn-raised btn-primary waves-effect" type="submit" >Submit Data</button>
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
             </div>
             </form>
+            <div class="text-right pr-3">
+                <span>
+                    <input type="checkbox" id="another"> Add Another
+                </span>
+            </div>
         </div>
     </div>
 </div>
@@ -246,9 +248,9 @@
     }
 
 
-    $(document).bind('keydown', 'alt+n', function(){
+    $(document).bind('keydown', 'alt+n', function(e){
        $('#largeModal').modal('show');
-
     });
+
 </script>
 @endsection
