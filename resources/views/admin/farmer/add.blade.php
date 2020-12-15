@@ -72,6 +72,10 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <span>
+
+                    <input type="checkbox" id="another"> Add Another
+                </span>
                 <button class="btn btn-raised btn-primary waves-effect" type="submit">Submit Data</button>
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
             </div>
@@ -127,6 +131,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+
                 <button class="btn btn-raised btn-primary waves-effect" type="submit">Submit Data</button>
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
             </div>
@@ -156,6 +161,7 @@
     function saveData(e) {
         e.preventDefault();
         var bodyFormData = new FormData(document.getElementById('form_validation'));
+
         axios({
                 method: 'post',
                 url: '{{ route("admin.farmer")}}',
@@ -167,8 +173,11 @@
             .then(function(response) {
                 console.log(response);
                 showNotification('bg-success', 'Farmer added successfully!');
-                $('#largeModal').modal('toggle');
-                $('#form_validation').trigger("reset")
+                if(!(document.getElementById('another').checked)){
+                    $('#largeModal').modal('toggle');
+                }
+                $('#form_validation').trigger("reset");
+                $('#name').focus();
                 $('#farmerData').prepend(response.data);
             })
             .catch(function(response) {
@@ -235,5 +244,11 @@
                 });
         }
     }
+
+
+    $(document).bind('keydown', 'alt+n', function(){
+       $('#largeModal').modal('show');
+
+    });
 </script>
 @endsection

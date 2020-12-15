@@ -93,6 +93,8 @@
     <script src="{{ asset('backend/js/axios.js') }}"></script>
     <script src="{{ asset('backend/js/table.js') }}"></script>
     <script src="{{ asset('backend/js/input.js') }}"></script>
+    <script src="{{ asset('backend/js/jquery.hotkeys.js') }}"></script>
+
     @yield('js')
 </body>
 
