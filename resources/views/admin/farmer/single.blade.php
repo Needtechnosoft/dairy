@@ -1,5 +1,5 @@
 <tr id="farmer-{{$user->id}}" data-name="{{ $user->name }}" class="searchable">
-    <td>{{ $user->id }}</td>
+    <td>{{ $user->no }}</td>
     <td>{{ $user->name }}</td>
     <td>{{ $user->phone }}</td>
     <td>{{ $user->address }}</td>

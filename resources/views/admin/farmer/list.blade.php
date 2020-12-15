@@ -1,6 +1,6 @@
 @foreach($farmers as $f)
 <tr id="farmer-{{$f->id}}" data-name="{{ $f->name }}" class="searchable">
-    <td>{{ $f->id }}</td>
+    <td>{{ $f->no }}</td>
     <td>{{ $f->name }}</td>
     <td>{{ $f->phone }}</td>
     <td>{{ $f->address }}</td>

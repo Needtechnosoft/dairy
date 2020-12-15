@@ -17,12 +17,15 @@ class FarmerController extends Controller
     public function addFarmer(Request $request){
         if($request->isMethod('post')){
             // dd($request->advance);
+
+                $max=User::max('no')??0;
                 $user = new User();
                 $user->phone = $request->phone;
                 $user->name = $request->name;
                 $user->address = $request->address;
                 $user->role = 1;
                 $user->password = bcrypt($request->phone);
+                $user->no=$max+1;
                 $user->save();
                 $manager=new LedgerManage($user->id);
                 $manager->addLedger('Opening Balance',1,$request->advance,$request->date,'102');
