@@ -49,8 +49,9 @@ class SellitemController extends Controller
         return view('admin.sellitem.single',compact('sell_item'));
     }
 
-    public function sellItemList(){
-        $sell = Sellitem::all();
+    public function sellItemList(Request $request){
+        $date = str_replace('-','',$request->date);
+        $sell = Sellitem::where('date',$date)->get();
         return view('admin.sellitem.list',compact('sell'));
     }
 

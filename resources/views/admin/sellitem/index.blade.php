@@ -9,39 +9,23 @@
 
 @endsection
 @section('content')
+    @include('admin.item.itemmodal')
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <div class="pt-2 pb-2">
             <input type="text" id="sid" placeholder="Search" style="width: 134px;">
         </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Farmer Name</th>
-                    </tr>
-                </thead>
-                <tbody id="farmerData">
-                    @foreach(\App\Models\User::where('role',1)->get() as $u)
-                    <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
-                        <td class="p-1"><span style="cursor: pointer;">{{ $u->id }}</span></td>
-                        <td class="p-1"> <span style="cursor: pointer;">{{ $u->name }}</span></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        @include('admin.farmer.minlist')
     </div>
 
-    <div class="col-md-8 bg-light">
+    <div class="col-md-9 bg-light pt-2">
         <form action="" id="sellitemData">
             @csrf
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="date">Date</label>
-                        <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="user_id" placeholder="Date">
+                        <input readonly type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="user_id" placeholder="Date">
                     </div>
                 </div>
 
@@ -49,36 +33,38 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="unumber">User Number</label>
-                        <input type="number" name="user_id" id="u_id" placeholder="User number" class="form-control next" data-next="item_id" min="1">
+                        <input type="number" name="user_id" id="u_id" placeholder="User number" class="form-control checkfarmer next  " data-next="item_id" min="1">
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <!-- <input type="hidden" name=""> -->
-                        <label for="unumber">Item Number</label>
-                        <input type="text" id="item_id" name="number" placeholder="Item number" class="form-control next" data-next="rate" min="1">
+                        <label for="unumber">Item Number
+                            <span id="itemsearch"  data-toggle="modal" data-target="#itemmodal">( search (alt+s) )</span>
+                        </label>
+                        <input type="text" id="item_id" name="number" placeholder="Item number" class="form-control checkitem next " data-rate="rate" data-next="rate" min="1">
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="rate">Rate</label>
-                    <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="qty" min="0.001">
+                    <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control  next" data-next="qty" min="0.001">
                 </div>
 
                 <div class="col-md-3">
                     <label for="qty">Quantity</label>
-                    <input type="number" name="qty" id="qty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="total" min="0.001">
+                    <input type="number" onfocus="$(this).select();" name="qty" id="qty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control  next" data-next="paid" min="0.001">
                 </div>
 
                 <div class="col-md-3">
                     <label for="total">Total</label>
-                    <input type="number" name="total" id="total" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="paid" min="0.001" readonly>
+                    <input type="number" name="total" id="total" step="0.001" placeholder="Total" value="0" class="form-control next connectmax" data-connected="paid" data-next="paid" min="0.001" readonly>
                 </div>
 
                 <div class="col-md-3">
                     <label for="paid">Paid</label>
-                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="due" min="0.001">
+                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control next " data-next="due" min="0.001">
                 </div>
 
                 <div class="col-md-3">
@@ -121,108 +107,12 @@
         </div>
     </div>
 
-    <div class="col-md-2">
-        <div class="pt-2 pb-2">
-            <input type="text" id="isid" placeholder="Search" style="width: 134px;">
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Item Number</th>
-                        <th>Item Name</th>
-                    </tr>
-                </thead>
-                <tbody id="itemData">
-                    @foreach(\App\Models\Item::get() as $i)
-                    <tr id="item-{{ $i->id }}" data-number="{{ $i->number }}" onclick="itemId({{ $i->id }});">
-                        <td class="p-1"><span style="cursor: pointer;">{{ $i->number }}</span></td>
-                        <td class="p-1"><span style="cursor: pointer;">{{ $i->title }}</span></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+
 </div>
 
 <!-- edit modal -->
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="eu_id">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="title" id="largeModalLabel">Edit Sell Item</h4>
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">X</button>
-                </div>
-            </div>
-            <hr>
-            <div class="card">
-                <div class="body">
-                    <form id="editform">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-3">
-                                <input type="hidden" id="eid" name="id">
-                                <div class="form-group">
-                                    <label for="date">Date</label>
-                                    <input type="text" name="date" id="enepali-datepicker" class="form-control next" data-next="eu_id" placeholder="Date">
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="unumber">User Number</label>
-                                    <input type="number" name="user_id" id="eu_id" placeholder="User number" class="form-control next" data-next="eitem_id" min="1">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <!-- <input type="hidden" name=""> -->
-                                    <label for="unumber">Item Number</label>
-                                    <input type="text" id="eitem_id" name="number" placeholder="Item number" class="form-control next" data-next="erate" min="1">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="rate">Rate</label>
-                                <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="erate" step="0.001" value="0" placeholder="Item rate" class="form-control next" data-next="eqty" min="0.001">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="qty">Quantity</label>
-                                <input type="number" name="qty" id="eqty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control next" data-next="etotal" min="0.001">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="total">Total</label>
-                                <input type="number" name="total" id="etotal" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="epaid" min="0.001" readonly>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="paid">Paid</label>
-                                <input type="number" name="paid" onkeyup="paidTotal();" id="epaid" step="0.001" placeholder="Total" value="0" class="form-control next" data-next="edue" min="0.001">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="due">Due</label>
-                                <input type="number" name="due" id="edue" step="0.001" placeholder="due" value="0" class="form-control next" data-next="udata" min="0" readonly>
-                            </div>
-
-                            <div class="col-md-12 d-flex justify-content-end mt-3">
-                                <input type="button" class="btn btn-primary btn-block" onclick="udateData();" id="udata" value="Update Data">
-                                {{-- <span >Update Data</span> --}}
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@include('admin.sellitem.editmodal')
 @endsection
 @section('js')
 <script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
@@ -321,19 +211,7 @@
         }
     }
 
-    // list
-    axios({
-            method: 'get',
-            url: '{{ route("admin.sell.item.list")}}',
-        })
-        .then(function(response) {
-            // console.log(response.data);
-            $('#sellDataBody').html(response.data);
-        })
-        .catch(function(response) {
-            //handle error
-            console.log(response);
-        });
+
 
     // delete
 
@@ -380,6 +258,19 @@
         $('#item_id').val(_number);
         $('#item_id').focus();
     }
+
+    function loaddata(){
+        // list
+        axios.post('{{ route("admin.sell.item.list")}}',{'date': $('#nepali-datepicker').val()})
+        .then(function(response) {
+            // console.log(response.data);
+            $('#sellDataBody').html(response.data);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+    }
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
     var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
     $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
@@ -392,7 +283,17 @@
         $('body').addClass('ls-toggle-menu');
         $('body').addClass('right_icon_toggle');
         $('#u_id').focus();
+        loaddata();
     };
+
+
+    $(document).bind('keydown', 'alt+s', function(e){
+       $('#itemmodal').modal('show');
+    });
+    $('#item_id').bind('keydown', 'alt+s', function(e){
+       $('#itemmodal').modal('show');
+    });
+
 
 </script>
 @endsection

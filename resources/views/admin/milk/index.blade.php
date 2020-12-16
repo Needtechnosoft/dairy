@@ -25,24 +25,7 @@
         <div class="pt-2 pb-2">
             <input type="text" id="sid" placeholder="Search" style="width: 210px;">
         </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Farmer Name</th>
-                    </tr>
-                </thead>
-                <tbody id="farmerData">
-                    @foreach(\App\Models\User::where('role',1)->get() as $u)
-                    <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->no }});" class="selectable">
-                        <td class="p-1">{{ $u->no }}</td>
-                        <td class="p-1">{{ $u->name }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+      @include('admin.farmer.minlist')
     </div>
 
     <div class="col-md-9 bg-light">

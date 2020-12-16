@@ -14,38 +14,21 @@
         <div class="pt-2 pb-2">
             <input type="text" id="sid" placeholder="Search" style="width: 210px;">
         </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Farmer Name</th>
-                    </tr>
-                </thead>
-                <tbody id="farmerData">
-                    @foreach(\App\Models\User::where('role',1)->get() as $u)
-                    <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
-                        <td class="p-1"><span style="cursor: pointer;">{{ $u->id }}</span></td>
-                        <td class="p-1"><span style="cursor: pointer;"> {{ $u->name }} </span></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+       @include('admin.farmer.minlist')
     </div>
 
     <div class="col-md-9 bg-light">
         <form action="" id="snffats">
             @csrf
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <div class="form-group">
                         <label for="date">Date</label>
                         <input type="text" name="date" id="nepali-datepicker" class="form-control" placeholder="Date">
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="form-group">
                         <label for="date">Collection Center</label>
                         <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="u_id">
@@ -57,26 +40,24 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <label for="farmer no">Farmer Number</label>
-                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control next" data-next="loaddata" min="1">
-                </div>
-
                 <div class="col-md-2 mt-4">
-                    <input type="button" class="btn btn-primary btn-block next" data-next="snf" onkeydown="loadData();" id="loaddata" value="Load">
+                    <input type="button" class="btn btn-primary btn-block next" data-next="snf" onclick="loadData();" onkeydown="loadData();" id="loaddata" value="Load">
                     {{-- <span >Load</span> --}}
                     <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
+                <div class="col-md-3 add-section">
 
-                <div class="col-md-4 add-section">
+                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control next" data-next="snf" min="1">
+                </div>
+                <div class="col-md-3 add-section">
                     <input type="number" name="snf" id="snf" step="0.001" min="0.001" placeholder="Snf" class="form-control next" data-next="fat">
                 </div>
 
-                <div class="col-md-4 add-section">
+                <div class="col-md-3 add-section">
                     <input type="number" name="fat" id="fat" step="0.001" min="0.001" placeholder="Fats" class="form-control next" data-next="saveData">
                 </div>
 
-                <div class="col-md-4 add-section">
+                <div class="col-md-3 add-section">
                     <input type="button" class="btn btn-primary btn-block" onclick="saveDate();" value="Save" id="saveData">
                     {{-- <span >Save</span> --}}
                 </div>
@@ -139,7 +120,7 @@
     function disableTopPanel(method) {
         $('#nepali-datepicker').css('pointer-events', method);
         $('#center_id').css('pointer-events', method);
-        $('#u_id').css('pointer-events', method);
+
         if (method == 'none') {
             $('#resetdata').removeClass('d-none').addClass('d-block');
         } else {
@@ -159,16 +140,13 @@
     function loadData() {
         disableTopPanel('none');
         $('#loaddata').hide();
-        if ($('#nepali-datepicker').val() == '' || $('#center_id').val() == '' || $('#u_id').val() == '') {
+        if ($('#nepali-datepicker').val() == '' || $('#center_id').val() == '' ) {
             alert('Please fill empty field !');
             if ($('#nepali-datepicker').val() == '') {
                 $('#nepali-datepicker').focus();
                 return false;
             } else if ($('#center_id').val() == '') {
                 $('#center_id').focus();
-                return false;
-            } else {
-                $('#u_id').focus();
                 return false;
             }
             disableTopPanel('auto');
@@ -240,6 +218,8 @@
                 $('#snffatBody').prepend(response.data);
                 $('#snf').val('');
                 $('#fat').val('');
+                $('#u_id').val('');
+                $('#u_id').focus();
             })
             .catch(function(response) {
                 //handle error
@@ -271,6 +251,8 @@
                 $('#defaultModal').modal('hide');
                 $('#snf').val('');
                 $('#fat').val('');
+                $('#u_id').val('');
+                $('#u_id').focus();
             })
             .catch(function(response) {
                 //handle error
@@ -287,7 +269,13 @@
         mainInput.nepaliDatePicker();
         $('#center_id').focus();
     };
+
+    $('#fat').bind('keydown', 'return', function(e){
+       saveDate();
+    });
+
 </script>
+
 @endsection
 
 

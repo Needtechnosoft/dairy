@@ -79,12 +79,12 @@
     <div class="modal fade" id="menumodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg p-0 m-0" role="document" style="max-width:100vw;">
           <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top:10px;">
+            <div class="modal-header pb-3">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top:5px;font-size:3rem;">
                   <span aria-hidden="true" >&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body pt-1">
                 @include('admin.modalmenu')
             </div>
           </div>

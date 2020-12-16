@@ -75,7 +75,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // sell items
     Route::get('sell-items','Admin\SellitemController@index')->name('admin.sell.item');
     Route::post('sell-item-add','Admin\SellitemController@addSellItem')->name('admin.sell.item.add');
-    Route::get('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
+    Route::post('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
     Route::post('sell-item-update','Admin\SellitemController@updateSellItem')->name('admin.sell.item.update');
     Route::get('sell-item-delete/{id}', 'Admin\SellitemController@deleteSellitem');
 
