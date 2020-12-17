@@ -26,56 +26,8 @@
         <span class="btn btn-primary" onclick="loadData()"> Load </span>
     </div>
 </div>
-<div class="row mt-5">
-    <div class="col-md-6">
-        <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
-            <strong>Milk Data</strong>
-            <hr>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
-            <strong>Snf & Fats</strong>
-            <hr>
-        </div>
-    </div>
-    <div class="col-md-12 mt-3">
-        <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
-            <strong>Selling Items</strong>
-            <hr>
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                <tr>
-                    <th>Item Name</th>
-                    <th>Item Number</th>
-                    <th>Rate</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Paid</th>
-                    <th>Due</th>
-                </tr>
-                @php
-                    $total = 0;
-                    $paid = 0;
-                    $due = 0;
-                @endphp
-                   <tbody id="sellItemData">
+<div id="allData">
 
-                   </tbody>
-                    <tr>
-                        <td colspan="6" class="text-right">Grand Total</td>
-                        <td colspan="7">{{ $total }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="6" class="text-right">Total Paid</td>
-                        <td colspan="7">{{ $paid }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="6" class="text-right">Total Due</td>
-                        <td colspan="7">{{ $due }}</td>
-                    </tr>
-            </table>
-        </div>
-    </div>
 </div>
 @endsection
 @section('js')
@@ -101,6 +53,7 @@
 
     function loadData(){
         var user = {{ $user->id }};
+        console.log(user);
         var data={
             'user_id':user,
             'year':$('#year').val(),
@@ -113,17 +66,7 @@
                 data:data ,
         })
         .then(function(response) {
-            // console.log(response.data);
-            response.data.sellitem.forEach(ele => {
-                var html = '<tr><td>'+ele.title+'</td>';
-                    html+= '<td>'+ele.number+'</td>';
-                    html+= '<td>'+ele.rate+'</td>';
-                    html+= '<td>'+ele.qty+'</td>';
-                    html+= '<td>'+ele.total+'</td>';
-                    html+= '<td>'+ele.paid+'</td>';
-                    html+= '<td>'+ele.due+'</td></tr>';
-                    $('#sellItemData').append(html);
-            });
+            $('#allData').html(response.data);
         })
         .catch(function(response) {
             //handle error

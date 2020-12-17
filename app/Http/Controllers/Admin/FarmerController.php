@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Advance;
+use App\Models\Milkdata;
 use App\Models\Sellitem;
+use App\Models\Snffat;
 use App\Models\User;
 use App\NepaliDate;
 use Illuminate\Http\Request;
@@ -46,16 +48,17 @@ class FarmerController extends Controller
 
     public function farmerDetail($id){
         $user = User::where('id',$id)->where('role',1)->first();
-        $sellitem = Sellitem::where('user_id',$user->id)->get();
-        return view('admin.farmer.detail',compact('user','sellitem'));
+        return view('admin.farmer.detail',compact('user'));
     }
 
     public function loadDate(Request $r){
         $range=NepaliDate::getDate($r->year,$r->month,$r->session);
-
-        $sellitem = Sellitem::join('items','items.id','=','sellitems.item_id')->where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
-        // dd($sellitem);
-        return response()->json(['sellitem'=>$sellitem]);
+        $sellitem = Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        $milkData = Milkdata::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        $snfFats = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        $snfAvg = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('snf');
+        $fatAvg = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('fat');
+        return view('admin.farmer.alldata',compact('sellitem','milkData','milkData','snfFats','snfAvg','fatAvg'));
     }
 
 

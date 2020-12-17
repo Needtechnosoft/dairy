@@ -22,7 +22,7 @@
                 </ul>
             </li>
             <li><a href="{{ route('admin.collection') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Collection Center</span></a></li>
-            <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Data</span></a></li>
+            <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Collection</span></a></li>
             <li><a href="{{ route('admin.snf.fat') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Snf & Fats</span></a></li>
             <li><a href="{{ route('admin.item') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Items</span></a></li>
             <li><a href="{{ route('admin.sell.item') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Sell Items</span></a></li>
