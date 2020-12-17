@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/','HomeController@home');
 
-// Route::get('/pass', function () {
-//     $pass = bcrypt('admin');
-//     dd($pass);
-// });
+// XXX Route::get('/pass', function () {
+// XXX     $pass = bcrypt('admin');
+// XXX     dd($pass);
+// XXX });
 
 
 
@@ -31,48 +31,49 @@ Route::match(['get', 'post'], 'logout', 'AuthController@logout')->name('logout')
 Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 
-    // farmer routes
+    // XXX farmer routes
     Route::match(['get', 'post'], 'farmers', 'Admin\FarmerController@addFarmer')->name('admin.farmer');
     Route::get('farmer-list','Admin\FarmerController@listFarmer')->name('list.farmer');
     Route::match(['get', 'post'],'farmer/update','Admin\FarmerController@updateFarmer')->name('update.farmer');
     Route::get('farmer/delete/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer');
-    //detail
-    Route::get('farmer/detail/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer');
 
-    // farmer advance
+    Route::get('farmer/detail/{id}','Admin\FarmerController@farmerDetail')->name('farmer.detail');
+    Route::post('load-date','Admin\FarmerController@loadDate')->name('farmer.loaddetail');
+
+    // XXX  farmer advance
     Route::get('farmer-advances', 'Admin\AdvanceController@index')->name('admin.farmer.advance');
     Route::post('farmer-advance-add', 'Admin\AdvanceController@addFormerAdvance')->name('admin.farmer.advance.add');
-    Route::get('farmer-advance-list', 'Admin\AdvanceController@listFarmerAdvance')->name('admin.farmer.advance.list');
+    Route::post('farmer-advance-list', 'Admin\AdvanceController@listFarmerAdvance')->name('admin.farmer.advance.list');
     Route::post('farmer-advance-update', 'Admin\AdvanceController@updateFormerAdvance')->name('admin.farmer.advance.update');
-
     Route::get('farmer-advance-delete/{id}', 'Admin\AdvanceController@deleteFarmerAdvance');
+    Route::post('farmer-advance-list-by-date', 'Admin\AdvanceController@advanceListByDate')->name('admin.advance.list.by.date');
 
 
 
-    // collection centers
+    // XXX collection centers
     Route::get('collection-centers', 'Admin\CenterController@index')->name('admin.collection');
     Route::post('collection-center-add', 'Admin\CenterController@addCollectionCenter')->name('add.center');
     Route::get('collection-center-list', 'Admin\CenterController@listCenter')->name('list.center');
     Route::get('collection-center-delete-{id}', 'Admin\CenterController@deleteCenter')->name('delete.center');
     Route::post('collection-center-update', 'Admin\CenterController@updateCollectionCenter')->name('update.center');
 
-    // milk data
+    // XXX milk data
     Route::get('milk-data','Admin\MilkController@index')->name('admin.milk');
     Route::post('milk-data-save/{type}','Admin\MilkController@saveMilkData')->name('store.milk');
     Route::post('milk-data-load','Admin\MilkController@milkDataLoad')->name('load.milk.data');
 
-    // snf and fats
+    // XXX snf and fats
     Route::get('snf-fats','Admin\SnffatController@index')->name('admin.snf.fat');
     Route::post('snf-fats-data','Admin\SnffatController@snffatDataLoad')->name('load.snffat.data');
     Route::post('snf-fats-save','Admin\SnffatController@saveSnffatData')->name('store.snffat');
 
-    // items
+    // XXX items
     Route::get('items','Admin\ItemController@index')->name('admin.item');
     Route::post('item-add','Admin\ItemController@saveItems')->name('admin.item.save');
     Route::get('item-delete/{id}','Admin\ItemController@deleteItem')->name('admin.item.delete');
     Route::post('item-update','Admin\ItemController@updateItem');
 
-    // sell items
+    // XXX sell items
     Route::get('sell-items','Admin\SellitemController@index')->name('admin.sell.item');
     Route::post('sell-item-add','Admin\SellitemController@addSellItem')->name('admin.sell.item.add');
     Route::post('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
@@ -81,20 +82,20 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
 
 
-    // expensess
+    // XXX  expensess
     Route::get('expenses', 'Admin\ExpenseController@index')->name('admin.exp');
     Route::post('expense-add', 'Admin\ExpenseController@addExpense')->name('admin.exp.add');
     Route::get('expense-list', 'Admin\ExpenseController@listExpense')->name('admin.exp.list');
     Route::get('expense-delete/{id}', 'Admin\ExpenseController@deleteExpense');
 
-    // suppliers
+    // XXX suppliers
     Route::get('suppliers', 'Admin\SupplierController@index')->name('admin.sup');
     Route::post('add-supplier','Admin\SupplierController@addSupplier')->name('admin.sup.add');
     Route::get('supplier-list', 'Admin\SupplierController@supplierList')->name('admin.sup.list');
     Route::get('supplier-delete/{id}', 'Admin\SupplierController@deleteSupplier');
     Route::post('supplier/update','Admin\SupplierController@updateSupplier');
 
-    // supplier bills
+    // XXX supplier bills
 
     Route::get('supplier-bills', 'Admin\SupplierController@indexBill')->name('admin.sup.bill');
     Route::post('supplier-bill-add', 'Admin\SupplierController@addBill')->name('admin.sup.bill.add');
@@ -103,7 +104,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('supplier-bill-delete/{id}', 'Admin\SupplierController@deleteBill');
 
 
-    // distributer
+    // XXX distributer
     Route::get('distributers', 'Admin\DistributerController@index')->name('admin.dis');
     Route::post('distributer-add', 'Admin\DistributerController@addDistributer')->name('admin.dis.add');
     Route::get('distributer-list', 'Admin\DistributerController@DistributerList')->name('admin.dis.list');
@@ -112,7 +113,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
 
 
-    // employees
+    // XXX XXX employees
     Route::get('employees', 'Admin\EmployeeController@index')->name('admin.emp');
     Route::post('employee-add', 'Admin\EmployeeController@addEmployee')->name('admin.emp.add');
     Route::post('employee/update', 'Admin\EmployeeController@updateEmployee');

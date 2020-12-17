@@ -14,6 +14,7 @@
     <td>
         <button  type="button" data-farmer="{{$f->toJson()}}" class="btn btn-primary btn-sm editfarmer" onclick="initEdit(this);" >Edit</button>
         |
+        <a href="{{ route('farmer.detail',$f->id) }}" class="btn btn-primary btn-sm">View</a> |
         <button class="btn btn-danger btn-sm" onclick="removeData({{$f->id}});">Delete</button>
     </td>
 </tr>

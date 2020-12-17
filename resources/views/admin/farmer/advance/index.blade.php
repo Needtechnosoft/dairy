@@ -6,9 +6,41 @@
 @endsection
 @section('head-title','Farmer Advance')
 @section('toobar')
-<button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Add Farmer Advance</button>
 @endsection
 @section('content')
+<div class="row">
+<div class="col-lg-12">
+    <div class="d-none">
+
+        @include('admin.farmer.minlist')
+    </div>
+    <form id="form_validation" method="POST" onsubmit="return saveData(event);">
+        @csrf
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="date">Date</label>
+                <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="u_id">
+            </div>
+
+            <div class="col-lg-3">
+                <label for="u_number">Farmer Number</label>
+                <div class="form-group">
+                    <input type="number" id="u_id" name="no" min="0" class="form-control next checkfarmer" data-next="amount" placeholder="Enter farmer number" required>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <label for="amount">Advance Amount</label>
+                <input type="number" id="amount" min="0" name="amount" class="form-control next" data-next="save" placeholder="Enter advance amount" value="0" required>
+            </div>
+            <div class="col-lg-3">
+                <input type="submit" id="save" class="btn btn-raised btn-primary waves-effect btn-block" value="Add" style="margin-top:30px;">
+            </div>
+
+        </div>
+    </form>
+</div>
+</div>
 <div class="pt-2 pb-2">
     <input type="text" id="sid" placeholder="Search">
 </div>
@@ -27,73 +59,6 @@
     </table>
 </div>
 
-<!-- modal -->
-
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="u_id">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="title" id="largeModalLabel">Add Farmer advance</h4>
-                <div>
-                   <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">X</button>
-                </div>
-            </div>
-            <hr>
-            <div class="card">
-                <div class="body">
-                    <div class="row">
-                            <div class="col-lg-4">
-                                <div class="pt-2 pb-2">
-                                    <input type="text" id="searchid" placeholder="Search" style="width: 230px;">
-                                </div>
-                                <div class="table-responsive" style="height: 114px">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Farmer Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="farmerforData">
-                                            @foreach(\App\Models\User::where('role',1)->get() as $u)
-                                            <tr id="farmer-{{ $u->id }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->id }});">
-                                                <td class="p-1"><span style="cursor: pointer;"> {{ $u->id }} </span></td>
-                                                <td class="p-1" style="cursor: pointer;"><span>{{ $u->name }}</span> </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        <div class="col-lg-8">
-                            <form id="form_validation" method="POST" onsubmit="return saveData(event);">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <label for="u_number">Farmer Number</label>
-                                        <input type="hidden" name="date" id="nepali-datepicker">
-                                        <div class="form-group">
-                                            <input type="number" id="u_id" name="user_id" min="0" class="form-control next" data-next="amount" placeholder="Enter farmer number" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label for="amount">Advance Amount</label>
-                                        <input type="number" id="amount" min="0" name="amount" class="form-control" placeholder="Enter advance amount" value="0" required>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-raised btn-primary waves-effect btn-block" type="submit">Submit Data</button>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- edit modal -->
 
@@ -113,7 +78,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="u_number">Farmer Number</label>
-                                <input type="hidden" name="date" id="nepali-datepicker">
+                                <input type="text" name="date" id="enepali-datepicker">
                                 <div class="form-group">
                                     <input type="number" id="eu_id" name="user_id" min="0" class="form-control next" data-next="amount" placeholder="Enter farmer number" required readonly>
                                 </div>
@@ -133,21 +98,36 @@
         </div>
     </div>
 </div>
+
 @endsection
 @section('js')
 <script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
 <script>
-    initTableSearch('searchid', 'farmerforData', ['name']);
-    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
-    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
-    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsDate().year+''+month+''+day);
+    // initTableSearch('searchid', 'farmerforData', ['name']);
+    $("input#nepali-datepicker").bind('click', function (e) {
+        var date = $('#nepali-datepicker').val();
+        axios({
+                method: 'post',
+                url: '{{ route("admin.farmer.advance.list")}}',
+                data : {'date' : date}
+            })
+            .then(function(response) {
+                // console.log(response.data);
+                $('#advanceData').empty();
+                $('#advanceData').html(response.data);
+            })
+            .catch(function(response) {
+                //handle error
+                console.log(response);
+            });
+    });
 
     function initEdit(ele) {
         var adv = JSON.parse(ele.dataset.advance);
         console.log(adv);
         $('#eid').val(adv.id);
-        $('#eu_id').val(adv.user_id);
+        $('#eu_id').val(adv.user.no);
         $('#eamount').val(adv.amount);
         $('#editModal').modal('show');
 
@@ -168,12 +148,15 @@
                 console.log(response);
                 showNotification('bg-success', 'Farmer advance added successfully!');
                 $('#largeModal').modal('toggle');
-                $('#form_validation').trigger("reset")
                 $('#advanceData').prepend(response.data);
+                $('#u_id').val('');
+                $('#amount').val(0);
+                $('#u_id').focus();
             })
             .catch(function(response) {
                 //handle error
                 console.log(response);
+                showNotification('bg-danger','operation Faild!');
             });
     }
 
@@ -202,18 +185,6 @@
             });
     }
 
-    axios({
-            method: 'get',
-            url: '{{ route("admin.farmer.advance.list")}}',
-        })
-        .then(function(response) {
-            // console.log(response.data);
-            $('#advanceData').html(response.data);
-        })
-        .catch(function(response) {
-            //handle error
-            console.log(response);
-        });
 
     // delete
     function removeData(id) {
@@ -235,6 +206,37 @@
                 });
         }
     }
+
+    // load advance
+
+    function loadAdvance(){
+        var datadate = $('#nepali-datepicker').val();
+        // console.log(datadate);
+        axios({
+                method: 'post',
+                url: '{{ route("admin.advance.list.by.date")}}',
+                data:{'date':datadate} ,
+        })
+        .then(function(response) {
+            $('#advanceData').html(response.data);
+            // $('').html(response.data);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+    }
+
+    window.onload = function() {
+        var mainInput = document.getElementById("nepali-datepicker");
+        mainInput.nepaliDatePicker();
+        $('#u_id').focus();
+        loadAdvance();
+    };
+
+    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
     function farmerId(id){
         $('#u_id').val(id);

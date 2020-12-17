@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Advance;
+use App\Models\Sellitem;
 use App\Models\User;
+use App\NepaliDate;
 use Illuminate\Http\Request;
 
 class FarmerController extends Controller
@@ -40,6 +42,20 @@ class FarmerController extends Controller
         $farmers = User::latest()->where('role',1)->get();
         // return response()->json($farmers);
         return view('admin.farmer.list',['farmers'=>$farmers]);
+    }
+
+    public function farmerDetail($id){
+        $user = User::where('id',$id)->where('role',1)->first();
+        $sellitem = Sellitem::where('user_id',$user->id)->get();
+        return view('admin.farmer.detail',compact('user','sellitem'));
+    }
+
+    public function loadDate(Request $r){
+        $range=NepaliDate::getDate($r->year,$r->month,$r->session);
+
+        $sellitem = Sellitem::join('items','items.id','=','sellitems.item_id')->where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        // dd($sellitem);
+        return response()->json(['sellitem'=>$sellitem]);
     }
 
 
