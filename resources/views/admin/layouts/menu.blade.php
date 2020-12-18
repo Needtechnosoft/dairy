@@ -21,24 +21,36 @@
                     <li><a href="{{ route('admin.farmer.advance') }}" class="waves-effect waves-block">Advance</a></li>
                 </ul>
             </li>
-            <li><a href="{{ route('admin.collection') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Collection Center</span></a></li>
-            <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Collection</span></a></li>
-            <li><a href="{{ route('admin.snf.fat') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Snf & Fats</span></a></li>
-            <li><a href="{{ route('admin.item') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Items</span></a></li>
-            <li><a href="{{ route('admin.sell.item') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Sell Items</span></a></li>
-            <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Expenses</span></a></li>
-            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Suppliers</span></a>
+
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Milk Collection</span></a>
                 <ul class="ml-menu">
-                    <li><a href="{{ route('admin.sup') }}" class="waves-effect waves-block">Supplier List</a></li>
-                    <li><a href="{{ route('admin.sup.bill') }}" class="waves-effect waves-block">Supplier Bill</a></li>
+                    <li><a href="{{ route('admin.collection') }}" class="waves-effect waves-block">Add Collection Center</a></li>
+                    <li><a href="{{ route('admin.milk') }}" class="waves-effect waves-block">Add Milk</a></li>
+                    <li><a href="{{ route('admin.snf.fat') }}" class="waves-effect waves-block">Add Fat & Snf</a></li>
                 </ul>
             </li>
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Items</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('admin.item') }}" class="waves-effect waves-block">Add Item</a></li>
+                    <li><a href="{{ route('admin.sell.item') }}" class="waves-effect waves-block">Sell Items</a></li>
+                </ul>
+            </li>
+
             <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Distributers</span></a>
                 <ul class="ml-menu">
                     <li><a href="{{ route('admin.dis') }}" class="waves-effect waves-block">Distributer List</a></li>
                     <li><a href="{{ route('admin.dis.sell') }}" class="waves-effect waves-block">Distributer Sell</a></li>
                 </ul>
             </li>
+
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Suppliers</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('admin.sup') }}" class="waves-effect waves-block">Supplier List</a></li>
+                    <li><a href="{{ route('admin.sup.bill') }}" class="waves-effect waves-block">Supplier Bill</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Expenses</span></a></li>
             <li><a href="{{ route('admin.emp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Employees</span></a></li>
             <li><a href="" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a></li>
 

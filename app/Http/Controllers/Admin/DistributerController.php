@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Distributer;
+use App\Models\Distributorsell;
+use App\Models\Ledger;
 use App\Models\User;
+use App\NepaliDate;
 use Illuminate\Http\Request;
 
 class DistributerController extends Controller
@@ -47,6 +50,20 @@ class DistributerController extends Controller
         $dis->amount = $request->amount;
         $dis->save();
         return view('admin.distributer.single',compact('user'));
+
+    }
+
+    public function distributerDetail($id){
+        $user = User::where('id',$id)->where('role',2)->first();
+        return view('admin.distributer.detail',compact('user'));
+    }
+
+    public function distributerDetailLoad(Request $r){
+        $range=NepaliDate::getDate($r->year,$r->month,$r->session);
+        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        $d = Distributer::where('user_id',$r->user_id)->first();
+        $sell = Distributorsell::where('distributer_id',$d->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        return view('admin.distributer.data',compact('ledger','sell'));
 
     }
 

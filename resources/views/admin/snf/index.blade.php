@@ -41,20 +41,21 @@
                 </div>
 
                 <div class="col-md-2 mt-4">
-                    <input type="button" class="btn btn-primary btn-block next" data-next="u_id" onclick="loadData();" onkeydown="loadData();" id="loaddata" value="Load">
+                    <input type="button" class="btn btn-primary btn-block next" data-next="u_id" onclick="loadData();"  onkeydown="loadData();" id="loaddata" value="Load">
                     {{-- <span >Load</span> --}}
                     <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
                 <div class="col-md-3 add-section">
 
-                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control checkfarmer next" data-next="snf" min="1">
-                </div>
-                <div class="col-md-3 add-section">
-                    <input type="number" name="snf" id="snf" step="0.001" min="0.001" placeholder="Snf" class="form-control next" data-next="fat">
+                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control checkfarmer next" data-next="fat" min="1">
                 </div>
 
                 <div class="col-md-3 add-section">
-                    <input type="number" name="fat" id="fat" step="0.001" min="0.001" placeholder="Fats" class="form-control next" data-next="saveData">
+                    <input type="number" name="fat" id="fat" step="0.001" min="0.001" placeholder="Fats" class="form-control next" data-next="snf" >
+                </div>
+
+                <div class="col-md-3 add-section">
+                    <input type="number" name="snf" id="snf" step="0.001" min="0.001" placeholder="Snf" class="form-control next" data-next="saveData">
                 </div>
 
                 <div class="col-md-3 add-section">
@@ -71,8 +72,8 @@
                         <thead>
                             <tr>
                                 <th>#No</th>
-                                <th>Snf (%)</th>
                                 <th>Fats (%)</th>
+                                <th>Snf (%)</th>
                             </tr>
                         </thead>
                         <tbody id="snffatBody">
@@ -177,13 +178,13 @@
 
 
     function saveDate() {
-        if($('#snf').val()==''){
-            alert('Please enter snf percentage');
-            $('#snf').focus();
-            return false;
-        }else if($('#fat').val()==''){
+        if($('#fat').val()==''){
             alert('Please enter fat percentage');
             $('#fat').focus();
+            return false;
+        }else if($('#snf').val()==''){
+            alert('Please enter snf percentage');
+            $('#snf').focus();
             return false;
         }else{
             var id=$('#u_id').val();
@@ -270,7 +271,7 @@
         $('#center_id').focus();
     };
 
-    $('#fat').bind('keydown', 'return', function(e){
+    $('#snf').bind('keydown', 'return', function(e){
        saveDate();
     });
 

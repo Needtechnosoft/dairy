@@ -8,7 +8,6 @@
     <td>{{$itemsell->paid}}</td>
     <td>{{$itemsell->due}}</td>
     <td>
-        <button  class="badge badge-primary" data-itemsell="{{$itemsell->toJson()}}" onclick="initEdit(this);" >Edit</button>
         <button class="badge badge-danger" onclick="removeData({{$itemsell->id}});">Delete</button>
     </td>
 </tr>

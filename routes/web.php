@@ -17,11 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/','HomeController@home');
 
-// XXX Route::get('/pass', function () {
-// XXX     $pass = bcrypt('admin');
-// XXX     dd($pass);
-// XXX });
-
+ Route::get('/pass', function () {
+     $pass = bcrypt('admin');
+     dd($pass);
+ });
 
 
 
@@ -111,8 +110,16 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('distributer-update', 'Admin\DistributerController@updateDistributer')->name('admin.dis.update');
     Route::get('distributer/delete/{id}', 'Admin\DistributerController@DistributerDelete');
 
+    Route::get('distributer/detail/{id}','Admin\DistributerController@distributerDetail')->name('distributer.detail');
+    Route::post('distributer/detail','Admin\DistributerController@distributerDetailLoad')->name('distributer.detail.load');
+
+
     // XXX distributer sell
     Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');
+    Route::post('distributer-sell-add', 'Admin\DistributersellController@addDistributersell')->name('admin.dis.sell.add');
+    Route::post('distributer-sell-list', 'Admin\DistributersellController@listDistributersell')->name('admin.dis.sell.list');
+    Route::get('distributer-sell-del/{id}', 'Admin\DistributersellController@deleteDistributersell');
+
 
 
 

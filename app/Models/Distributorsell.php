@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Distributorsell extends Model
 {
     use HasFactory;
+    public function distributer(){
+        return $this->belongsTo(Distributer::class);
+    }
 }

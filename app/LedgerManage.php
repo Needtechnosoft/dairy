@@ -15,6 +15,7 @@ class LedgerManage{
     * "102"= "farmer opening balance/advance"
     * "103" = "item sell"
     * "104" = "Farmer Advance"
+    * "105" = "Sold to distributer"
     */
     public function addLedger($particular, $type,$amount,$date,$identifier,$foreign_id=null){
         $nepalidate=new NepaliDate($date);

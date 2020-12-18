@@ -70,4 +70,5 @@ class User extends Authenticatable
         return Advance::where('user_id',$this->id)->first();
     }
 
+
 }

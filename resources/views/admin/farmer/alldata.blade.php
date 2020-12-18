@@ -125,8 +125,8 @@
                     <th>Date</th>
                     <th>Particular</th>
                     <th>Amount (Rs.)</th>
-                    <th>Cr. (Rs.)</th>
                     <th>Dr. (Rs.)</th>
+                    <th>Cr. (Rs.)</th>
                 </tr>
 
                 @foreach ($ledger as $l)
@@ -135,10 +135,10 @@
                         <td>{{ $l->title }}</td>
                         <td>{{ $l->amount }}</td>
                         <td>
-                            {{ $l->cr == null?"--":$l->cr }}
+                            {{ $l->dr == null?"--":$l->dr }}
                         </td>
                         <td>
-                            {{ $l->dr == null?"--":$l->dr }}
+                            {{ $l->cr == null?"--":$l->cr }}
                         </td>
                     </tr>
                 @endforeach
