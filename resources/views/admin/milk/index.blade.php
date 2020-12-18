@@ -27,7 +27,6 @@
         </div>
       @include('admin.farmer.minlist')
     </div>
-
     <div class="col-md-9 bg-light">
         <form action="" id="milkData">
             @csrf
@@ -69,7 +68,7 @@
                 </div>
 
                 <div class="col-md-4 add-section">
-                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control next" data-next="m_amt" min="1">
+                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control checkfarmer next" data-next="m_amt" min="1">
                 </div>
 
                 <div class="col-md-4 add-section">

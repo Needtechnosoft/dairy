@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Advance;
+use App\Models\Ledger;
 use App\Models\Milkdata;
 use App\Models\Sellitem;
 use App\Models\Snffat;
@@ -58,7 +59,8 @@ class FarmerController extends Controller
         $snfFats = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
         $snfAvg = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('snf');
         $fatAvg = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('fat');
-        return view('admin.farmer.alldata',compact('sellitem','milkData','milkData','snfFats','snfAvg','fatAvg'));
+        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        return view('admin.farmer.alldata',compact('sellitem','milkData','milkData','snfFats','snfAvg','fatAvg','ledger'));
     }
 
 

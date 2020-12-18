@@ -1,21 +1,20 @@
 @extends('admin.layouts.app')
-@section('title','Sell Items')
+@section('title','Distributer Sell')
 @section('css')
 <link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
-@section('head-title','Sell Items')
+@section('head-title','Distributer Sell')
 @section('toobar')
 
 @endsection
 @section('content')
-    @include('admin.item.itemmodal')
 <div class="row">
     <div class="col-md-3">
         <div class="pt-2 pb-2">
             <input type="text" id="sid" placeholder="Search" style="width: 134px;">
         </div>
-        @include('admin.farmer.minlist')
+        @include('admin.distributer.sell.minlist')
     </div>
 
     <div class="col-md-9 bg-light pt-2">

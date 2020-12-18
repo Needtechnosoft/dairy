@@ -1,7 +1,7 @@
 @foreach($exps as $exp)
 <tr id="expense-{{$exp->id}}" data-name="{{ $exp->title }}" class="searchable">
     <td>{{ $exp->title }}</td>
-    <td>{{ $exp->date }}</td>
+    <td>{{ _nepalidate($exp->date) }}</td>
     <td>{{ $exp->payment_by }}</td>
     <td>{{ $exp->amount }}</td>
     <td>{{ $exp->payment_detail }}</td>

@@ -111,6 +111,9 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('distributer-update', 'Admin\DistributerController@updateDistributer')->name('admin.dis.update');
     Route::get('distributer/delete/{id}', 'Admin\DistributerController@DistributerDelete');
 
+    // XXX distributer sell
+    Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');
+
 
 
     // XXX XXX employees

@@ -115,4 +115,34 @@
             </table>
         </div>
     </div>
+
+    <div class="col-md-12 mt-3">
+        <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
+            <strong>Ledger</strong>
+            <hr>
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <tr>
+                    <th>Date</th>
+                    <th>Particular</th>
+                    <th>Amount (Rs.)</th>
+                    <th>Cr. (Rs.)</th>
+                    <th>Dr. (Rs.)</th>
+                </tr>
+
+                @foreach ($ledger as $l)
+                    <tr>
+                        <td>{{ _nepalidate($l->date) }}</td>
+                        <td>{{ $l->title }}</td>
+                        <td>{{ $l->amount }}</td>
+                        <td>
+                            {{ $l->cr == null?"--":$l->cr }}
+                        </td>
+                        <td>
+                            {{ $l->dr == null?"--":$l->dr }}
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+    </div>
 </div>

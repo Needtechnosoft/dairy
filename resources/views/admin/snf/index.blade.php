@@ -31,7 +31,7 @@
                 <div class="col-md-5">
                     <div class="form-group">
                         <label for="date">Collection Center</label>
-                        <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="u_id">
+                        <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="loaddata">
                             <option></option>
                             @foreach(\App\Models\Center::all() as $c)
                             <option value="{{$c->id}}">{{ $c->name }}</option>
@@ -41,13 +41,13 @@
                 </div>
 
                 <div class="col-md-2 mt-4">
-                    <input type="button" class="btn btn-primary btn-block next" data-next="snf" onclick="loadData();" onkeydown="loadData();" id="loaddata" value="Load">
+                    <input type="button" class="btn btn-primary btn-block next" data-next="u_id" onclick="loadData();" onkeydown="loadData();" id="loaddata" value="Load">
                     {{-- <span >Load</span> --}}
                     <span class="btn btn-danger d-none" onclick="resetData()" id="resetdata"> Reset</span>
                 </div>
                 <div class="col-md-3 add-section">
 
-                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control next" data-next="snf" min="1">
+                    <input type="number" name="user_id" id="u_id" placeholder="number" class="form-control checkfarmer next" data-next="snf" min="1">
                 </div>
                 <div class="col-md-3 add-section">
                     <input type="number" name="snf" id="snf" step="0.001" min="0.001" placeholder="Snf" class="form-control next" data-next="fat">

@@ -33,7 +33,12 @@
                     <li><a href="{{ route('admin.sup.bill') }}" class="waves-effect waves-block">Supplier Bill</a></li>
                 </ul>
             </li>
-            <li><a href="{{ route('admin.dis') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Distributers</span></a></li>
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Distributers</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('admin.dis') }}" class="waves-effect waves-block">Distributer List</a></li>
+                    <li><a href="{{ route('admin.dis.sell') }}" class="waves-effect waves-block">Distributer Sell</a></li>
+                </ul>
+            </li>
             <li><a href="{{ route('admin.emp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Employees</span></a></li>
             <li><a href="" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a></li>
 

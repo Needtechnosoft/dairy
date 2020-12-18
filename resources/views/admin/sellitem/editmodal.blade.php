@@ -25,7 +25,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="unumber">User Number</label>
-                                    <input type="number" name="user_id" id="eu_id" placeholder="User number" class="form-control next" data-next="eitem_id" min="1" >
+                                    <input type="number" name="user_id" id="eu_id" placeholder="User number" class="form-control checkfarmer next" data-next="eitem_id" min="1" >
                                 </div>
                             </div>
 
@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <!-- <input type="hidden" name=""> -->
                                     <label for="unumber">Item Number</label>
-                                    <input type="text" id="eitem_id" name="number" placeholder="Item number" class="form-control next" data-next="erate" min="1">
+                                    <input type="text" id="eitem_id" name="number" placeholder="Item number" class="form-control checkitem next" data-next="erate" min="1">
                                 </div>
                             </div>
 
