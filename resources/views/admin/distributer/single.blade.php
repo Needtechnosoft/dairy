@@ -12,3 +12,4 @@
         |
         <button class="btn btn-danger btn-sm" onclick="removeData({{$user->id}});">Delete</button></td>
 </tr>
+{{-- dfdfdf --}}
