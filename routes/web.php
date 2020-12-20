@@ -33,9 +33,9 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX farmer routes
     Route::match(['get', 'post'], 'farmers', 'Admin\FarmerController@addFarmer')->name('admin.farmer');
     Route::get('farmer-list','Admin\FarmerController@listFarmer')->name('list.farmer');
+    Route::post('farmer-list-by-center','Admin\FarmerController@listFarmerByCenter')->name('list.farmer.bycenter');
     Route::match(['get', 'post'],'farmer/update','Admin\FarmerController@updateFarmer')->name('update.farmer');
     Route::get('farmer/delete/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer');
-
     Route::get('farmer/detail/{id}','Admin\FarmerController@farmerDetail')->name('farmer.detail');
     Route::post('load-date','Admin\FarmerController@loadDate')->name('farmer.loaddetail');
 
@@ -47,6 +47,10 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('farmer-advance-delete/{id}', 'Admin\AdvanceController@deleteFarmerAdvance');
     Route::post('farmer-advance-list-by-date', 'Admin\AdvanceController@advanceListByDate')->name('admin.advance.list.by.date');
 
+    // farmer due payments
+    Route::get('farmer-due','Admin\FarmerController@due')->name('admin.farmer.due');
+    Route::post('farmer-due-load','Admin\FarmerController@dueLoad')->name('admin.farmer.due.load');
+    Route::post('farmer-pay-save','Admin\FarmerController@paymentSave')->name('admin.farmer.pay.save');
 
 
     // XXX collection centers
@@ -60,6 +64,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('milk-data','Admin\MilkController@index')->name('admin.milk');
     Route::post('milk-data-save/{type}','Admin\MilkController@saveMilkData')->name('store.milk');
     Route::post('milk-data-load','Admin\MilkController@milkDataLoad')->name('load.milk.data');
+    Route::post('farmer-data-load','Admin\MilkController@loadFarmerData')->name('load.farmer.data');
 
     // XXX snf and fats
     Route::get('snf-fats','Admin\SnffatController@index')->name('admin.snf.fat');

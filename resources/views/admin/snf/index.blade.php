@@ -11,10 +11,9 @@
 @section('content')
 <div class="row">
     <div class="col-md-3">
-        <div class="pt-2 pb-2">
-            <input type="text" id="sid" placeholder="Search" style="width: 210px;">
+        <div id="_farmers">
+            Select Collection center for load farmers !
         </div>
-       @include('admin.farmer.minlist')
     </div>
 
     <div class="col-md-9 bg-light">
@@ -275,10 +274,27 @@
        saveDate();
     });
 
+    // load farmer data by center id
+    $('#center_id').change(function(){
+        var center_id = $('#center_id').val();
+        axios({
+            method: 'post',
+            url: '{{ route("load.farmer.data")}}',
+            data:{'center':center_id}
+        })
+        .then(function(response) {
+            $('#_farmers').html(response.data);
+            initTableSearch('sid', 'farmerData', ['name']);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+    })
+
 </script>
 
 @endsection
-
 
 <!-- reward per items -->
 <!-- reward amt ,reward per=> sell items  -->

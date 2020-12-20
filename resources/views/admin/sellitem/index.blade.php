@@ -12,16 +12,26 @@
     @include('admin.item.itemmodal')
 <div class="row">
     <div class="col-md-3">
-        <div class="pt-2 pb-2">
-            <input type="text" id="sid" placeholder="Search" style="width: 134px;">
+        <div id="_farmers">
+            Select Collection center for load farmers !
         </div>
-        @include('admin.farmer.minlist')
     </div>
 
     <div class="col-md-9 bg-light pt-2">
         <form action="" id="sellitemData">
             @csrf
             <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="date">Collection Center</label>
+                        <select name="center_id" id="center_id" class="form-control show-tick ms next">
+                            <option></option>
+                            @foreach(\App\Models\Center::all() as $c)
+                            <option value="{{$c->id}}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="date">Date</label>
@@ -293,6 +303,24 @@
     $('#item_id').bind('keydown', 'alt+s', function(e){
        $('#itemmodal').modal('show');
     });
+
+    // load farmer data by center id
+    $('#center_id').change(function(){
+        var center_id = $('#center_id').val();
+        axios({
+            method: 'post',
+            url: '{{ route("load.farmer.data")}}',
+            data:{'center':center_id}
+        })
+        .then(function(response) {
+            $('#_farmers').html(response.data);
+            initTableSearch('sid', 'farmerData', ['name']);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+    })
 
 
 </script>

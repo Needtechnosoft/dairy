@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 <div class="pt-2 pb-2">
-    <input type="text" id="sid" placeholder="Search"> 
+    <input type="text" id="sid" placeholder="Search">
 </div>
 <div class="table-responsive">
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -29,7 +29,7 @@
 
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="name">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content ">
             <div class="modal-header">
                 <h4 class="title" id="largeModalLabel">Create Supplier</h4>
             </div>
@@ -193,7 +193,7 @@
             console.log(response);
         });
 
-    // delete 
+    // delete
     function removeData(id) {
         var dataid = id;
         if (confirm('Are you sure?')) {

@@ -1,12 +1,29 @@
 @extends('admin.layouts.app')
 @section('title','Farmer-add')
 @section('head-title','Create Farmer')
+@section('css')
+<link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
+@endsection
 @section('toobar')
 <button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Create Farmer (alt+n)</button>
 @endsection
 @section('content')
-<div class="pt-2 pb-2">
-    <input type="text" id="sid" placeholder="Search">
+<div class="row">
+    <div class="col-md-3">
+        <input type="text" id="sid" placeholder="Search">
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3 text-right"><div class="mt-2"><strong> Collection Center : </strong></div></div>
+    <div class="col-md-3">
+        <div class="form-group text-right">
+            <select name="center_id" id="loadFarmerByCenter" class="form-control show-tick ms next" data-next="session">
+                <option></option>
+                @foreach(\App\Models\Center::all() as $c)
+                <option value="{{$c->id}}">{{ $c->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 </div>
 <div class="table-responsive">
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -28,7 +45,7 @@
 
 <!-- modal -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="name">
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="center_id">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -40,6 +57,17 @@
                     <form id="form_validation" method="POST" onsubmit="return saveData(event);">
                         @csrf
                         <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="date">Collection Center</label>
+                                    <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="name" required>
+                                        <option></option>
+                                        @foreach(\App\Models\Center::all() as $c)
+                                        <option value="{{$c->id}}">{{ $c->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-lg-6">
                                <input type="hidden" name="date" id="nepali-datepicker">
                                 <label for="name">Farmer Name</label>
@@ -89,7 +117,7 @@
 <!-- edit modal -->
 
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-ff="ename">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,14 +133,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Farmer Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="ename" name="name" class="form-control" placeholder="Enter farmer name" required>
+                                    <input type="text" id="ename" name="name" class="form-control next" data-next="ephone" placeholder="Enter farmer name" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="name">Farmer Phone</label>
                                 <div class="form-group">
-                                    <input type="number" id="ephone" name="phone" class="form-control" placeholder="Enter farmer phone" required>
+                                    <input type="number" id="ephone" name="phone" class="form-control next" data-next="eaddress" placeholder="Enter farmer phone" required>
                                 </div>
                             </div>
 
@@ -143,6 +171,7 @@
 </div>
 @endsection
 @section('js')
+<script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
 <script>
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
@@ -151,6 +180,7 @@
     function initEdit(ele) {
         var farmer = JSON.parse(ele.dataset.farmer);
         console.log(farmer);
+        $('#ecenter_id').val(farmer.center_id).change();
         $('#ename').val(farmer.name);
         $('#ephone').val(farmer.phone);
         $('#eaddress').val(farmer.address);
@@ -162,8 +192,8 @@
 
     function saveData(e) {
         e.preventDefault();
+        var center = $('#center_id').val();
         var bodyFormData = new FormData(document.getElementById('form_validation'));
-
         axios({
                 method: 'post',
                 url: '{{ route("admin.farmer")}}',
@@ -181,6 +211,7 @@
                 $('#form_validation').trigger("reset");
                 $('#name').focus();
                 $('#farmerData').prepend(response.data);
+                $('#center_id').val(center).change();
             })
             .catch(function(response) {
                 //handle error
@@ -246,6 +277,25 @@
                 });
         }
     }
+
+    $("#loadFarmerByCenter").change(function () {
+        var center_id = $('#loadFarmerByCenter').val();
+        axios({
+            method: 'post',
+            url: '{{ route("list.farmer.bycenter")}}',
+            data:{'center':center_id}
+        })
+        .then(function(response) {
+            // console.log(response.data);
+            $('#farmerData').empty();
+            $('#farmerData').html(response.data);
+            initTableSearch('sid', 'farmerData', ['name']);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+    });
 
 
     $(document).bind('keydown', 'alt+n', function(e){

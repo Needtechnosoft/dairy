@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Advance;
+use App\Models\Farmer;
 use App\Models\Ledger;
 use App\Models\Milkdata;
 use App\Models\Sellitem;
@@ -22,8 +23,9 @@ class FarmerController extends Controller
     public function addFarmer(Request $request){
         if($request->isMethod('post')){
             // dd($request->advance);
-
-                $max=User::max('no')??0;
+                $max=User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center_id)->max('users.no')??0;
+                // dd($max);
+                // $max=User::max('no')??0;
                 $user = new User();
                 $user->phone = $request->phone;
                 $user->name = $request->name;
@@ -32,8 +34,20 @@ class FarmerController extends Controller
                 $user->password = bcrypt($request->phone);
                 $user->no=$max+1;
                 $user->save();
-                $manager=new LedgerManage($user->id);
-                $manager->addLedger('Opening Balance',1,$request->advance,$request->date,'102');
+
+                $farmer=new Farmer();
+                $farmer->user_id=$user->id;
+                $farmer->center_id=$request->center_id;
+                $farmer->save();
+
+
+                if($request->has('advance') ){
+                    if($request->advance>0){
+
+                        $manager=new LedgerManage($user->id);
+                        $manager->addLedger('Opening Balance',1,$request->advance,$request->date,'102');
+                    }
+                }
                 return view('admin.farmer.single',compact('user'));
                 // return response()->json("Farmer Created successfully !");
         }else{
@@ -42,8 +56,15 @@ class FarmerController extends Controller
     }
 
     public function listFarmer(){
-        $farmers = User::latest()->where('role',1)->get();
+        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',1)->where('users.role',1)->select('users.*','farmers.center_id')->get();
         // return response()->json($farmers);
+        return view('admin.farmer.list',['farmers'=>$farmers]);
+    }
+
+    public function listFarmerByCenter(Request $request){
+        // dd($request->all());
+        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center)->where('users.role',1)->select('users.*','farmers.center_id')->get();
+        // dd($farmers);
         return view('admin.farmer.list',['farmers'=>$farmers]);
     }
 
@@ -65,7 +86,9 @@ class FarmerController extends Controller
 
 
     public function updateFarmer(Request $request){
+        // dd($request->all());
         $user = User::where('id',$request->id)->where('role',1)->first();
+        // dd($user);
         $user->phone = $request->phone;
         $user->name = $request->name;
         $user->address = $request->address;
@@ -77,5 +100,22 @@ class FarmerController extends Controller
         $user = User::where('id',$id)->where('role',1)->first();
         $user->delete();
         return response()->json('Delete successfully !');
+    }
+
+
+    // due payment controller
+    public function due(){
+        return view('admin.farmer.due.index');
+    }
+
+    public function dueLoad(Request $request){
+        $user = User::where('no',$request->no)->first();
+        $due = Sellitem::where('user_id',$user->id)->where('due','>',0)->get();
+        // dd($due);
+        return view('admin.farmer.due.due',compact('due'));
+    }
+
+    public function paymentSave(Request $request){
+        dd($request->all());
     }
 }

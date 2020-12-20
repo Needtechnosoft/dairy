@@ -1,3 +1,6 @@
+<div class="pt-2 pb-2">
+    <input type="text" id="sid" placeholder="Search" style="width: 210px;">
+</div>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -7,7 +10,7 @@
             </tr>
         </thead>
         <tbody id="farmerData">
-            @foreach(\App\Models\User::where('role',1)->get() as $u)
+            @foreach($farmers as $u)
             <tr id="farmer-{{ $u->no }}" data-name="{{ $u->name }}" onclick="farmerId({{ $u->no }});">
                 <td class="p-1"><span style="cursor: pointer;">{{ $u->no }}</span></td>
                 <td class="p-1"> <span style="cursor: pointer;">{{ $u->name }}</span></td>

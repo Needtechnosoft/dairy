@@ -18,7 +18,8 @@ class MilkController extends Controller
         // dd($request->all());
         $actiontype=0;
         $date = str_replace('-', '', $request->date);
-        $user=User::where('no',$request->user_id)->first();
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->user_id)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+        // $user=User::where('no',$request->user_id)->first();
         // dd($user,$request);
         if($user==null ){
             return response("Farmer Not Found",400);
@@ -68,6 +69,11 @@ class MilkController extends Controller
         $date = str_replace('-', '', $request->date);
         $milkData = Milkdata::where(['date'=>$date,'center_id'=>$request->center_id])->get();
         return view('admin.milk.dataload',['milkdatas'=>$milkData]);
+    }
+
+    public function loadFarmerData(Request $request){
+        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center)->where('users.role',1)->select('users.*','farmers.center_id')->get();
+        return view('admin.farmer.minlist',compact('farmers'));
     }
 
 }

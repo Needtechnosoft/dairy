@@ -15,7 +15,8 @@ class SnffatController extends Controller
 
     public function saveSnffatData(Request $request){
         $date = str_replace('-', '', $request->date);
-        $user=User::where('no',$request->user_id)->first();
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->user_id)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+        // $user=User::where('no',$request->user_id)->first();
         // dd($user,$request);
         if($user==null ){
             return response("Farmer Not Found",400);

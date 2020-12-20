@@ -28,14 +28,15 @@ class SellitemController extends Controller
             $sell_item->rate = $request->rate;
             $sell_item->due = $request->due;
             $sell_item->paid = $request->paid;
-            $user = User::where('no',$request->user_id)->first();
+            $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->user_id)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+            // $user = User::where('no',$request->user_id)->first();
             $sell_item->user_id = $user->id;
             $sell_item->item_id = $item_id->id;
             $sell_item->date = $date;
             $item_id->save();
             $sell_item->save();
             $manager=new LedgerManage($user->id);
-            $manager->addLedger('Sold Item :'.$item_id->title.'('.$sell_item->rate.'x'.$sell_item->qty.')',1,$request->total,$date,'103',$sell_item->id);
+            $manager->addLedger('Sold Item : '.$item_id->title.'('.$sell_item->rate.'x'.$sell_item->qty.')',1,$request->total,$date,'103',$sell_item->id);
             if($request->paid>0){
                 $manager->addLedger('Paid amount',2,$request->paid,$date,'103',$sell_item->id);
             }
