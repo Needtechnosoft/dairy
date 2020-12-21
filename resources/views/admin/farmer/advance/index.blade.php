@@ -10,20 +10,29 @@
 @section('content')
 <div class="row">
 <div class="col-lg-12">
-    <div class="d-none">
-
-        @include('admin.farmer.minlist')
-    </div>
+    @include('admin.farmer.farmermodal')
     <form id="form_validation" method="POST" onsubmit="return saveData(event);">
         @csrf
         <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="date">Collection Center</label>
+                    <select name="center_id" id="center_id" class="form-control show-tick ms next">
+                        <option></option>
+                        @foreach(\App\Models\Center::all() as $c)
+                        <option value="{{$c->id}}">{{ $c->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             <div class="col-lg-3">
                 <label for="date">Date</label>
                 <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="u_id">
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <label for="u_number">Farmer Number</label>
+                <span id="farmersearch"  data-toggle="modal" data-target="#farmermodal" style="cursor: pointer;">( search (alt+s) )</span>
                 <div class="form-group">
                     <input type="number" id="u_id" name="no" min="0" class="form-control next checkfarmer" data-next="amount" placeholder="Enter farmer number" required>
                 </div>
@@ -33,7 +42,7 @@
                 <label for="amount">Advance Amount</label>
                 <input type="number" id="amount" min="0" name="amount" class="form-control next" data-next="save" placeholder="Enter advance amount" value="0" required>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <input type="submit" id="save" class="btn btn-raised btn-primary waves-effect btn-block" value="Add" style="margin-top:30px;">
             </div>
 
@@ -105,12 +114,14 @@
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
 <script>
     // initTableSearch('searchid', 'farmerforData', ['name']);
+    // load by date
     $("input#nepali-datepicker").bind('click', function (e) {
         var date = $('#nepali-datepicker').val();
+        var center_id = $('#center_id').val();
         axios({
                 method: 'post',
                 url: '{{ route("admin.farmer.advance.list")}}',
-                data : {'date' : date}
+                data : {'date' : date,'center_id':center_id}
             })
             .then(function(response) {
                 // console.log(response.data);
@@ -208,16 +219,18 @@
     }
 
     // load advance
-
-    function loadAdvance(){
+   $('#center_id').change(function(){
         var datadate = $('#nepali-datepicker').val();
+        var center_id = $('#center_id').val();
+        // alert(center_id);
         // console.log(datadate);
         axios({
                 method: 'post',
                 url: '{{ route("admin.advance.list.by.date")}}',
-                data:{'date':datadate} ,
+                data:{'date':datadate,'center_id':center_id}
         })
         .then(function(response) {
+            $('#advanceData').empty();
             $('#advanceData').html(response.data);
             // $('').html(response.data);
         })
@@ -225,13 +238,13 @@
             //handle error
             console.log(response);
         });
-    }
+   })
 
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
         $('#u_id').focus();
-        loadAdvance();
+        // loadAdvance();
     };
 
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
@@ -240,6 +253,33 @@
 
     function farmerId(id){
         $('#u_id').val(id);
+        $('#farmermodal').modal('hide');
+        $('#u_id').focus();
     }
+
+    $(document).bind('keydown', 'alt+s', function(e){
+       $('#farmermodal').modal('show');
+    });
+    $('#u_id').bind('keydown', 'alt+s', function(e){
+       $('#farmermodal').modal('show');
+    });
+
+    // load farmer data by center id
+    $('#center_id').change(function(){
+        var center_id = $('#center_id').val();
+        axios({
+            method: 'post',
+            url: '{{ route("load.farmer.data")}}',
+            data:{'center':center_id}
+        })
+        .then(function(response) {
+            $('#_farmers').html(response.data);
+            initTableSearch('sid', 'farmerData', ['name']);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+    })
 </script>
 @endsection

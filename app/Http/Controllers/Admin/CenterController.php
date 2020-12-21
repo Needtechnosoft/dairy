@@ -16,6 +16,8 @@ class CenterController extends Controller
         $center = new Center();
         $center->name = $request->name;
         $center->addresss = $request->address;
+        $center->fat_rate = $request->fat_rate;
+        $center->snf_rate = $request->snf_rate;
         $center->save();
         return view('admin.center.single')->with(compact('center'));
     }
@@ -25,6 +27,8 @@ class CenterController extends Controller
         $center = Center::where('id',$request->id)->first();
         $center->name = $request->name;
         $center->addresss = $request->address;
+        $center->fat_rate = $request->fat_rate;
+        $center->snf_rate = $request->snf_rate;
         $center->save();
         return view('admin.center.single')->with(compact('center'));
     }

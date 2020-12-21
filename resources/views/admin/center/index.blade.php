@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 <div class="pt-2 pb-2">
-    <input type="text" id="sid" placeholder="Search"> 
+    <input type="text" id="sid" placeholder="Search">
 </div>
 <div class="table-responsive">
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -15,6 +15,8 @@
                 <th>#Id</th>
                 <th>Center Name</th>
                 <th>Center Address</th>
+                <th>Fat Rate (Rs.)</th>
+                <th>Snf Rate (Rs.)</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -26,7 +28,9 @@
                     <input type="hidden" name="id" value="{{$c->id}}">
                     <td><input type="text" value="{{ $c->name }}" class="form-control" name="name" form="collectionForm-{{ $c->id }}"></td>
                     <td><input type="text" value="{{ $c->addresss }}" class="form-control" name="address" form="collectionForm-{{ $c->id }}"></td>
-                    <td><span onclick="editCollection({{$c->id}});" form="collectionForm-{{ $c->id }}" class="btn btn-primary btn-sm"> Update </span> | <span class="btn btn-danger btn-sm" onclick="removeCenter({{$c->id}});">Delete</span></td>
+                    <td><input type="number" value="{{ $c->fat_rate }}" id="fatrate" step="0.001" class="form-control" name="fat_rate" form="collectionForm-{{ $c->id }}"></td>
+                    <td><input type="number" value="{{ $c->snf_rate }}" id="snfrate" step="0.001" class="form-control" name="snf_rate" form="collectionForm-{{ $c->id }}"></td>
+                    <td><span onclick="editCollection({{$c->id}});" form="collectionForm-{{ $c->id }}" class="btn btn-primary btn-sm"> Update </span> <span class="btn btn-danger btn-sm" onclick="removeCenter({{$c->id}});">Delete</span></td>
                 </form>
             </tr>
             @endforeach
@@ -60,7 +64,19 @@
                             <div class="col-lg-6">
                                 <label for="name">Collection Center Address</label>
                                 <div class="form-group">
-                                    <input type="text" id="address" name="address" class="form-control" placeholder="Collection Center Address" required>
+                                    <input type="text" id="address" name="address" class="form-control next" data-next="fat-rate" placeholder="Collection Center Address" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="name">Fat Rate</label>
+                                <div class="form-group">
+                                    <input type="number" id="fat-rate" name="fat_rate" class="form-control next" data-next="snf-rate" step="0.001" placeholder="Enter fat rate" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="name">Snf Rate</label>
+                                <div class="form-group">
+                                    <input type="number" id="snf-rate" name="snf_rate" class="form-control" step="0.001" placeholder="Enter snf rate" required>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +143,7 @@
             });
     }
 
-    // list 
+    // list
     // axios({
     //         method: 'get',
     //         url: '{{ route("list.center")}}',
@@ -151,7 +167,7 @@
     //         console.log(response);
     //     });
 
-    // delete 
+    // delete
     function removeCenter(id) {
         var dataid = id;
         if (confirm('Are you sure?')) {

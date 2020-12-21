@@ -3,10 +3,13 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
-@section('head-title','Farmer Details')
+@section('head-title','Farmer Details / '.$user->name)
 @section('toobar')
 @endsection
 @section('content')
+@php
+
+@endphp
 <div class="row">
     <div class="col-md-3">
         <select name="year" id="year" class="form-control show-tick ms select2">

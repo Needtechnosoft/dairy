@@ -18,7 +18,8 @@ class AdvanceController extends Controller
     public function addFormerAdvance(Request $request){
         $date = str_replace('-','',$request->date);
         $adv = new Advance();
-        $user = User::where('no',$request->no)->first();
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->no)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+        // $user = User::where('no',$request->no)->first();
         if($user==null ){
             return response("Farmer Not Found",400);
         }else{
@@ -37,7 +38,9 @@ class AdvanceController extends Controller
 
     public function listFarmerAdvance(Request $r){
         $date = str_replace('-','',$r->date);
-        $advs = Advance::where('date',$date)->get();
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('farmers.center_id',$r->center_id)->select('farmers.user_id')->get();
+        // dd($user);
+        $advs = Advance::where('date',$date)->whereIn('user_id',$user)->get();
         return view('admin.farmer.advance.list',compact('advs'));
     }
 
@@ -49,7 +52,9 @@ class AdvanceController extends Controller
 
     function advanceListByDate(Request $r){
         $date = str_replace('-','',$r->date);
-        $advs = Advance::where('date',$date)->get();
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('farmers.center_id',$r->center_id)->select('farmers.user_id')->get();
+        // dd($user);
+        $advs = Advance::where('date',$date)->whereIn('user_id',$user)->get();
         return view('admin.farmer.advance.list',compact('advs'));
         // return response()->json($adv);
         // dd($date);

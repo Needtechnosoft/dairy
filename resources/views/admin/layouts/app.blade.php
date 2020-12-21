@@ -44,7 +44,7 @@
         <div class="body_scroll">
             <div class="block-header">
                 <div class="row">
-                    <div class="col-lg-7 col-md-6 col-sm-12">
+                    <div class="col-lg-12 col-md-6 col-sm-12">
                         <h2>
                             <button class="btn btn-primary mr-3 " type="button" data-toggle="modal" data-target="#menumodal">Menu</button> <a href="{{route('admin.dashboard')}}">Dashboard</a> / @yield('head-title','')
                         </h2>

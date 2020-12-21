@@ -31,7 +31,8 @@
                         <td>{{ $e }}</td>
                     </tr>
             </table>
-                <strong>Grand Total : {{ $m + $e }}</strong> (Liter)
+                <strong>Grand Total : {{ $m + $e }}</strong> (Liter) <br>
+                <strong>Total Amount : {{ ($m + $e) * $perLiterAmount }} (Rs.)</strong>
         </div>
     </div>
     <div class="col-md-6">
@@ -55,7 +56,8 @@
             </table>
             <div class="row">
                 <div class="col-md-6">
-                    <strong>Snf Average : {{ $snfAvg }}</strong>
+                    <strong>Snf Average : {{ $snfAvg }}</strong> <br> <br>
+                    <strong>Per Liter Rate : {{ $perLiterAmount }} (Rs.)</strong>
                 </div>
                 <div class="col-md-6">
                     <strong>Fat Average : {{ $fatAvg }}</strong>
