@@ -32,7 +32,6 @@
                     </tr>
             </table>
                 <strong>Grand Total : {{ $m + $e }}</strong> (Liter) <br>
-                <strong>Total Amount : {{ ($m + $e) * $perLiterAmount }} (Rs.)</strong>
         </div>
     </div>
     <div class="col-md-6">
@@ -55,12 +54,13 @@
                     @endforeach
             </table>
             <div class="row">
-                <div class="col-md-6">
-                    <strong>Snf Average : {{ $snfAvg }}</strong> <br> <br>
-                    <strong>Per Liter Rate : {{ $perLiterAmount }} (Rs.)</strong>
+                <div class="col-md-7">
+                    <strong>Snf Average : {{ round($snfAvg,2) }}</strong> <br> <br>
+                    <strong>Per Liter Rate : {{ round($perLiterAmount,2) }} (Rs.)</strong> <br>
+                    <strong>Total Amount : {{ round(($m + $e) * $perLiterAmount,2) }} (Rs.)</strong>
                 </div>
-                <div class="col-md-6">
-                    <strong>Fat Average : {{ $fatAvg }}</strong>
+                <div class="col-md-5">
+                    <strong>Fat Average : {{ round($fatAvg,2) }}</strong>
                 </div>
             </div>
         </div>

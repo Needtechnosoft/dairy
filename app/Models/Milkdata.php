@@ -10,6 +10,7 @@ class Milkdata extends Model
     use HasFactory;
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return \App\Models\User::where('id',$this->user_id)->first();
+        // return $this->belongsTo(User::class);
     }
 }
