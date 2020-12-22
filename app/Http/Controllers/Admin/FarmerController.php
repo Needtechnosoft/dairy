@@ -7,6 +7,7 @@ use App\LedgerManage;
 use App\Models\Advance;
 use App\Models\Center;
 use App\Models\Farmer;
+use App\Models\Farmerpayment;
 use App\Models\Ledger;
 use App\Models\Milkdata;
 use App\Models\Sellitem;
@@ -115,13 +116,40 @@ class FarmerController extends Controller
     }
 
     public function dueLoad(Request $request){
-        $user = User::where('no',$request->no)->first();
-        $due = Sellitem::where('user_id',$user->id)->where('due','>',0)->get();
+            $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->no)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+            // $user = User::where('no',$request->no)->first();
+            $due = Sellitem::where('user_id',$user->id)->where('due','>',0)->get();
         // dd($due);
         return view('admin.farmer.due.due',compact('due'));
     }
 
     public function paymentSave(Request $request){
-        dd($request->all());
+        $date = str_replace('-','',$request->date);
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->no)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+        $farmerPay = new Farmerpayment();
+        $farmerPay->amount = $request->pay;
+        $farmerPay->date = $date;
+        $farmerPay->payment_detail = $request->detail;
+        $farmerPay->user_id = $user->id;
+        $farmerPay->save();
+        $due = Sellitem::where('user_id',$user->id)->where('due','>',0)->get();
+        $paidmaount = $farmerPay->amount;
+
+        foreach ($due as $key => $value) {
+            if($paidmaount<=0){
+                break;
+            }
+            if($paidmaount>=$value->due){
+                $paidmaount -= $value->due;
+                $value->due =0;
+                $value->save();
+            }else{
+                $value->due-=$paidmaount;
+                $paidmaount=0;
+                $value->save();
+            }
+        }
+        $ledger = new LedgerManage($user->id);
+        $ledger->addLedger('Farmer due amount paid',2,$paidmaount,$date,'107',$farmerPay->id);
     }
 }

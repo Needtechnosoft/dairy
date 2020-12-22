@@ -51,7 +51,7 @@
 
                 <div class="col-md-3">
                     <label for="paid">Paid</label>
-                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control next " data-next="save" min="0.001">
+                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control" min="0.001">
                 </div>
 
                 <div class="col-md-3">
@@ -214,6 +214,9 @@
     };
 
 
+    $('#paid').bind('keydown', 'return', function(e){
+        saveData();
+    });
 
 </script>
 @endsection

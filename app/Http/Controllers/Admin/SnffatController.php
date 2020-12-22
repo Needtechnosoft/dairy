@@ -49,7 +49,6 @@ class SnffatController extends Controller
 
     public function snffatDataLoad(Request $request){
         $date = str_replace('-', '', $request->date);
-
         $data = Snffat::where(['date'=>$date ,'center_id'=>$request->center_id])->get();
         return view('admin.snf.dataload',['data'=>$data]);
     }

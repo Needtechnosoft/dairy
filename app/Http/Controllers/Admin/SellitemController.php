@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
+use App\Models\Farmer;
 use App\Models\Item;
 use App\Models\Ledger;
 use App\Models\Sellitem;
@@ -38,7 +39,7 @@ class SellitemController extends Controller
             $manager=new LedgerManage($user->id);
             $manager->addLedger('Sold Item : '.$item_id->title.'('.$sell_item->rate.'x'.$sell_item->qty.')',1,$request->total,$date,'103',$sell_item->id);
             if($request->paid>0){
-                $manager->addLedger('Paid amount',2,$request->paid,$date,'103',$sell_item->id);
+                $manager->addLedger('Paid amount',2,$request->paid,$date,'106',$sell_item->id);
             }
             return view('admin.sellitem.single',compact('sell_item'));
         }else{
@@ -94,12 +95,17 @@ class SellitemController extends Controller
 
     public function sellItemList(Request $request){
         $date = str_replace('-','',$request->date);
-        $sell = Sellitem::where('date',$date)->get();
+        $farmer = Farmer::where('center_id',$request->center_id)->select('user_id')->get();
+        // $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->no)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+        $sell = Sellitem::where('date',$date)->whereIn('user_id',$farmer)->get();
         return view('admin.sellitem.list',compact('sell'));
     }
 
     public function deleteSellitem($id){
         $sell = Sellitem::find($id);
+        $item = Item::where('id',$sell->item_id)->first();
+        $item->stock = $item->stock + $sell->qty;
+        $item->save();
         $sell->delete();
         Ledger::where('foreign_key',$id)->delete();
     }

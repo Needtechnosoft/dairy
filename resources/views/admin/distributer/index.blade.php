@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 <div class="pt-2 pb-2">
-    <input type="text" id="sid" placeholder="Search"> 
+    <input type="text" id="sid" placeholder="Search">
 </div>
 <div class="table-responsive">
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -224,7 +224,7 @@
             console.log(response);
         });
 
-    // delete 
+    // delete
     function removeData(id) {
         var dataid = id;
         if (confirm('Are you sure?')) {
@@ -243,5 +243,7 @@
                 });
         }
     }
+
+
 </script>
 @endsection

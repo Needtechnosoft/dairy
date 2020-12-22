@@ -74,12 +74,12 @@
 
                 <div class="col-md-3">
                     <label for="paid">Paid</label>
-                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control next " data-next="due" min="0.001">
+                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control" min="0.001">
                 </div>
 
                 <div class="col-md-3">
                     <label for="due">Due</label>
-                    <input type="number" name="due" id="due" step="0.001" placeholder="due" value="0" class="form-control next" data-next="save" min="0" readonly>
+                    <input type="number" name="due" id="due" step="0.001" placeholder="due" value="0" class="form-control" min="0" readonly>
                 </div>
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
@@ -265,13 +265,17 @@
 
     function itemId(id) {
         _number = document.querySelector('#item-' + id).dataset.number;
+        _rate = document.querySelector('#item-' + id).dataset.rate;
         $('#item_id').val(_number);
+        $('#rate').val(_rate);
+        $('#itemmodal').modal('hide');
         $('#item_id').focus();
+        calTotal();
     }
 
-    function loaddata(){
-        // list
-        axios.post('{{ route("admin.sell.item.list")}}',{'date': $('#nepali-datepicker').val()})
+    $('#center_id').change(function(){
+        var center_id = $('#center_id').val();
+        axios.post('{{ route("admin.sell.item.list")}}',{'center_id':center_id,'date': $('#nepali-datepicker').val()})
         .then(function(response) {
             // console.log(response.data);
             $('#sellDataBody').html(response.data);
@@ -280,7 +284,8 @@
             //handle error
             console.log(response);
         });
-    }
+    })
+        // list
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
     var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
     $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
@@ -322,6 +327,9 @@
         });
     })
 
+    $('#paid').bind('keydown', 'return', function(e){
+        saveData();
+    });
 
 </script>
 @endsection

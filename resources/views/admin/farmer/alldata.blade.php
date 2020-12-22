@@ -126,21 +126,30 @@
                 <tr>
                     <th>Date</th>
                     <th>Particular</th>
-                    <th>Amount (Rs.)</th>
-                    <th>Dr. (Rs.)</th>
                     <th>Cr. (Rs.)</th>
+                    <th>Dr. (Rs.)</th>
+                    <th>Balance (Rs.)</th>
                 </tr>
 
                 @foreach ($ledger as $l)
                     <tr>
                         <td>{{ _nepalidate($l->date) }}</td>
                         <td>{{ $l->title }}</td>
-                        <td>{{ $l->amount }}</td>
+
                         <td>
-                            {{ $l->dr == null?"--":$l->dr }}
+                            @if ($l->type==1)
+                                {{ $l->amount }}
+                            @endif
                         </td>
                         <td>
-                            {{ $l->cr == null?"--":$l->cr }}
+                            @if($l->type==2)
+                              {{ $l->amount }}
+                            @endif
+                        </td>
+                        <td>
+                            {{ $l->dr == null?"":"Dr. ".$l->dr }}
+
+                            {{ $l->cr == null?"--":"Cr. ".$l->cr }}
                         </td>
                     </tr>
                 @endforeach

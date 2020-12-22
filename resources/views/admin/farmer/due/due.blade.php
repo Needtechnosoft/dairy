@@ -48,7 +48,7 @@
     </div>
     <div class="col-md-9 mt-1">
         <label for="detail">Payment Detail</label>
-        <input type="text" class="form-control" id="detail" placeholder="Payment details">
+        <input type="text" class="form-control" id="p_detail" placeholder="Payment details">
     </div>
     <div class="col-md-3">
         <span class="btn btn-primary btn-block" style="margin-top:35px;" onclick="duePayment();"> Pay Now </span>

@@ -16,6 +16,8 @@ class LedgerManage{
     * "103" = "item sell"
     * "104" = "Farmer Advance"
     * "105" = "Sold to distributer"
+    * "106" = "Farmer amount paid at Selling item"
+    * "107" = "Due amount paid by farmer"
     */
     public function addLedger($particular, $type,$amount,$date,$identifier,$foreign_id=null){
         $nepalidate=new NepaliDate($date);
@@ -43,10 +45,11 @@ class LedgerManage{
         $l->year = $nepalidate->year;
         $l->month = $nepalidate->month;
         $l->session = $nepalidate->session;
+        $l->type = $type;
         $t=1;
+
         if($_amount>0){
             $t=2;
-
             $l->dr=$_amount;
         }else if($_amount<0){
             $t=1;
