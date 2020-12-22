@@ -264,6 +264,8 @@
                     $('#item-' + id).remove();
                 })
                 .catch(function(response) {
+                    showNotification('bg-danger','You do not have authority to delete!');
+
                     console.log(response)
                 })
         }

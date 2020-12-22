@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody id="employeeData">
-            
+
         </tbody>
     </table>
 </div>
@@ -209,7 +209,7 @@
             console.log(response);
         });
 
-    // delete 
+    // delete
     function removeData(id) {
         var dataid = id;
         if (confirm('Are you sure?')) {
@@ -223,6 +223,7 @@
                     showNotification('bg-danger', 'Deleted Successfully !');
                 })
                 .catch(function(response) {
+                    showNotification('bg-danger','You do not have authority to delete!');
                     //handle error
                     console.log(response);
                 });

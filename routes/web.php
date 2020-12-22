@@ -35,7 +35,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('farmer-list','Admin\FarmerController@listFarmer')->name('list.farmer');
     Route::post('farmer-list-by-center','Admin\FarmerController@listFarmerByCenter')->name('list.farmer.bycenter');
     Route::match(['get', 'post'],'farmer/update','Admin\FarmerController@updateFarmer')->name('update.farmer');
-    Route::get('farmer/delete/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer');
+    Route::get('farmer/delete/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer')->middleware('authority');
     Route::get('farmer/detail/{id}','Admin\FarmerController@farmerDetail')->name('farmer.detail');
     Route::post('load-date','Admin\FarmerController@loadDate')->name('farmer.loaddetail');
 
@@ -44,7 +44,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('farmer-advance-add', 'Admin\AdvanceController@addFormerAdvance')->name('admin.farmer.advance.add');
     Route::post('farmer-advance-list', 'Admin\AdvanceController@listFarmerAdvance')->name('admin.farmer.advance.list');
     Route::post('farmer-advance-update', 'Admin\AdvanceController@updateFormerAdvance')->name('admin.farmer.advance.update');
-    Route::get('farmer-advance-delete/{id}', 'Admin\AdvanceController@deleteFarmerAdvance');
+    Route::get('farmer-advance-delete/{id}', 'Admin\AdvanceController@deleteFarmerAdvance')->middleware('authority');
     Route::post('farmer-advance-list-by-date', 'Admin\AdvanceController@advanceListByDate')->name('admin.advance.list.by.date');
 
     // farmer due payments
@@ -57,8 +57,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('collection-centers', 'Admin\CenterController@index')->name('admin.collection');
     Route::post('collection-center-add', 'Admin\CenterController@addCollectionCenter')->name('add.center');
     Route::get('collection-center-list', 'Admin\CenterController@listCenter')->name('list.center');
-    Route::get('collection-center-delete-{id}', 'Admin\CenterController@deleteCenter')->name('delete.center');
-    Route::post('collection-center-update', 'Admin\CenterController@updateCollectionCenter')->name('update.center');
+    Route::get('collection-center-delete-{id}', 'Admin\CenterController@deleteCenter')->name('delete.center')->middleware('authority');
+    Route::post('collection-center-update', 'Admin\CenterController@updateCollectionCenter')->name('update.center')->middleware('authority');
 
     // XXX milk data
     Route::get('milk-data','Admin\MilkController@index')->name('admin.milk');
@@ -74,7 +74,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX items
     Route::get('items','Admin\ItemController@index')->name('admin.item');
     Route::post('item-add','Admin\ItemController@saveItems')->name('admin.item.save');
-    Route::get('item-delete/{id}','Admin\ItemController@deleteItem')->name('admin.item.delete');
+    Route::get('item-delete/{id}','Admin\ItemController@deleteItem')->name('admin.item.delete')->middleware('authority');
     Route::post('item-update','Admin\ItemController@updateItem');
 
     // XXX sell items
@@ -82,7 +82,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('sell-item-add','Admin\SellitemController@addSellItem')->name('admin.sell.item.add');
     Route::post('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
     Route::post('sell-item-update','Admin\SellitemController@updateSellItem')->name('admin.sell.item.update');
-    Route::get('sell-item-delete/{id}', 'Admin\SellitemController@deleteSellitem');
+    Route::get('sell-item-delete/{id}', 'Admin\SellitemController@deleteSellitem')->middleware('authority');
 
 
 
@@ -90,13 +90,13 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('expenses', 'Admin\ExpenseController@index')->name('admin.exp');
     Route::post('expense-add', 'Admin\ExpenseController@addExpense')->name('admin.exp.add');
     Route::get('expense-list', 'Admin\ExpenseController@listExpense')->name('admin.exp.list');
-    Route::get('expense-delete/{id}', 'Admin\ExpenseController@deleteExpense');
+    Route::get('expense-delete/{id}', 'Admin\ExpenseController@deleteExpense')->middleware('authority');
 
     // XXX suppliers
     Route::get('suppliers', 'Admin\SupplierController@index')->name('admin.sup');
     Route::post('add-supplier','Admin\SupplierController@addSupplier')->name('admin.sup.add');
     Route::get('supplier-list', 'Admin\SupplierController@supplierList')->name('admin.sup.list');
-    Route::get('supplier-delete/{id}', 'Admin\SupplierController@deleteSupplier');
+    Route::get('supplier-delete/{id}', 'Admin\SupplierController@deleteSupplier')->middleware('authority');
     Route::post('supplier/update','Admin\SupplierController@updateSupplier');
 
     // XXX supplier bills
@@ -105,7 +105,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('supplier-bill-add', 'Admin\SupplierController@addBill')->name('admin.sup.bill.add');
     Route::get('supplier-bill-list', 'Admin\SupplierController@listBill')->name('admin.sup.bill.list');
     Route::post('supplier-bill-update', 'Admin\SupplierController@updateBill')->name('admin.sup.bill.update');
-    Route::get('supplier-bill-delete/{id}', 'Admin\SupplierController@deleteBill');
+    Route::get('supplier-bill-delete/{id}', 'Admin\SupplierController@deleteBill')->middleware('authority');
 
 
     // XXX distributer
@@ -113,7 +113,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('distributer-add', 'Admin\DistributerController@addDistributer')->name('admin.dis.add');
     Route::get('distributer-list', 'Admin\DistributerController@DistributerList')->name('admin.dis.list');
     Route::post('distributer-update', 'Admin\DistributerController@updateDistributer')->name('admin.dis.update');
-    Route::get('distributer/delete/{id}', 'Admin\DistributerController@DistributerDelete');
+    Route::get('distributer/delete/{id}', 'Admin\DistributerController@DistributerDelete')->middleware('authority');
 
     Route::get('distributer/detail/{id}','Admin\DistributerController@distributerDetail')->name('distributer.detail');
     Route::post('distributer/detail','Admin\DistributerController@distributerDetailLoad')->name('distributer.detail.load');
@@ -123,7 +123,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');
     Route::post('distributer-sell-add', 'Admin\DistributersellController@addDistributersell')->name('admin.dis.sell.add');
     Route::post('distributer-sell-list', 'Admin\DistributersellController@listDistributersell')->name('admin.dis.sell.list');
-    Route::get('distributer-sell-del/{id}', 'Admin\DistributersellController@deleteDistributersell');
+    Route::get('distributer-sell-del/{id}', 'Admin\DistributersellController@deleteDistributersell')->middleware('authority');
 
 
 
@@ -133,7 +133,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('employee-add', 'Admin\EmployeeController@addEmployee')->name('admin.emp.add');
     Route::post('employee/update', 'Admin\EmployeeController@updateEmployee');
     Route::get('employee-list', 'Admin\EmployeeController@employeeList')->name('admin.emp.list');
-    Route::get('employee/delete/{id}', 'Admin\EmployeeController@employeeDelete');
+    Route::get('employee/delete/{id}', 'Admin\EmployeeController@employeeDelete')->middleware('authority');
 
 
 });
