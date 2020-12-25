@@ -50,6 +50,7 @@
                     <li><a href="{{ route('admin.sup.bill') }}" class="waves-effect waves-block">Supplier Bill</a></li>
                 </ul>
             </li>
+            <li><a href="{{ route('report.home') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Report</span></a></li>
 
             <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Expenses</span></a></li>
             <li><a href="{{ route('admin.emp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Employees</span></a></li>

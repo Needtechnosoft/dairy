@@ -29,9 +29,9 @@ class DistributersellController extends Controller
         $sell->save();
         $user = Distributer::where('id',$request->user_id)->first();
         $ledger = new LedgerManage($user->user_id);
-        $ledger->addLedger('Sold to distributer ('.$request->rate .' X '.$request->qty.')',2,$request->total,$date,'105',$sell->id);
+        $ledger->addLedger('Sold to distributer ('.$request->rate .' X '.$request->qty.')',1,$request->total,$date,'105',$sell->id);
         if($request->paid >0){
-            $ledger->addLedger('Paid amount received',1,$request->paid,$date,'105',$sell->id);
+            $ledger->addLedger('Paid amount received',2,$request->paid,$date,'105',$sell->id);
         }
         return view('admin.distributer.sell.single',compact('sell'));
     }

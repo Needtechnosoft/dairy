@@ -152,7 +152,7 @@
             })
             .then(function(response) {
                 console.log(response.data);
-                showNotification('bg-success', 'Milk data added Successfully !');
+                // showNotification('bg-success', 'Milk data added Successfully !');
                 $('#u_id').val('');
                 $('#m_amt').val('');
 
@@ -227,7 +227,7 @@
                     $('#milkDataBody').prepend(response.data);
                 }
                 $('#u_id').focus();
-                showNotification('bg-success', 'Milk data added Successfully !');
+                // showNotification('bg-success', 'Milk data added Successfully !');
 
             })
             .catch(function(response) {

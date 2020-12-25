@@ -213,7 +213,7 @@
             })
             .then(function(response) {
                 console.log(response.data);
-                showNotification('bg-success', 'Data added Successfully !');
+                // showNotification('bg-success', 'Data added Successfully !');
                 $('#snffatBody').prepend(response.data);
                 $('#snf').val('');
                 $('#fat').val('');
@@ -241,7 +241,7 @@
             })
             .then(function(response) {
                 console.log(response.data);
-                showNotification('bg-success', 'Data updated Successfully !');
+                // showNotification('bg-success', 'Data updated Successfully !');
                 document.querySelector('#snf-'+id).dataset.snf=response.data.snf;
                 $('#_snf-'+id).text(response.data.snf);
 

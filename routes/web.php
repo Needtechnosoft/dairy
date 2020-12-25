@@ -136,6 +136,14 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('employee/delete/{id}', 'Admin\EmployeeController@employeeDelete')->middleware('authority');
 
 
+    Route::group(['prefix' => 'report'], function () {
+        Route::name('report.')->group(function(){
+
+            Route::get('','ReportController@index')->name('home');
+
+            Route::match(['GET','POST'],'farmer','ReportController@farmer')->name('farmer');
+        });
+    });
 });
 
 
