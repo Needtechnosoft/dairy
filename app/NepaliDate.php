@@ -26,4 +26,57 @@ class NepaliDate{
         $data[2]=$date+($session==1?15:32);
         return $data;
     }
+
+    public static function getDateWeek($year,$month,$week){
+        $data=[];
+        $date=$year*10000+$month*100;
+        $data[1]=$date+(($week-1)*7 )+1;
+        $data[2]=$date+($week*7);
+        return $data;
+    }
+
+    public static function getDateMonth($year,$month){
+        $data=[];
+        $date=$year*10000+$month*100;
+        $data[1]=$date+1;
+        $data[2]=$date+32;
+        return $data;
+    }
+
+    public static function getDateYear($year){
+        $data=[];
+        $date=$year*10000;
+        $data[1]=$date+101;
+        $data[2]=$date+1232;
+        return $data;
+    }
+
+    public static function nextSession($year,$month,$session){
+        $data=[];
+
+        $session+=1;
+        if($session>2){
+            $session=1;
+            $month+=1;
+        }
+
+        if($month>12){
+            $month=1;
+            $year+=1;
+        }
+        return [
+            'year'=>$year,
+            'month'=>$month,
+            'session'=>$session,
+        ];
+    }
+
+    public function getNextDate($year,$month,$session){
+        $nsession=self::nextSession($year,$month,$session);
+        return getDate(
+            $nsession['year'],
+            $nsession['month'],
+            $nsession['session']
+        );
+    }
 }

@@ -18,6 +18,24 @@
             Farmer Report
         </span>
     </div>
+    <div class="col-md-2 section href" data-target="{{route('report.milk')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-view-agenda"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text">
+            Milk Report
+        </span>
+    </div>
+    <div class="col-md-2 section href" data-target="{{route('report.sales')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-money-box"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text">
+            Sales Report
+        </span>
+    </div>
 </div>
 @endsection
 @section('js')

@@ -3,10 +3,7 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
-@section('head-title')
-    <a href="{{route('report.home')}}">Report</a> / Farmer
-
-@endsection
+@section('head-title','Report - Milk')
 @section('toobar')
 
 @endsection
@@ -88,7 +85,6 @@
         axios.post("{{route('report.farmer')}}",d)
         .then(function(response){
             $('#allData').html(response.data);
-
         })
         .catch(function(error){
             alert('some error occured');
@@ -114,6 +110,7 @@
     function printDiv(id)
     {
         var divToPrint=document.getElementById(id);
+
         var newWin=window.open('','Report');
         newWin.document.open();
         newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');

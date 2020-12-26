@@ -120,6 +120,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
 
     // XXX distributer sell
+
     Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');
     Route::post('distributer-sell-add', 'Admin\DistributersellController@addDistributersell')->name('admin.dis.sell.add');
     Route::post('distributer-sell-list', 'Admin\DistributersellController@listDistributersell')->name('admin.dis.sell.list');
@@ -142,6 +143,10 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::get('','ReportController@index')->name('home');
 
             Route::match(['GET','POST'],'farmer','ReportController@farmer')->name('farmer');
+            Route::match(['GET','POST'],'milk','ReportController@milk')->name('milk');
+            Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');
+
+            Route::post('changeSession','ReportController@session')->name('changeSession');
         });
     });
 });

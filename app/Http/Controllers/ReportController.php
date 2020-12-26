@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Advance;
 use App\Models\Center;
+use App\Models\Distributorsell;
 use App\Models\Farmer;
 use App\Models\Ledger;
 use App\Models\Milkdata;
@@ -60,6 +61,89 @@ class ReportController extends Controller
         }else{
 
             return view('admin.report.farmer.index');
+        }
+    }
+
+    public function milk(Request $request){
+        if($request->getMethod()=="POST"){
+            $year=$request->year;
+            $month=$request->month;
+            $session=$request->session;
+
+            // ->where('date','>=',$range[1])->where('date','<=',$range[2]);
+
+            if($request->filled('center_id')){
+                $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+
+            }
+            // $center=Center::find($request->center_id);
+
+        }else{
+            return view('admin.report.milk.index');
+        }
+    }
+
+    public function sales(Request $request){
+        if($request->getMethod()=="POST"){
+            // dd($request->all());
+            $year=$request->year;
+            $month=$request->month;
+            $week=$request->week;
+            $session=$request->session;
+            $type=$request->type;
+            $range=[];
+            $data=[];
+            $sellitem=Sellitem::join('farmers','farmers.user_id','=','sellitems.user_id')
+            ->join('users','users.id','=','farmers.user_id')
+            ->join('items','items.id','sellitems.item_id')
+            ;
+
+            $sellmilk=Distributorsell::join('distributers','distributers.id','=','distributorsells.distributer_id')
+            ->join('users','users.id','=','distributers.user_id');
+
+            if($type==0){
+                $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+                 $sellitem=$sellitem->where('sellitems.date','>=',$range[1])->where('sellitems.date','<=',$range[2]);
+                 $sellmilk=$sellmilk->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+            }elseif($type==1){
+                $date=$date = str_replace('-','',$request->date1);
+                $sellitem=$sellitem->where('sellitems.date','=',$date);
+                $sellmilk=$sellmilk->where('distributorsells.date','=',$date);
+            }elseif($type==2){
+                $range=NepaliDate::getDateWeek($request->year,$request->month,$request->week);
+                $sellitem=$sellitem->where('sellitems.date','>=',$range[1])->where('sellitems.date','<=',$range[2]);
+                $sellmilk=$sellmilk->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+            }elseif($type==3){
+                $range=NepaliDate::getDateMonth($request->year,$request->month);
+                $sellitem=$sellitem->where('sellitems.date','>=',$range[1])->where('sellitems.date','<=',$range[2]);
+                $sellmilk=$sellmilk->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+            }elseif($type==4){
+                $range=NepaliDate::getDateYear($request->year);
+                $sellitem=$sellitem->where('sellitems.date','>=',$range[1])->where('sellitems.date','<=',$range[2]);
+                $sellmilk=$sellmilk->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+            }elseif($type==5){
+                $range[1]=str_replace('-','',$request->date1);;
+                $range[2]=str_replace('-','',$request->date2);;
+                $sellitem=$sellitem->where('sellitems.date','>=',$range[1])->where('sellitems.date','<=',$range[2]);
+                $sellmilk=$sellmilk->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+            }
+
+            if($request->center_id!=-1){
+                $sellitem=$sellitem->where('farmers.center_id',$request->center_id);
+
+            }
+
+            $data['sellitem']=$sellitem->select('sellitems.date','sellitems.rate','sellitems.qty','sellitems.total','sellitems.due','users.name','items.title','users.no')->orderBy('sellitems.date','asc')->get();
+            $data['sellmilk']=$sellmilk->select('distributorsells.*','users.name')->get();
+
+            return view('admin.report.sales.data',compact('data'));
+        }else{
+            return view('admin.report.sales.index');
+
         }
     }
 }
