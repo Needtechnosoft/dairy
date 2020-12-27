@@ -2,40 +2,68 @@
 <div class="row mt-5">
     <div class="col-md-6">
         <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
-            <strong>Milk Data</strong>
-            <hr>
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                <tr>
-                    <th>Date</th>
-                    <th>Morning (Liter)</th>
-                    <th>Evening (liter)</th>
-                </tr>
-                @php
-                    $m = 0;
-                    $e = 0;
-                @endphp
-                    @foreach ($milkData as $milk)
-                      <tr>
-                          <td>{{ _nepalidate($milk->date) }}</td>
-                          <td>{{ $milk->m_amount }}</td>
-                          <td>{{ $milk->e_amount }}</td>
-                      </tr>
-                      @php
-                          $m += $milk->m_amount;
-                          $e += $milk->e_amount;
-                      @endphp
-                    @endforeach
+            <button class="btn btn-success" onclick="printDiv('milk-data');">Print</button>
+            <div id="milk-data">
+                <style>
+                    td,th{
+                        border:1px solid black;
+                    }
+                    table{
+                        width:100%;
+                        border-collapse: collapse;
+                    }
+                    thead {display: table-header-group;}
+                    tfoot {display: table-header-group;}
+                </style>
+                <strong>Milk Data</strong>
+                <hr>
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                     <tr>
-                        <td><strong>Total</strong></td>
-                        <td>{{ $m }}</td>
-                        <td>{{ $e }}</td>
+                        <th>Date</th>
+                        <th>Morning (Liter)</th>
+                        <th>Evening (liter)</th>
                     </tr>
-            </table>
-                <strong>Grand Total : {{ $m + $e }}</strong> (Liter) <br>
+                    @php
+                        $m = 0;
+                        $e = 0;
+                    @endphp
+                        @foreach ($milkData as $milk)
+                        <tr>
+                            <td>{{ _nepalidate($milk->date) }}</td>
+                            <td>{{ $milk->m_amount }}</td>
+                            <td>{{ $milk->e_amount }}</td>
+                        </tr>
+                        @php
+                            $m += $milk->m_amount;
+                            $e += $milk->e_amount;
+                        @endphp
+                        @endforeach
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td>{{ $m }}</td>
+                            <td>{{ $e }}</td>
+                        </tr>
+                </table>
+                    <strong>Grand Total : {{ $m + $e }}</strong> (Liter) <br>
+            </div>
         </div>
+
     </div>
     <div class="col-md-6">
         <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
+            <button class="btn btn-success" onclick="printDiv('milk-data');">Print</button>
+            <div id="milk-data">
+                <style>
+                    td,th{
+                        border:1px solid black;
+                    }
+                    table{
+                        width:100%;
+                        border-collapse: collapse;
+                    }
+                    thead {display: table-header-group;}
+                    tfoot {display: table-header-group;}
+                </style>
             <strong>Snf & Fats </strong>
             <hr>
             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -53,15 +81,16 @@
 
                     @endforeach
             </table>
-            <div class="row">
-                <div class="col-md-7">
+            <div style="display: flex">
+                <div style="flex:7;padding:10px;">
                     <strong>Snf Average : {{ round($snfAvg,2) }}</strong> <br> <br>
                     <strong>Per Liter Rate : {{ round($perLiterAmount,2) }} (Rs.)</strong> <br>
-                    <strong>Total Amount : {{ round(($m + $e) * $perLiterAmount,2) }} (Rs.)</strong>
+                    <strong>Total Amount : {{ round(($m + $e) * $perLiterAmount) }} (Rs.)</strong>
                 </div>
-                <div class="col-md-5">
+                <div style="flex:5;padding:10px;">
                     <strong>Fat Average : {{ round($fatAvg,2) }}</strong>
                 </div>
+            </div>
             </div>
         </div>
     </div>

@@ -232,8 +232,6 @@ class ReportController extends Controller
                 $range[1]=str_replace('-','',$request->date1);;
                 $range[2]=str_replace('-','',$request->date2);;
                $milkdatas=$milkdatas->where('milkdatas.date','>=',$range[1])->where('milkdatas.date','<=',$range[2]);
-
-
             }
 
             $hascenter=false;
@@ -244,17 +242,14 @@ class ReportController extends Controller
             }
 
             $datas=$milkdatas->select('milkdatas.m_amount','milkdatas.e_amount','milkdatas.user_id','milkdatas.date','farmers.center_id','users.name','users.no')->get();
-            $data1=$milkdatas->select(DB::raw('(sum(milkdatas.m_amount)+sum(milkdatas.e_amount)) as milk ,milkdatas.user_id ,users.name,users.no'))->groupBy('milkdatas.user_id','users.name','users.no')->get();
-
-            $data2=$milkdatas->select(DB::raw('(sum(milkdatas.m_amount)+sum(milkdatas.e_amount)) as milk ,farmers.center_id'))->groupBy('farmers.center_id')->get()->groupBy('center_id');
+            $data1=$milkdatas->select(DB::raw('(sum(milkdatas.m_amount)+sum(milkdatas.e_amount)) as milk ,milkdatas.user_id ,users.name,users.no,farmers.center_id'))->groupBy('milkdatas.user_id','users.name','users.no','farmers.center_id')->get()->groupBy('center_id');
 
 
-            dd($data1->toArray(),$data2->toArray());
-            $dataByFarmer=$datas->groupBy('user_id');
-            $dataByCenter=$datas->groupBy('user_id');
-            dd($data);
 
-            return view('admin.report.milk.data',compact('data1','data2','hascenter'));
+
+
+
+            return view('admin.report.milk.data',compact('data1'));
 
 
 

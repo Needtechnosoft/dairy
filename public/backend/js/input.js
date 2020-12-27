@@ -68,3 +68,14 @@ $('.checkitem').focusout(function(){
 function CheckItem(id){
     return exists('#item-'+id);
 }
+
+function printDiv(id)
+{
+        var divToPrint=document.getElementById(id);
+
+        var newWin=window.open('','Report');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+        newWin.document.close();
+
+}
