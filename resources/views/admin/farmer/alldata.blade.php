@@ -51,8 +51,8 @@
     </div>
     <div class="col-md-6">
         <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
-            <button class="btn btn-success" onclick="printDiv('milk-data');">Print</button>
-            <div id="milk-data">
+            <button class="btn btn-success" onclick="printDiv('snffat-data');">Print</button>
+            <div id="snffat-data">
                 <style>
                     td,th{
                         border:1px solid black;
@@ -64,33 +64,33 @@
                     thead {display: table-header-group;}
                     tfoot {display: table-header-group;}
                 </style>
-            <strong>Snf & Fats </strong>
-            <hr>
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                <tr>
-                    <th>Date</th>
-                    <th>Snf (%)</th>
-                    <th>Fats (%)</th>
-                </tr>
-                    @foreach ($snfFats as $sf)
-                        <tr>
-                           <td>{{ _nepalidate($sf->date) }}</td>
-                            <td>{{ $sf->snf }}</td>
-                            <td>{{ $sf->fat }}</td>
-                        </tr>
+                <strong>Snf & Fats </strong>
+                <hr>
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <tr>
+                        <th>Date</th>
+                        <th>Snf (%)</th>
+                        <th>Fats (%)</th>
+                    </tr>
+                        @foreach ($snfFats as $sf)
+                            <tr>
+                            <td>{{ _nepalidate($sf->date) }}</td>
+                                <td>{{ $sf->snf }}</td>
+                                <td>{{ $sf->fat }}</td>
+                            </tr>
 
-                    @endforeach
-            </table>
-            <div style="display: flex">
-                <div style="flex:7;padding:10px;">
-                    <strong>Snf Average : {{ round($snfAvg,2) }}</strong> <br> <br>
-                    <strong>Per Liter Rate : {{ round($perLiterAmount,2) }} (Rs.)</strong> <br>
-                    <strong>Total Amount : {{ round(($m + $e) * $perLiterAmount) }} (Rs.)</strong>
+                        @endforeach
+                </table>
+                <div style="display: flex">
+                    <div style="flex:7;padding:10px;">
+                        <strong>Snf Average : {{ round($snfAvg,2) }}</strong> <br> <br>
+                        <strong>Per Liter Rate : {{ round($perLiterAmount,2) }} (Rs.)</strong> <br>
+                        <strong>Total Amount : {{ round(($m + $e) * $perLiterAmount) }} (Rs.)</strong>
+                    </div>
+                    <div style="flex:5;padding:10px;">
+                        <strong>Fat Average : {{ round($fatAvg,2) }}</strong>
+                    </div>
                 </div>
-                <div style="flex:5;padding:10px;">
-                    <strong>Fat Average : {{ round($fatAvg,2) }}</strong>
-                </div>
-            </div>
             </div>
         </div>
     </div>
@@ -149,40 +149,54 @@
 
     <div class="col-md-12 mt-3">
         <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
-            <strong>Ledger</strong>
-            <hr>
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                <tr>
-                    <th>Date</th>
-                    <th>Particular</th>
-                    <th>Cr. (Rs.)</th>
-                    <th>Dr. (Rs.)</th>
-                    <th>Balance (Rs.)</th>
-                </tr>
-
-                @foreach ($ledger as $l)
+            <button class="btn btn-success" onclick="printDiv('ledger-data');">Print</button>
+            <div id="ledger-data">
+                <style>
+                    td,th{
+                        border:1px solid black;
+                    }
+                    table{
+                        width:100%;
+                        border-collapse: collapse;
+                    }
+                    thead {display: table-header-group;}
+                    tfoot {display: table-header-group;}
+                </style>
+                <strong>Ledger</strong>
+                <hr>
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                     <tr>
-                        <td>{{ _nepalidate($l->date) }}</td>
-                        <td>{{ $l->title }}</td>
-
-                        <td>
-                            @if ($l->type==1)
-                                {{ $l->amount }}
-                            @endif
-                        </td>
-                        <td>
-                            @if($l->type==2)
-                              {{ $l->amount }}
-                            @endif
-                        </td>
-                        <td>
-                            {{ $l->dr == null?"":"Dr. ".$l->dr }}
-
-                            {{ $l->cr == null?"--":"Cr. ".$l->cr }}
-                        </td>
+                        <th>Date</th>
+                        <th>Particular</th>
+                        <th>Cr. (Rs.)</th>
+                        <th>Dr. (Rs.)</th>
+                        <th>Balance (Rs.)</th>
                     </tr>
-                @endforeach
-            </table>
+
+                    @foreach ($ledger as $l)
+                        <tr>
+                            <td>{{ _nepalidate($l->date) }}</td>
+                            <td>{{ $l->title }}</td>
+
+                            <td>
+                                @if ($l->type==1)
+                                    {{ $l->amount }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($l->type==2)
+                                {{ $l->amount }}
+                                @endif
+                            </td>
+                            <td>
+                                {{ $l->dr == null?"":"Dr. ".$l->dr }}
+
+                                {{ $l->cr == null?"--":"Cr. ".$l->cr }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
         </div>
     </div>
 </div>
