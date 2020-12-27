@@ -28,12 +28,8 @@
         Center : {{$center->name}}
     </span>
 </div>
-<form action="{{route('report.farmer.session')}}" method="POST">
-    <input type="hidden" name="year" value="{{$year}}" >
-    <input type="hidden" name="month" value="{{$month}}" >
-    <input type="hidden" name="session" value="{{$session}}" >
-    <input type="hidden" name="center_id" value="{{$center->id}}" >
-    <table class="table">
+<table>
+
         <thead>
             <tr>
                 <th>No</th>
@@ -58,67 +54,60 @@
             @foreach ($data as $farmer)
                 <tr>
                     <td>
-                        {{$farmer->no}}
-                        @php
-                        $tt=$farmer->total-$farmer->advance-$farmer->due-$farmer->prevdue;
-                        $farmer->balance=$tt<0?(-1*$tt):0;
-                        $farmer->nettotal=$tt>0?$tt:0;
-                        @endphp
-                        <input type="hidden" name="farmers[]" value="{{$farmer->toJson()}}" >
+                        {{$farmer->user->no}}
+
                     </td>
                     @php
-                        $t='farmer-'.$farmer->id;
+                        $t='farmer-'.$farmer->user_id;
                     @endphp
 
                     <td>
-                        {{$farmer->name}}
+                        {{$farmer->user->name}}
                     </td>
                     <td>
-                        {{($farmer->m_milk+$farmer->e_milk)}}
-                        {{-- <input type="hidden" name="milk[{{$t}}]" value="{{($farmer->m_milk+$farmer->e_milk)}}" > --}}
+                        {{($farmer->milk)}}
+
 
                     </td>
                     <td>
                         {{$farmer->snf}}
-                        {{-- <input type="hidden" name="snf[{{$t}}]" value="{{($farmer->snf)}}" > --}}
 
                     </td>
                     <td>
                         {{$farmer->fat}}
-                        {{-- <input type="hidden" name="fat[{{$t}}]" value="{{($farmer->fat)}}" > --}}
+
 
                     </td>
                     <td>
                         {{$farmer->rate}}
-                        {{-- <input type="hidden" name="rate[{{$t}}]" value="{{($farmer->rate)}}" > --}}
+
 
                     </td>
                     <td>
                         {{$farmer->total}}
-                        {{-- <input type="hidden" name="total[{{$t}}]" value="{{($farmer->total)}}" > --}}
+
 
                     </td>
                     <td>
                         {{$farmer->due}}
-                        {{-- <input type="hidden" name="due[{{$t}}]" value="{{($farmer->due)}}" > --}}
 
                     </td>
                     <td>
                         {{$farmer->advance}}
-                        {{-- <input type="hidden" name="advance[{{$t}}]" value="{{($farmer->advance)}}" > --}}
+
                     </td>
                     <td>
                         {{$farmer->prevdue}}
-                        {{-- <input type="hidden" name="prevdue[{{$t}}]" value="{{($farmer->prevdue)}}" > --}}
+
                     </td>
 
                     <td>
                         {{$farmer->nettotal}}
-                        {{-- <input type="hidden" name="nettotal[{{$t}}]" value=" {{$tt>0?$tt:0}}" > --}}
+
                     </td>
                     <td>
                         {{$farmer->balance}}
-                        {{-- <input type="hidden" name="balance[{{$t}}]" value=" {{$tt<0?(-1*$tt):0}}" > --}}
+
                     </td>
                     <td></td>
                 </tr>
@@ -126,10 +115,7 @@
 
         </tbody>
     </table>
-    <div class="py-2">
-        <input type="submit" value="Update Session Data" class="btn btn-success">
-    </div>
-</form>
+
 
 
 

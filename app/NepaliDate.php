@@ -71,12 +71,12 @@ class NepaliDate{
         ];
     }
 
-    public function getNextDate($year,$month,$session){
+    public static function getNextDate($year,$month,$session){
         $nsession=self::nextSession($year,$month,$session);
-        return getDate(
+        return self::getDate(
             $nsession['year'],
             $nsession['month'],
             $nsession['session']
-        );
+        )[1];
     }
 }

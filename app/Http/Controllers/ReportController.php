@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\LedgerManage;
 use App\Models\Advance;
 use App\Models\Center;
 use App\Models\Distributorsell;
 use App\Models\Farmer;
+use App\Models\FarmerReport;
 use App\Models\Ledger;
 use App\Models\Milkdata;
 use App\Models\Sellitem;
 use App\Models\Snffat;
+use App\Models\SessionWatch;
 use App\NepaliDate;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB as DB;
 
 class ReportController extends Controller
 {
@@ -27,56 +32,232 @@ class ReportController extends Controller
             $month=$request->month;
             $session=$request->session;
             $range = NepaliDate::getDate($request->year,$request->month,$request->session);
-            $data=[];
-            foreach($farmers as $farmer){
-                $m_amount=Milkdata::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('m_amount');
-                $e_amount=Milkdata::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('e_amount');
+            if(SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()>0){
+                $data=FarmerReport::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->get();
+                return view('admin.report.farmer.data1',compact('data','year','month','session','center'));
 
-                $snfavg=Snffat::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('snf');
-                $fatavg=Snffat::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('fat');
+            }else{
+
+                $data=[];
+                foreach($farmers as $farmer){
+                    $m_amount=Milkdata::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('m_amount');
+                    $e_amount=Milkdata::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('e_amount');
+
+                    $snfavg=Snffat::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('snf');
+                    $fatavg=Snffat::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('fat');
 
 
 
-                $farmer->snf=(float)round( $snfavg, 2);
-                $farmer->fat=(float)round( $fatavg,2) ;
-                $farmer->m_milk=(float)$m_amount;
-                $farmer->e_milk=(float)$e_amount;
+                    $farmer->snf=(float)round( $snfavg, 2);
+                    $farmer->fat=(float)round( $fatavg,2) ;
+                    $farmer->m_milk=(float)$m_amount;
+                    $farmer->e_milk=(float)$e_amount;
 
-                if($snfavg!=null || $fatavg!=null){
-                    $rate=($center->snf_rate* round( $snfavg, 2) ) + ($center->fat_rate*  round( $fatavg,2) );
-                    $farmer->rate=(float)round($rate,2);
-                    $farmer->total=(float)round( $rate*($m_amount+$e_amount),2);
+                    if($snfavg!=null || $fatavg!=null){
+                        $rate=($center->snf_rate* round( $snfavg, 2) ) + ($center->fat_rate*  round( $fatavg,2) );
+                        $farmer->rate=(float)round($rate,2);
+                        $farmer->total=(float)round( $rate*($m_amount+$e_amount));
+                    }
+                    $due=Sellitem::where('user_id',$farmer->id)->sum('due');
+
+                    $farmer->due=(float)$due;
+                    $previousMonth=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
+                    $farmer->prevdue=(float)$previousMonth;
+                    $farmer->nettotal=(float)($farmer->total-$farmer->due-$farmer->prevdue);
+                    $farmer->advance=(float)(Advance::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount'));
+
+                    array_push($data,$farmer);
                 }
-                $due=Sellitem::where('user_id',$farmer->id)->sum('due');
-
-                $farmer->due=(float)$due;
-                $previousMonth=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
-                $farmer->prevdue=(float)$previousMonth;
-                $farmer->nettotal=(float)($farmer->total-$farmer->due-$farmer->prevdue);
-                $farmer->advance=(float)(Advance::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount'));
-
-                array_push($data,$farmer);
+                return view('admin.report.farmer.data',compact('data','year','month','session','center'));
             }
-            return view('admin.report.farmer.data',compact('data','year','month','session','center'));
         }else{
 
             return view('admin.report.farmer.index');
         }
     }
 
+    public function farmerSession(Request $request){
+        // dd($request->all());
+        $nextdate=NepaliDate::getNextDate($request->year,$request->month,$request->session);
+        $lastdate=NepaliDate::getDate($request->year,$request->month,$request->session)[2];
+
+        foreach($request->farmers as $farmer){
+            $data=json_decode($farmer);
+
+            $ledger=new LedgerManage($data->id);
+
+
+            if($data->balance > ($data->advance+$data->prevdue)){
+                    $due = Sellitem::where('user_id',$data->id)->where('due','>',0)->get();
+                    $paidmaount=$data->total;
+                    foreach ($due as $key => $value) {
+                        if($paidmaount<=0){
+                            break;
+                        }
+                        if($paidmaount>=$value->due){
+                            $paidmaount -= $value->due;
+                            $value->due =0;
+                            $value->save();
+                        }else{
+                            $value->due-=$paidmaount;
+                            $paidmaount=0;
+                            $value->save();
+                        }
+                    }
+
+
+            }else{
+                Sellitem::where('user_id',$data->id)->update([
+                                    'due'=>0,
+                                    'paid'=>DB::raw("`total`")
+                                ]);
+            }
+
+            if($data->nettotal>0 ||$data->balance>0){
+
+                $ledger->addLedger("Payment for milk (".($data->e_milk+$data->m_milk)."l X ".($data->rate??0).")",2,$data->total,$lastdate,'108');
+
+                if($data->nettotal>0){
+                        $ledger->addLedger("Payment Given To Farmer",1,$data->nettotal,$lastdate,'110');
+                }else{
+                    if($data->balance>0){
+                        $ledger->addLedger("Closing Balance",2,$data->balance,$lastdate,'109');
+                        $ledger->addLedger("Aalya",1,$data->balance,$nextdate,'101');
+                    }
+                }
+            }
+            $farmerreport=new FarmerReport();
+            $farmerreport->user_id=$data->id;
+            $farmerreport->milk=$data->e_milk+$data->m_milk;
+            $farmerreport->snf=$data->snf??0;
+            $farmerreport->fat=$data->fat??0;
+            $farmerreport->rate=$data->rate??0;
+            $farmerreport->total=$data->total??0;
+            $farmerreport->due=$data->due??0;
+            $farmerreport->prevdue=$data->prevdue??0;
+            $farmerreport->advance=$data->advance??0;
+            $farmerreport->nettotal=$data->nettotal??0;
+            $farmerreport->balance=$data->balance??0;
+            $farmerreport->year=$request->year;
+            $farmerreport->month=$request->month;
+            $farmerreport->session=$request->session;
+            $farmerreport->center_id=$request->center_id;
+            $farmerreport->save();
+        }
+
+        $sessionwatch=new SessionWatch();
+        $sessionwatch->year=$request->year;
+        $sessionwatch->month=$request->month;
+        $sessionwatch->session=$request->session;
+        $sessionwatch->center_id=$request->center_id;
+        $sessionwatch->save();
+
+        //    foreach($request->ids as $user_id){
+
+        //     if($request->input['balance.farmer_'.$user_id]<=0){
+
+        //         Sellitem::where('user_id',$user_id)->update(
+        //             [
+        //                 'due'=>0,
+        //                 'paid'=>DB::raw("`total`")
+        //             ]
+        //         );
+        //     }else{
+        //         $due = Sellitem::where('user_id',$user_id)->where('due','>',0)->get();
+        //         $paidmaount=$request->input['total.farmer_'.$user_id];
+        //         foreach ($due as $key => $value) {
+        //             if($paidmaount<=0){
+        //                 break;
+        //             }
+        //             if($paidmaount>=$value->due){
+        //                 $paidmaount -= $value->due;
+        //                 $value->due =0;
+        //                 $value->save();
+        //             }else{
+        //                 $value->due-=$paidmaount;
+        //                 $paidmaount=0;
+        //                 $value->save();
+        //             }
+        //         }
+        //     }
+
+        //     $total = $request->input['nettotal.farmer_'.$user_id];
+        //     $balance=$request->input['balance.farmer_'.$user_id];
+        //     $ledger=new LedgerManage($user_id);
+        //     $ledger->addLedger("Payment form milk (".$request->input['milk.farmer_'.$user_id]."l X ".$request->input['milk.farmer_'.$user_id].")",2,$total,$nextdate,'108',);
+
+
+
+
+        //    }
+    }
+
     public function milk(Request $request){
         if($request->getMethod()=="POST"){
             $year=$request->year;
             $month=$request->month;
+            $week=$request->week;
             $session=$request->session;
+            $type=$request->type;
+            $range=[];
+            $data=[];
 
-            // ->where('date','>=',$range[1])->where('date','<=',$range[2]);
+            $milkdatas=MilkData::join('farmers','farmers.user_id','=','milkdatas.user_id')
+            ->join('centers','centers.id','=','farmers.center_id')
+            ->join('users','users.id','=','milkdatas.user_id');
 
-            if($request->filled('center_id')){
+
+            if($type==0){
                 $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+                $milkdatas=$milkdatas->where('milkdatas.date','>=',$range[1])->where('milkdatas.date','<=',$range[2]);
+
+            }elseif($type==1){
+                $date=$date = str_replace('-','',$request->date1);
+               $milkdatas=$milkdatas->where('milkdatas.date','=',$date);
+
+            }elseif($type==2){
+                $range=NepaliDate::getDateWeek($request->year,$request->month,$request->week);
+               $milkdatas=$milkdatas->where('milkdatas.date','>=',$range[1])->where('milkdatas.date','<=',$range[2]);
+
+
+            }elseif($type==3){
+                $range=NepaliDate::getDateMonth($request->year,$request->month);
+               $milkdatas=$milkdatas->where('milkdatas.date','>=',$range[1])->where('milkdatas.date','<=',$range[2]);
+            }elseif($type==4){
+                $range=NepaliDate::getDateYear($request->year);
+               $milkdatas=$milkdatas->where('milkdatas.date','>=',$range[1])->where('milkdatas.date','<=',$range[2]);
+
+
+            }elseif($type==5){
+                $range[1]=str_replace('-','',$request->date1);;
+                $range[2]=str_replace('-','',$request->date2);;
+               $milkdatas=$milkdatas->where('milkdatas.date','>=',$range[1])->where('milkdatas.date','<=',$range[2]);
+
 
             }
-            // $center=Center::find($request->center_id);
+
+            $hascenter=false;
+            if($request->center_id!=-1){
+                $hascenter=true;
+               $milkdatas=$milkdatas->where('farmers.center_id',$request->center_id);
+
+            }
+
+            $datas=$milkdatas->select('milkdatas.m_amount','milkdatas.e_amount','milkdatas.user_id','milkdatas.date','farmers.center_id','users.name','users.no')->get();
+            $data1=$milkdatas->select(DB::raw('(sum(milkdatas.m_amount)+sum(milkdatas.e_amount)) as milk ,milkdatas.user_id ,users.name,users.no'))->groupBy('milkdatas.user_id','users.name','users.no')->get();
+
+            $data2=$milkdatas->select(DB::raw('(sum(milkdatas.m_amount)+sum(milkdatas.e_amount)) as milk ,farmers.center_id'))->groupBy('farmers.center_id')->get()->groupBy('center_id');
+
+
+            dd($data1->toArray(),$data2->toArray());
+            $dataByFarmer=$datas->groupBy('user_id');
+            $dataByCenter=$datas->groupBy('user_id');
+            dd($data);
+
+            return view('admin.report.milk.data',compact('data1','data2','hascenter'));
+
+
+
 
         }else{
             return view('admin.report.milk.index');
@@ -146,4 +327,6 @@ class ReportController extends Controller
 
         }
     }
+
+
 }

@@ -3,7 +3,7 @@ namespace App;
 use App\Models\User;
 
 class LedgerManage{
-    private  $user;
+    public  $user;
 
     public function  __construct($user_id){
         $this->user=User::find($user_id);
@@ -19,7 +19,8 @@ class LedgerManage{
     * "106" = "Farmer amount paid at Selling item"
     * "107" = "Due amount paid by farmer"
     * "108" = "Famer milk Money Adjustment"
-    * "109" = "Closing Balance"
+    * "109" = "Money given to farmer"
+    * "110" = "farmer closing Balance"
     */
     public function addLedger($particular, $type,$amount,$date,$identifier,$foreign_id=null){
         $nepalidate=new NepaliDate($date);

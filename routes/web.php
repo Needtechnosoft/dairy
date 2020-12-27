@@ -143,10 +143,11 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::get('','ReportController@index')->name('home');
 
             Route::match(['GET','POST'],'farmer','ReportController@farmer')->name('farmer');
+            Route::post('farmer/changeSession','ReportController@farmerSession')->name('farmer.session');
+
             Route::match(['GET','POST'],'milk','ReportController@milk')->name('milk');
             Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');
 
-            Route::post('changeSession','ReportController@session')->name('changeSession');
         });
     });
 });

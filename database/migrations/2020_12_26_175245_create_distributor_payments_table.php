@@ -19,7 +19,7 @@ class CreateDistributorPaymentsTable extends Migration
             $table->integer('date');
             $table->string('payment_detail');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id','d_payemnt')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
