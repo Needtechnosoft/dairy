@@ -29,6 +29,7 @@
     </div>
     <div class="col-md-3">
         <span class="btn btn-primary" onclick="loadData()"> Load </span>
+        <span class="btn btn-primary" onclick="printDiv('print')"> Print </span>
     </div>
 </div>
 <div id="allData">

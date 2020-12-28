@@ -1,0 +1,22 @@
+@foreach ($bills as $bill)
+    <tr>
+        <td>
+            {{_nepalidate($bill->date)}}
+        </td>
+        <td>
+            {{$bill->rate}}
+        </td>
+        <td>
+            {{$bill->qty}}
+        </td>
+        <td>
+            {{$bill->total}}
+        </td>
+        <td>
+            {{$bill->paid}}
+        </td>
+        <td>
+            {{$bill->deu}}
+        </td>
+    </tr>
+@endforeach

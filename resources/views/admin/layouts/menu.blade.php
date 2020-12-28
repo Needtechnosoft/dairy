@@ -41,6 +41,7 @@
                 <ul class="ml-menu">
                     <li><a href="{{ route('admin.dis') }}" class="waves-effect waves-block">Distributer List</a></li>
                     <li><a href="{{ route('admin.dis.sell') }}" class="waves-effect waves-block">Distributer Sell</a></li>
+                    <li><a href="{{ route('admin.dis.payemnt') }}" class="waves-effect waves-block">payment</a></li>
                 </ul>
             </li>
 

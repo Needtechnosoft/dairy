@@ -33,6 +33,10 @@
     <input type="hidden" name="month" value="{{$month}}" >
     <input type="hidden" name="session" value="{{$session}}" >
     <input type="hidden" name="center_id" value="{{$center->id}}" >
+    @php
+
+
+    @endphp
     <table class="table">
         <thead>
             <tr>
@@ -49,7 +53,7 @@
                     Prev Due
                 </th>
                 <th>Net Total</th>
-                <th>Balance</th>
+                <th>Due Balance</th>
                 <th>Signature</th>
             </tr>
         </thead>
@@ -64,7 +68,9 @@
                         $farmer->balance=$tt<0?(-1*$tt):0;
                         $farmer->nettotal=$tt>0?$tt:0;
                         @endphp
-                        <input type="hidden" name="farmers[]" value="{{$farmer->toJson()}}" >
+                        @if ($farmer->old==false)
+                            <input type="hidden" name="farmers[]" value="{{$farmer->toJson()}}" >
+                        @endif
                     </td>
                     @php
                         $t='farmer-'.$farmer->id;
@@ -74,7 +80,7 @@
                         {{$farmer->name}}
                     </td>
                     <td>
-                        {{($farmer->m_milk+$farmer->e_milk)}}
+                        {{($farmer->milk)}}
                         {{-- <input type="hidden" name="milk[{{$t}}]" value="{{($farmer->m_milk+$farmer->e_milk)}}" > --}}
 
                     </td>
@@ -120,7 +126,11 @@
                         {{$farmer->balance}}
                         {{-- <input type="hidden" name="balance[{{$t}}]" value=" {{$tt<0?(-1*$tt):0}}" > --}}
                     </td>
-                    <td></td>
+                    <td>
+                        @if ($farmer->old)
+                           Already Taken
+                        @endif
+                    </td>
                 </tr>
             @endforeach
 

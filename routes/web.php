@@ -126,7 +126,9 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('distributer-sell-list', 'Admin\DistributersellController@listDistributersell')->name('admin.dis.sell.list');
     Route::get('distributer-sell-del/{id}', 'Admin\DistributersellController@deleteDistributersell')->middleware('authority');
 
-
+    //XXX Distributor Payments
+    Route::get('distributer-payment', 'Admin\DistributorPaymentController@index')->name('admin.dis.payemnt');
+    Route::post('distributer-due-list', 'Admin\DistributorPaymentController@due')->name('admin.dis.due');
 
 
     // XXX XXX employees
@@ -144,6 +146,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
             Route::match(['GET','POST'],'farmer','ReportController@farmer')->name('farmer');
             Route::post('farmer/changeSession','ReportController@farmerSession')->name('farmer.session');
+            Route::post('farmer/single/changeSession','ReportController@farmerSingleSession')->name('farmer.single.session');
 
             Route::match(['GET','POST'],'milk','ReportController@milk')->name('milk');
             Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');

@@ -37,7 +37,7 @@ class SellitemController extends Controller
             $item_id->save();
             $sell_item->save();
             $manager=new LedgerManage($user->id);
-            $manager->addLedger('Sold Item : '.$item_id->title.'('.$sell_item->rate.'x'.$sell_item->qty.')',1,$request->total,$date,'103',$sell_item->id);
+            $manager->addLedger($item_id->title.' ( Rs.'.$sell_item->rate.' x '.$sell_item->qty. ')',1,$request->total,$date,'103',$sell_item->id);
             if($request->paid>0){
                 $manager->addLedger('Paid amount',2,$request->paid,$date,'106',$sell_item->id);
             }

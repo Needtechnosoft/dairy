@@ -8,6 +8,7 @@ use App\Models\Advance;
 use App\Models\Center;
 use App\Models\Farmer;
 use App\Models\Farmerpayment;
+use App\Models\FarmerReport;
 use App\Models\Ledger;
 use App\Models\Milkdata;
 use App\Models\Sellitem;
@@ -77,6 +78,9 @@ class FarmerController extends Controller
 
     public function loadDate(Request $r){
         $range=NepaliDate::getDate($r->year,$r->month,$r->session);
+        $data=$r->all();
+        $farmer1=User::where('id',$r->user_id)->first();
+
         $sellitem = Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
         $milkData = Milkdata::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
         $snfFats = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
@@ -88,7 +92,14 @@ class FarmerController extends Controller
         $fatAmount = $fatAvg * $fatsnfRate->fat_rate;
         $snfAmount = $snfAvg * $fatsnfRate->snf_rate;
         $perLiterAmount = $fatAmount + $snfAmount;
-        return view('admin.farmer.alldata',compact('sellitem','milkData','milkData','snfFats','snfAvg','fatAvg','ledger','perLiterAmount'));
+
+        $farmer1->old=FarmerReport::where(['year'=>$r->year,'month'=>$r->month,'session'=>$r->session,'user_id'=>$r->user_id])->count()>0;
+        $farmer1->advance=(float)(Advance::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount'));
+        $farmer1->due=(float)(Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due'));
+        $previousMonth=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
+        $farmer1->prevdue=(float)$previousMonth;
+
+        return view('admin.farmer.alldata',compact('data','farmer1','sellitem','milkData','milkData','snfFats','snfAvg','fatAvg','ledger','perLiterAmount'));
     }
 
 
