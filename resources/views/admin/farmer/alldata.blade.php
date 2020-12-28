@@ -232,7 +232,7 @@
     </div>
 </div>
 
-@if ($farmer1->old==false)
+
     <hr>
     <h5 class="font-weight-bold">
         Session Summary
@@ -305,6 +305,7 @@
                     {{$balance}}
                 </td>
                 <td>
+                    @if ($farmer1->old==false)
                     <form action="{{route('report.farmer.single.session')}}" method="POST">
                         @csrf
                         <input type="hidden" name="year" value="{{$data['year']}}">
@@ -323,8 +324,10 @@
                         <input type="hidden" name="balance" value=" {{ $balance}}">
                         <button class="btn btn-sm btn-success">Close Session</button>
                     </form>
+                    @else
+                        Session Closed
+                    @endif
                 </td>
             </tr>
         </table>
     </div>
-@endif
