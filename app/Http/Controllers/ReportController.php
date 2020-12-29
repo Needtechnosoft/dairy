@@ -48,6 +48,7 @@ class ReportController extends Controller
                         $farmer->fat=$_data->fat;
                         $farmer->rate=$_data->rate;
                         $farmer->milk=$_data->milk;
+                        $farmer->bonus=$_data->bonus;
                         $farmer->total=$_data->total;
                         $farmer->prevdue=$_data->prevdue;
                         $farmer->due=$_data->due;
