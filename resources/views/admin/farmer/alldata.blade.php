@@ -243,6 +243,9 @@
         <table class="table">
             <tr>
                 <th>
+                    Milk Amount
+                </th>
+                <th>
                     Snf
                 </th>
                 <th>
@@ -251,9 +254,7 @@
                 <th>
                     Rate
                 </th>
-                <th>
-                    Milk Amount
-                </th>
+
                 <th>
                     Total
                 </th>
@@ -270,6 +271,9 @@
             </tr>
             <tr>
                 <td>
+                    {{ $m + $e }}
+                </td>
+                <td>
                     {{ round($snfAvg,2) }}
                 </td>
                 <td>
@@ -278,9 +282,7 @@
                 <td>
                     {{ round($perLiterAmount,2) }}
                 </td>
-                <td>
-                    {{ $m + $e }}
-                </td>
+
                 <td>
                     {{ round(($m + $e) * $perLiterAmount) }}
                 </td>
