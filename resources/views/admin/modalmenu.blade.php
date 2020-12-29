@@ -100,4 +100,13 @@
         </div>
 
     @endif
+    <div class="col-md-2 section section_1 href" data-target="{{route('report.home')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-markunread-mailbox"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text text-center">
+            Reports
+        </span>
+    </div>
 </div>

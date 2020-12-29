@@ -72,6 +72,7 @@
             </span>
         </div>
 
+        @if (env('tier',1)==1)
         <div class="col-md-2 section href" data-target="{{route('admin.exp')}}">
             <span class="icon">
                 <i class="zmdi zmdi-balance-wallet"></i>
@@ -101,6 +102,15 @@
                 Supplier <br> Bills
             </span>
         </div>
-
+        @endif
+        <div class="col-md-2 section href" data-target="{{route('report.home')}}">
+            <span class="icon">
+                <i class="zmdi zmdi-markunread-mailbox"></i>
+            </span>
+            <span class="divider"></span>
+            <span class="text text-center">
+                Reports
+            </span>
+        </div>
     </div>
 @endsection
