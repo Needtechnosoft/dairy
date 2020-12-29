@@ -72,7 +72,7 @@
                     <td>
                         {{$farmer->no}}
                         @php
-                        $tt=$farmer->total-$farmer->advance-$farmer->due-$farmer->prevdue+$farmer->bonus;
+                        $tt=$farmer->total-$farmer->advance-$farmer->due-$farmer->prevdue-$farmer->bonus;
                         $farmer->balance=$tt<0?(-1*$tt):0;
                         $farmer->nettotal=$tt>0?$tt:0;
                         @endphp

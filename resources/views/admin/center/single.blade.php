@@ -9,7 +9,7 @@
         <td><input type="number" value="{{ $center->snf_rate }}" id="snf-rate" step="0.001" class="form-control" name="snf_rate" form="collectionForm-{{ $center->id }}"></td>
         @if (env('hasextra',0)==1)
             <td>
-                <input type="number" value="{{ $c->bonus }}" id="bonus" step="0.001" class="form-control" name="bonus" form="collectionForm-{{ $center->id }}">
+                <input type="number" value="{{ $center->bonus }}" id="bonus" step="0.001" class="form-control" name="bonus" form="collectionForm-{{ $center->id }}">
             </td>
         @endif
         <td><span onclick="editCollection({{$center->id}});" form="collectionForm-{{ $center->id }}" class="btn btn-primary btn-sm"> Update </span> | <span class="btn btn-danger btn-sm" onclick="removeCenter({{$center->id}});">Delete</span></td>

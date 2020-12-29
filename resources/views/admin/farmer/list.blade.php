@@ -2,7 +2,9 @@
 <tr id="farmer-{{$f->id}}" data-name="{{ $f->name }}" class="searchable">
     <td>{{ $f->no }}</td>
     <td>{{ $f->name }}</td>
-    <td>{{ $f->phone }}</td>
+    @if(env('requirephone',1)==1)
+        <td>{{ $f->phone }}</td>
+    @endif
     <td>{{ $f->address }}</td>
     <td>
         @if($f->amount > 0)

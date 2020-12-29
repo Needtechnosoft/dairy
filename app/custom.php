@@ -7,3 +7,10 @@ function _nepalidate($date){
     $day= (int)($date%100);
     return $year."-".($month<10?"0".$month:$month)."-".($day<10?"0".$day:$day);
 }
+
+function truncate_decimals($number, $decimals=2)
+{
+  $factor = pow(10,$decimals);
+  $val = intval($number*$factor)/$factor;
+  return $val;
+}

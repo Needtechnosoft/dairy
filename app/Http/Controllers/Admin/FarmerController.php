@@ -30,7 +30,7 @@ class FarmerController extends Controller
                 // dd($max);
                 // $max=User::max('no')??0;
                 $user = new User();
-                $user->phone = $request->phone;
+                $user->phone = $request->phone??"9800000000";
                 $user->name = $request->name;
                 $user->address = $request->address;
                 $user->role = 1;
@@ -46,9 +46,8 @@ class FarmerController extends Controller
 
                 if($request->has('advance') ){
                     if($request->advance>0){
-
                         $manager=new LedgerManage($user->id);
-                        $manager->addLedger('Opening Balance',1,$request->advance,$request->date,'102');
+                        $manager->addLedger('Opening Balance',1,$request->advance,$request->date,'101');
                     }
                 }
                 return view('admin.farmer.single',compact('user'));
@@ -84,13 +83,13 @@ class FarmerController extends Controller
         $sellitem = Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
         $milkData = Milkdata::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
         $snfFats = Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
-        $snfAvg = round(Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('snf'),2);
-        $fatAvg = round(Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('fat'),2);
-        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        $snfAvg = truncate_decimals(Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('snf'),2);
+        $fatAvg = truncate_decimals(Snffat::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->avg('fat'),2);
+        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->orderBy('id','asc')->get();
         $farmer = Farmer::where('user_id',$r->user_id)->first();
         $fatsnfRate = Center::where('id',$farmer->center_id)->first();
-        $fatAmount = $fatAvg * $fatsnfRate->fat_rate;
-        $snfAmount = $snfAvg * $fatsnfRate->snf_rate;
+        $fatAmount = truncate_decimals($fatAvg * $fatsnfRate->fat_rate);
+        $snfAmount = truncate_decimals($snfAvg * $fatsnfRate->snf_rate);
         $perLiterAmount = $fatAmount + $snfAmount;
 
         $farmer1->old=FarmerReport::where(['year'=>$r->year,'month'=>$r->month,'session'=>$r->session,'user_id'=>$r->user_id])->count()>0;

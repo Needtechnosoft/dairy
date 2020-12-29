@@ -31,7 +31,9 @@
             <tr>
                 <th>#Id</th>
                 <th>Farmer Name</th>
-                <th>Farmer phone</th>
+                @if(env('requirephone',1)==1)
+                    <th>Farmer phone</th>
+                @endif
                 <th>Farmer Address</th>
                 <th>Balance (Rs.)</th>
                 <th></th>
@@ -75,13 +77,14 @@
                                     <input type="text" id="name" name="name" class="form-control next" data-next="phone" placeholder="Enter farmer name" required>
                                 </div>
                             </div>
-
-                            <div class="col-lg-6">
-                                <label for="name">Farmer Phone</label>
-                                <div class="form-group">
-                                    <input type="number" id="phone" name="phone" class="form-control next" data-next="address" placeholder="Enter farmer phone" required>
+                            @if(env('requirephone',1)==1)
+                                <div class="col-lg-6">
+                                    <label for="name">Farmer Phone</label>
+                                    <div class="form-group">
+                                        <input type="number" id="phone" name="phone" class="form-control next" data-next="address" placeholder="Enter farmer phone" required>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="col-lg-6">
                                 <label for="name">Farmer Address</label>

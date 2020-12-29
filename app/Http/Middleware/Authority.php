@@ -18,8 +18,11 @@ class Authority
     public function handle(Request $request, Closure $next)
     {
         $user=Auth::user();
-        if($user->phone!="9852059171"){
-            return response('Not authorzed To Delete',500);
+        if($user->phone!=env('authphone',"9852059171")){
+            return response('Not authorized To Delete',500);
+        }else{
+            return $next($request);
         }
+
     }
 }

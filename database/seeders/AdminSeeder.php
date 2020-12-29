@@ -14,8 +14,8 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $user=new User();
-        $user->name="Nawa Durga";
-        $user->phone="9800916365";
+        $user->name=env('APP_NAME',"Nawa Durga");
+        $user->phone=env('authphone',"9852059171");
         $user->password=bcrypt('admin');
         $user->role=0;
         $user->address="Ramailo, Morang";

@@ -78,7 +78,7 @@ class ReportController extends Controller
                             $farmer->total=(float)round( $rate*($farmer->milk));
                             $farmer->bonus=0;
                             if (env('hasextra',0)==1){
-                                $farmer->bonus=$farmer->total*$center->bonus;
+                                $farmer->bonus=$farmer->total*$center->bonus/100;
 
                             }
                         }
