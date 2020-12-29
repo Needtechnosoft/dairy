@@ -39,14 +39,22 @@
                 <th>Fat%</th>
                 <th>Price/l</th>
                 <th>Total</th>
+                @if (env('hasextra',0)==1)
+                    <th>
+                        Bonus ( {{ round($center->bonus,2) }} % )
+                    </th>
+
+                @endif
                 <th>Due</th>
                 <th>Avance</th>
                 <th>
                     Prev Due
                 </th>
                 <th>Net Total</th>
-                <th>Balance</th>
-                <th>Signature</th>
+                <th>Due Balance</th>
+                @if (env('hasextra',0)==0)
+                    <th>Signature</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -109,7 +117,9 @@
                         {{$farmer->balance}}
 
                     </td>
-                    <td></td>
+                    @if (env('hasextra',0)==0)
+                        <td></td>
+                    @endif
                 </tr>
             @endforeach
 

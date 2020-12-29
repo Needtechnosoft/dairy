@@ -276,10 +276,10 @@
                     {{ round($fatAvg,2) }}
                 </td>
                 <td>
-                    {{ $m + $e }}
+                    {{ round($perLiterAmount,2) }}
                 </td>
                 <td>
-                    {{ round($perLiterAmount,2) }}
+                    {{ $m + $e }}
                 </td>
                 <td>
                     {{ round(($m + $e) * $perLiterAmount) }}

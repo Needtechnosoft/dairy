@@ -116,7 +116,6 @@
                         <td>
                              {{ $farmer->bonus??0}}
                         </td>
-
                     @endif
                     <td>
                         {{$farmer->due}}
