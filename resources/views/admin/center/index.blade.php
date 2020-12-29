@@ -17,6 +17,11 @@
                 <th>Center Address</th>
                 <th>Fat Rate (Rs.)</th>
                 <th>Snf Rate (Rs.)</th>
+                @if (env('hasextra',0)==1)
+                    <th>
+                        Bonus (%)
+                    </th>
+                @endif
                 <th>Action</th>
             </tr>
         </thead>
@@ -30,6 +35,12 @@
                     <td><input type="text" value="{{ $c->addresss }}" class="form-control" name="address" form="collectionForm-{{ $c->id }}"></td>
                     <td><input type="number" value="{{ $c->fat_rate }}" id="fatrate" step="0.001" class="form-control" name="fat_rate" form="collectionForm-{{ $c->id }}"></td>
                     <td><input type="number" value="{{ $c->snf_rate }}" id="snfrate" step="0.001" class="form-control" name="snf_rate" form="collectionForm-{{ $c->id }}"></td>
+                    @if (env('hasextra',0)==1)
+                        <td>
+                            <input type="number" value="{{ $c->bonus }}" id="bonus" step="0.001" class="form-control" name="bonus" form="collectionForm-{{ $c->id }}">
+                        </td>
+
+                    @endif
                     <td><span onclick="editCollection({{$c->id}});" form="collectionForm-{{ $c->id }}" class="btn btn-primary btn-sm"> Update </span> <span class="btn btn-danger btn-sm" onclick="removeCenter({{$c->id}});">Delete</span></td>
                 </form>
             </tr>
@@ -77,6 +88,12 @@
                                 <label for="name">Snf Rate</label>
                                 <div class="form-group">
                                     <input type="number" id="snf-rate" name="snf_rate" class="form-control" step="0.001" placeholder="Enter snf rate" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 {{env('hasextra',0)==1?"":"d-none"}}" >
+                                <label for="name">Bonus (%)</label>
+                                <div class="form-group">
+                                    <input type="number" id="bonus" name="bonus" class="form-control" step="0.001" placeholder="Enter " value="0" required>
                                 </div>
                             </div>
                         </div>

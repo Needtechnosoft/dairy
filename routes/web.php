@@ -129,6 +129,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     //XXX Distributor Payments
     Route::get('distributer-payment', 'Admin\DistributorPaymentController@index')->name('admin.dis.payemnt');
     Route::post('distributer-due-list', 'Admin\DistributorPaymentController@due')->name('admin.dis.due');
+    Route::post('distributer-due-pay', 'Admin\DistributorPaymentController@pay')->name('admin.dis.pay');
 
 
     // XXX XXX employees
@@ -150,6 +151,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
             Route::match(['GET','POST'],'milk','ReportController@milk')->name('milk');
             Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');
+            Route::match(['GET','POST'],'distributor','ReportController@distributor')->name('dis');
 
         });
     });

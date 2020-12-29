@@ -33,32 +33,14 @@
             </div>
         </form>
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="date">Date</label>
-                <input readonly type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="user_id" placeholder="Date">
-            </div>
-        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="mt-5">
+                    <div id="data">
 
-                    <table id="newstable1" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Rate</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Paid</th>
-                                <th>Due</th>
+                    </div>
 
-                            </tr>
-                        </thead>
-                        <tbody id="data">
-
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -122,29 +104,65 @@
         }
    });
 
-    function loaddata(){
-        // list
-        axios.post('{{ route("admin.dis.due")}}',{'id': $('#u_id').val()})
+   function pay(){
+        axios.post('{{ route("admin.dis.pay")}}',{
+            'id': $('#u_id').val(),
+            'amount':$('#amount').val(),
+            'method':$('#method').val(),
+            'date': $('#nepali-datepicker').val()
+        })
         .then(function(response) {
             // console.log(response.data);
             $('#data').html(response.data);
+            setDate();
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
+   }
+
+    function loaddata(){
+        // $('#data').html();
+        // list
+        axios.post('{{ route("admin.dis.due")}}',{
+            'id': $('#u_id').val()
+
+            })
+        .then(function(response) {
+            // console.log(response.data);
+            $('#data').html(response.data);
+            setDate();
         })
         .catch(function(response) {
             //handle error
             console.log(response);
         });
     }
-    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
-    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
-    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
-    window.onload = function() {
+    function checkAmount(ele){
+        if(ele.max<$(ele).val()){
+            alert('The Due Is Only '+ele.max);
+            $(ele).val(ele.max);
+        }
+    }
+
+    function setDate(){
+
+        var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+        var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+        $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
-        var edit = document.getElementById("enepali-datepicker");
-        edit.nepaliDatePicker();
-        $('#u_id').focus();
-        loaddata();
+    }
+
+    window.onload = function() {
+        // var mainInput = document.getElementById("nepali-datepicker");
+        // mainInput.nepaliDatePicker();
+        // var edit = document.getElementById("enepali-datepicker");
+        // edit.nepaliDatePicker();
+        // $('#u_id').focus();
+        // loaddata();
     };
 
 

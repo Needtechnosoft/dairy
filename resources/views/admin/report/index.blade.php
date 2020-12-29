@@ -36,6 +36,15 @@
             Sales Report
         </span>
     </div>
+    <div class="col-md-2 section href" data-target="{{route('report.dis')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-truck"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text">
+            Distributor Report
+        </span>
+    </div>
 </div>
 @endsection
 @section('js')

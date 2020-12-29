@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
 @section('head-title')
-<a href="{{route('list.farmer')}}">Famers</a>/ Farmer Details - . {{$user->name}}
+    <a href="{{route('list.farmer')}}">Famers</a>/ Farmer Details - . {{$user->name}}
 @endsection
 @section('toobar')
 @endsection

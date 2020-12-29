@@ -26,6 +26,7 @@ class ReportController extends Controller
     }
 
     public function farmer(Request $request){
+
         if($request->getMethod()=="POST"){
             $farmers=Farmer::join('users','users.id','=','farmers.user_id')->where('farmers.center_id',$request->center_id)->select('users.id','users.name','users.no','farmers.center_id')->get();
             $center=Center::find($request->center_id);
@@ -74,9 +75,13 @@ class ReportController extends Controller
                             $rate=($center->snf_rate* round( $snfavg, 2) ) + ($center->fat_rate*  round( $fatavg,2) );
                             $farmer->rate=(float)round($rate,2);
                             $farmer->total=(float)round( $rate*($farmer->milk));
-                        }
-                        $due=Sellitem::where('user_id',$farmer->id)->sum('due');
+                            $farmer->bonus=0;
+                            if (env('hasextra',0)==1){
+                                $farmer->bonus=$farmer->total*$center->bonus;
 
+                            }
+                        }
+                        $due=Sellitem::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due');
                         $farmer->due=(float)$due;
                         $previousMonth=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
                         $farmer->prevdue=(float)$previousMonth;
@@ -100,7 +105,7 @@ class ReportController extends Controller
         $ledger=new LedgerManage($request->id);
 
 
-            if($request->balance > ($request->advance+$request->prevdue)){
+            if($request->due > ($request->total)){
                     $due = Sellitem::where('user_id',$request->id)->where('due','>',0)->get();
                     $paidmaount=$request->total;
                     foreach ($due as $key => $value) {
@@ -147,6 +152,7 @@ class ReportController extends Controller
             $farmerreport->rate=$request->rate??0;
             $farmerreport->total=$request->total??0;
             $farmerreport->due=$request->due??0;
+            $farmerreport->bonus=$request->bonus??0;
             $farmerreport->prevdue=$request->prevdue??0;
             $farmerreport->advance=$request->advance??0;
             $farmerreport->nettotal=$request->nettotal??0;
@@ -171,7 +177,7 @@ class ReportController extends Controller
             $ledger=new LedgerManage($data->id);
 
 
-            if($data->balance > ($data->advance+$data->prevdue)){
+            if($data->due > ($data->total)){
                     $due = Sellitem::where('user_id',$data->id)->where('due','>',0)->get();
                     $paidmaount=$data->total;
                     foreach ($due as $key => $value) {
@@ -219,6 +225,7 @@ class ReportController extends Controller
             $farmerreport->total=$data->total??0;
             $farmerreport->due=$data->due??0;
             $farmerreport->prevdue=$data->prevdue??0;
+            $farmerreport->bonus=$data->bonus??0;
             $farmerreport->advance=$data->advance??0;
             $farmerreport->nettotal=$data->nettotal??0;
             $farmerreport->balance=$data->balance??0;
@@ -409,5 +416,20 @@ class ReportController extends Controller
         }
     }
 
+    public function distributor(Request $request){
+        if($request->getMethod()=="POST"){
+            $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+            $data=Distributorsell::join('distributers','distributorsells.distributer_id','=',"distributers.id")
+            ->join('users','users.id','=','distributers.user_id')
+            ->where('distributorsells.date','>=',$range[1])
+            ->where('distributorsells.date','<=',$range[2])
+            ->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty, users.name,sum(distributorsells.total) total'))->groupBy('id','name')->get();
+
+            return view('admin.report.distributor.data',compact('data'));
+
+        }else{
+            return view('admin.report.distributor.index');
+        }
+    }
 
 }

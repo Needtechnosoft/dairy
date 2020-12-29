@@ -47,6 +47,12 @@
                 <th>Fat%</th>
                 <th>Price/l</th>
                 <th>Total</th>
+                @if (env('hasextra',0)==1)
+                    <th>
+                        Bonus ( {{ round($center->bonus,2) }} % )
+                    </th>
+
+                @endif
                 <th>Due</th>
                 <th>Avance</th>
                 <th>
@@ -54,7 +60,9 @@
                 </th>
                 <th>Net Total</th>
                 <th>Due Balance</th>
-                <th>Signature</th>
+                @if (env('hasextra',0)==0)
+                    <th>Signature</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -64,7 +72,7 @@
                     <td>
                         {{$farmer->no}}
                         @php
-                        $tt=$farmer->total-$farmer->advance-$farmer->due-$farmer->prevdue;
+                        $tt=$farmer->total-$farmer->advance-$farmer->due-$farmer->prevdue+$farmer->bonus;
                         $farmer->balance=$tt<0?(-1*$tt):0;
                         $farmer->nettotal=$tt>0?$tt:0;
                         @endphp
@@ -104,6 +112,12 @@
                         {{-- <input type="hidden" name="total[{{$t}}]" value="{{($farmer->total)}}" > --}}
 
                     </td>
+                    @if(env('hasextra',0)==1)
+                        <td>
+                             {{ $farmer->bonus??0}}
+                        </td>
+
+                    @endif
                     <td>
                         {{$farmer->due}}
                         {{-- <input type="hidden" name="due[{{$t}}]" value="{{($farmer->due)}}" > --}}
@@ -126,11 +140,13 @@
                         {{$farmer->balance}}
                         {{-- <input type="hidden" name="balance[{{$t}}]" value=" {{$tt<0?(-1*$tt):0}}" > --}}
                     </td>
+                    @if (env('hasextra',0)==0)
                     <td>
                         @if ($farmer->old)
                            Already Taken
                         @endif
                     </td>
+                    @endif
                 </tr>
             @endforeach
 

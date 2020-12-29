@@ -18,6 +18,7 @@ class CenterController extends Controller
         $center->addresss = $request->address;
         $center->fat_rate = $request->fat_rate;
         $center->snf_rate = $request->snf_rate;
+        $center->bonus = $request->bonus??0;
         $center->save();
         return view('admin.center.single')->with(compact('center'));
     }
@@ -29,6 +30,7 @@ class CenterController extends Controller
         $center->addresss = $request->address;
         $center->fat_rate = $request->fat_rate;
         $center->snf_rate = $request->snf_rate;
+        $center->bonus = $request->bonus??0;
         $center->save();
         return view('admin.center.single')->with(compact('center'));
     }
