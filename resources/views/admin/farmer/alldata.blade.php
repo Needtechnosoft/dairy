@@ -246,10 +246,10 @@
                     Milk Amount
                 </th>
                 <th>
-                    Snf
+                    Fat
                 </th>
                 <th>
-                    Fat
+                    Snf
                 </th>
                 <th>
                     Rate
@@ -274,10 +274,10 @@
                     {{ $m + $e }}
                 </td>
                 <td>
-                    {{ round($snfAvg,2) }}
+                    {{ round($fatAvg,2) }}
                 </td>
                 <td>
-                    {{ round($fatAvg,2) }}
+                    {{ round($snfAvg,2) }}
                 </td>
                 <td>
                     {{ round($perLiterAmount,2) }}
