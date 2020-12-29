@@ -38,6 +38,7 @@ class FarmerController extends Controller
                 $user->no=$max+1;
                 $user->save();
 
+                $id=$user->id;
                 $farmer=new Farmer();
                 $farmer->user_id=$user->id;
                 $farmer->center_id=$request->center_id;
@@ -50,6 +51,8 @@ class FarmerController extends Controller
                         $manager->addLedger('Opening Balance',1,$request->advance,$request->date,'101');
                     }
                 }
+
+                $user=User::find($id);
                 return view('admin.farmer.single',compact('user'));
                 // return response()->json("Farmer Created successfully !");
         }else{

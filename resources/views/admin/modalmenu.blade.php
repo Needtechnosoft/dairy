@@ -68,35 +68,36 @@
             Sell Item
         </span>
     </div>
+    @if (env('tier',1)==1)
+        <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
+            <span class="icon">
+                <i class="zmdi zmdi-balance-wallet"></i>
+            </span>
+            <span class="divider"></span>
+            <span class="text text-center">
+                Expenses
+            </span>
+        </div>
 
-    <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
-        <span class="icon">
-            <i class="zmdi zmdi-balance-wallet"></i>
-        </span>
-        <span class="divider"></span>
-        <span class="text text-center">
-            Expenses
-        </span>
-    </div>
+        <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
+            <span class="icon">
+                <i class="zmdi zmdi-accounts"></i>
+            </span>
+            <span class="divider"></span>
+            <span class="text text-center">
+                Suppliers ({{ \App\Models\User::where('role',3)->count() }})
+            </span>
+        </div>
 
-    <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
-        <span class="icon">
-            <i class="zmdi zmdi-accounts"></i>
-        </span>
-        <span class="divider"></span>
-        <span class="text text-center">
-            Suppliers ({{ \App\Models\User::where('role',3)->count() }})
-        </span>
-    </div>
+        <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
+            <span class="icon">
+                <i class="zmdi zmdi-book"></i>
+            </span>
+            <span class="divider"></span>
+            <span class="text text-center">
+                Supplier <br> Bills
+            </span>
+        </div>
 
-    <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
-        <span class="icon">
-            <i class="zmdi zmdi-book"></i>
-        </span>
-        <span class="divider"></span>
-        <span class="text text-center">
-            Supplier <br> Bills
-        </span>
-    </div>
-
+    @endif
 </div>

@@ -10,7 +10,7 @@
     tfoot {display: table-header-group;}
 </style>
 <h2 style="text-align: center;margin-bottom:0px;font-weight:800;font-size:2rem;">
-    NawaDurga Dairy Udyog
+    {{env('APP_NAME','Dairy')}}
 </h2>
 
 <div style="display: flex;justify-content: space-between;font-weight:800;">
