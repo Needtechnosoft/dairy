@@ -183,13 +183,13 @@
                         @endphp
                         {{-- <input type="hidden" name="balance[{{$t}}]" value=" {{$tt<0?(-1*$tt):0}}" > --}}
                     </td>
-                    @if (env('hasextra',0)==0)
+
                     <td>
                         @if ($farmer->old)
                            Already Taken
                         @endif
                     </td>
-                    @endif
+
                 </tr>
             @php
                 $i+=1;
@@ -232,6 +232,7 @@
                     <td>
                         {{$balancetotal}}
                     </td>
+                    <td></td>
                 </tr>
             @php
                 $point=false;
@@ -276,6 +277,7 @@
             <td>
                 {{$balancetotal}}
             </td>
+            <td></td>
         </tr>
             </tbody>
         </table>
