@@ -67,18 +67,18 @@ class ReportController extends Controller
 
 
 
-                        $farmer->snf=(float)round( $snfavg, 2);
-                        $farmer->fat=(float)round( $fatavg,2) ;
+                        $farmer->snf=(float)truncate_decimals( $snfavg);
+                        $farmer->fat=(float)truncate_decimals( $fatavg) ;
                         $farmer->milk=(float)($m_amount+$e_amount);
 
 
                         if($snfavg!=null || $fatavg!=null){
-                            $rate=($center->snf_rate* round( $snfavg, 2) ) + ($center->fat_rate*  round( $fatavg,2) );
-                            $farmer->rate=(float)round($rate,2);
+                            $rate=($center->snf_rate* $farmer->snf ) + ($center->fat_rate*  $farmer->fat );
+                            $farmer->rate=(float)truncate_decimals($rate);
                             $farmer->total=(float)round( $rate*($farmer->milk));
                             $farmer->bonus=0;
                             if (env('hasextra',0)==1){
-                                $farmer->bonus=$farmer->total*$center->bonus/100;
+                                $farmer->bonus=(int)($farmer->total*$center->bonus/100);
 
                             }
                         }

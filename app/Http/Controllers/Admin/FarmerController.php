@@ -98,10 +98,13 @@ class FarmerController extends Controller
         $farmer1->old=FarmerReport::where(['year'=>$r->year,'month'=>$r->month,'session'=>$r->session,'user_id'=>$r->user_id])->count()>0;
         $farmer1->advance=(float)(Advance::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount'));
         $farmer1->due=(float)(Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due'));
+        $farmer1->bonus=0;
+        $center=Center::where('id',$farmer->center_id)->first();
+
         $previousMonth=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
         $farmer1->prevdue=(float)$previousMonth;
 
-        return view('admin.farmer.alldata',compact('data','farmer1','sellitem','milkData','milkData','snfFats','snfAvg','fatAvg','ledger','perLiterAmount'));
+        return view('admin.farmer.alldata',compact('center','data','farmer1','sellitem','milkData','milkData','snfFats','snfAvg','fatAvg','ledger','perLiterAmount'));
     }
 
 

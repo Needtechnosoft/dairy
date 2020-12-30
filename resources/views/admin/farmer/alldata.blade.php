@@ -258,6 +258,19 @@
                 <th>
                     Total
                 </th>
+                @if (env('hasextra',0)==1)
+                    <th>
+                        Bonus ( {{ round($center->bonus,2) }} % )
+                    </th>
+
+                @endif
+                @php
+
+                    if (env('hasextra',0)==1){
+                        $farmer1->bonus=(int)(round(($m + $e) * $perLiterAmount) * $center->bonus/100);
+                    }
+                @endphp
+
                 <th>Due</th>
                 <th>Avance</th>
                 <th>
@@ -286,6 +299,11 @@
                 <td>
                     {{ round(($m + $e) * $perLiterAmount) }}
                 </td>
+                @if(env('hasextra',0)==1)
+                    <td>
+                        {{ $farmer1->bonus??0}}
+                    </td>
+                @endif
                 <td>
                     {{$farmer1->due}}
                 </td>
@@ -296,7 +314,7 @@
                     {{$farmer1->prevdue}}
                 </td>
                 @php
-                    $tt=round(($m + $e) * $perLiterAmount)-$farmer1->advance-$farmer1->due-$farmer1->prevdue;
+                    $tt=round(($m + $e) * $perLiterAmount)-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus;
                     $balance=$tt<0?(-1*$tt):0;
                     $nettotal=$tt>0?$tt:0;
                 @endphp
@@ -320,6 +338,7 @@
                         <input type="hidden" name="milk" value="{{ $m + $e }}">
                         <input type="hidden" name="total" value=" {{ round(($m + $e) * $perLiterAmount) }}">
                         <input type="hidden" name="due" value=" {{ $farmer1->due}}">
+                        <input type="hidden" name="bonus" value=" {{ $farmer1->bonus}}">
                         <input type="hidden" name="advance" value=" {{ $farmer1->advance }}">
                         <input type="hidden" name="prevdue" value=" {{ $farmer1->prevdue}}">
                         <input type="hidden" name="nettotal" value=" {{ $nettotal }}">
