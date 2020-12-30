@@ -76,9 +76,9 @@
                 </th>
                 <th>Net Total</th>
                 <th>Due Balance</th>
-                @if (env('hasextra',0)==0)
+
                     <th>Signature</th>
-                @endif
+
             </tr>
         </thead>
         <tbody>
