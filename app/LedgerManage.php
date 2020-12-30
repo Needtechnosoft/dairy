@@ -22,6 +22,8 @@ class LedgerManage{
     * "109" = "Money given to farmer"
     * "110" = "farmer closing Balance"
     * "111" = "Distributor Payment"
+    * "112" = "Employee Advaance payment"
+    * "113" = "Employee Advaance payment cancel"
 
     */
     public function addLedger($particular, $type,$amount,$date,$identifier,$foreign_id=null){

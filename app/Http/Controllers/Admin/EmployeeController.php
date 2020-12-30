@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\LedgerManage;
 use App\Models\Employee;
+use App\Models\EmployeeAdvance;
+use App\Models\Ledger;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -50,5 +53,62 @@ class EmployeeController extends Controller
     public function employeeDelete($id){
         $user = User::where('id',$id)->where('role',4)->first();
         $user->delete();
+    }
+
+    public function advance(){
+        return view('admin.emp.advance.index');
+    }
+
+    public function getAdvance(Request $request){
+        $date = str_replace('-', '', $request->date);
+        $advances=EmployeeAdvance::where('date',$date)->get();
+
+        return view('admin.emp.advance.list',compact('advances'));
+
+    }
+    public function addAdvance(Request $request){
+        $date = str_replace('-', '', $request->date);
+
+        $advance=new EmployeeAdvance();
+        $advance->employee_id=$request->employee_id;
+        $advance->amount=$request->amount;
+        $advance->date=$date;
+        $advance->save();
+
+        $ledger=new LedgerManage($advance->employee->user_id);
+        $ledger->addLedger('Advance Given',1,$request->amount,$date,'112',$advance->id);
+        return view('admin.emp.advance.single',compact('advance'));
+    }
+
+    public function updateAdvance(Request $request){
+        $date = str_replace('-', '', $request->date);
+
+        $advance=EmployeeAdvance::find($request->id);
+        $tempamount=$advance->ammount;
+        $advance->amount=$request->amount;
+        $advance->save();
+
+        $ledger=new LedgerManage($advance->employee->user_id);
+        $ledger->addLedger('Advance Canceled',2,$tempamount,$date,'113',$advance->id);
+        $ledger->addLedger('Advance Updated',1,$request->amount,$date,'112',$advance->id);
+        return response()->json(['status'=>'success']);
+    }
+
+    public function delAdvance(Request $request){
+        $date = str_replace('-', '', $request->date);
+
+        $advance=EmployeeAdvance::find($request->id);
+        $tempamount=$advance->ammount;
+
+        $advance->save();
+
+        $ledger=new LedgerManage($advance->employee->user_id);
+        $ledger->addLedger('Advance Canceled',2,$tempamount,$date,'113',$advance->id);
+
+        return response()->json(['status'=>'success']);
+    }
+
+    public function employeeDetail($id){
+
     }
 }

@@ -138,6 +138,13 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('employee/update', 'Admin\EmployeeController@updateEmployee');
     Route::get('employee-list', 'Admin\EmployeeController@employeeList')->name('admin.emp.list');
     Route::get('employee/delete/{id}', 'Admin\EmployeeController@employeeDelete')->middleware('authority');
+    Route::get('employee/detail/{id}', 'Admin\EmployeeController@employeeDetail')->middleware('Detail');
+
+    Route::get('employee/advance','Admin\EmployeeController@advance')->name('admin.emp.advance');
+    Route::post('employee/addadvance','Admin\EmployeeController@addAdvance')->name('admin.emp.advance.add');
+    Route::post('employee/getadvance','Admin\EmployeeController@getAdvance')->name('admin.emp.advance.list');
+    Route::post('employee/deladvance','Admin\EmployeeController@delAdvance')->name('admin.emp.advance.del');
+    Route::post('employee/updateadvance','Admin\EmployeeController@updateAdvance')->name('admin.emp.advance.update');
 
 
     Route::group(['prefix' => 'report'], function () {

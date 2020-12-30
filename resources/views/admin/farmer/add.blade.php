@@ -193,8 +193,13 @@
 
     }
 
+    var lock=false;
     function saveData(e) {
         e.preventDefault();
+        if(lock){
+
+        }else{
+        lock=true;
         var center = $('#center_id').val();
         var bodyFormData = new FormData(document.getElementById('form_validation'));
         axios({
@@ -215,11 +220,15 @@
                 $('#name').focus();
                 $('#farmerData').prepend(response.data);
                 $('#center_id').val(center).change();
+                lock=false;
             })
             .catch(function(response) {
                 //handle error
                 console.log(response);
+                lock=false;
             });
+
+        }
     }
 
     // edit data

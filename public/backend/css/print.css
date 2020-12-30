@@ -1,0 +1,13 @@
+@media print { @page {size: auto !important} }
+
+td, th{
+    padding: 0px 5px !important;
+}
+
+.d-print-none{
+    display:none !important;
+}
+
+@media print {
+    .fs {page-break-after: always;}
+  }
