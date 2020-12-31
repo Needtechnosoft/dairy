@@ -45,6 +45,7 @@ class DistributersellController extends Controller
     public function deleteDistributersell($id){
         $sell = Distributorsell::find($id);
         $sell->delete();
+
         Ledger::where('foreign_key',$id)->delete();
     }
 

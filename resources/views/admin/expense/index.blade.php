@@ -266,19 +266,23 @@
             });
     }
 
-    axios({
-            method: 'get',
-            url: '{{ route("admin.exp.list")}}',
-        })
-        .then(function(response) {
-            // console.log(response.data);
-            $('#expenseData').html(response.data);
-            initTableSearch('sid', 'expenseData', ['name']);
-        })
-        .catch(function(response) {
-            //handle error
-            console.log(response);
-        });
+
+     function loadData(){
+
+         axios({
+                 method: 'get',
+                 url: '{{ route("admin.exp.list")}}',
+             })
+             .then(function(response) {
+                 // console.log(response.data);
+                 $('#expenseData').html(response.data);
+                 initTableSearch('sid', 'expenseData', ['name']);
+             })
+             .catch(function(response) {
+                 //handle error
+                 console.log(response);
+             });
+    }
 
     // delete
     function removeData(id) {
@@ -302,6 +306,12 @@
     }
 
     window.onload = function() {
+        var month = NepaliFunctions.GetCurrentBsDate().month;
+        var year = NepaliFunctions.GetCurrentBsDate().year;
+
+
+        $('#yr').val(year).change();
+        $('#mth').val(month).change();
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
     };

@@ -68,6 +68,16 @@
             Sell Item
         </span>
     </div>
+    <div class="col-md-2 section section_1 href" data-target="{{route('product.home')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-drink"></i>
+
+        </span>
+        <span class="divider"></span>
+        <span class="text text-center">
+            Products ( {{\App\Models\Product::count()}} )
+        </span>
+    </div>
     @if (env('tier',1)==1)
         <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
             <span class="icon">

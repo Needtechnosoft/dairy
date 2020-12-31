@@ -6,6 +6,7 @@ use App\LedgerManage;
 use App\Models\Advance;
 use App\Models\Center;
 use App\Models\Distributorsell;
+use App\Models\Employee;
 use App\Models\Farmer;
 use App\Models\FarmerReport;
 use App\Models\Ledger;
@@ -14,6 +15,8 @@ use App\Models\Sellitem;
 use App\Models\Snffat;
 use App\Models\SessionWatch;
 use App\Models\FarmerSession;
+use App\Models\EmployeeAdvance;
+use App\Models\EmployeeReport;
 use App\NepaliDate;
 use Illuminate\Http\Request;
 
@@ -284,6 +287,8 @@ class ReportController extends Controller
 
 
         //    }
+
+        return redirect()->back();
     }
 
     public function milk(Request $request){
@@ -433,4 +438,48 @@ class ReportController extends Controller
         }
     }
 
+    public function employee(Request $request){
+        if($request->getMethod()=="POST"){
+            $range=NepaliDate::getDateMonth($request->year,$request->month);
+            $year=$request->year;
+            $month=$request->month;
+            $employees=Employee::all();
+            $data=[];
+            foreach($employees as $employee){
+                if(EmployeeReport::where('employee_id',$employee->id)->where('year',$request->year)->where('month',$request->month)->count()>0){
+                    $report=EmployeeReport::where('employee_id',$employee->id)->where('year',$request->year)->where('month',$request->month)->first();
+                    $employee->prevbalance=$report->prevbalance;
+                    $employee->advance=$report->advance;
+                    $employee->salary=$report->salary;
+                    $employee->old=true;
+                }else{
+                    $employee->prevbalance=Ledger::where('user_id',$employee->user_id)->where('identifire','101')->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount');
+                    $employee->advance=EmployeeAdvance::where('employee_id',$employee->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount');
+                    $employee->old=false;
+                }
+
+                array_push($data,$employee);
+            }
+            // $advance=EmployeeAdvance::where
+            return view('admin.report.employee.data',compact('data','year','month'));
+
+
+        }else{
+            return view('admin.report.employee.index');
+
+        }
+    }
+
+    public function employeeSession(Request $request){
+            foreach($request->employees as $employee){
+                $report=new EmployeeReport();
+                $report->employee_id=$employee->id;
+                $report->prebalance=$employee->prevbalance;
+                $report->advance=$employee->advance;
+                $report->salary=$employee->salary;
+                $report->save();
+            }
+
+            return redirect()->back();
+    }
 }

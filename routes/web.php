@@ -89,7 +89,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX  expensess
     Route::get('expenses', 'Admin\ExpenseController@index')->name('admin.exp');
     Route::post('expense-add', 'Admin\ExpenseController@addExpense')->name('admin.exp.add');
-    Route::get('expense-list', 'Admin\ExpenseController@listExpense')->name('admin.exp.list');
+    Route::post('expense-list', 'Admin\ExpenseController@listExpense')->name('admin.exp.list');
     Route::get('expense-delete/{id}', 'Admin\ExpenseController@deleteExpense')->middleware('authority');
 
     // XXX suppliers
@@ -143,8 +143,18 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('employee/advance','Admin\EmployeeController@advance')->name('admin.emp.advance');
     Route::post('employee/addadvance','Admin\EmployeeController@addAdvance')->name('admin.emp.advance.add');
     Route::post('employee/getadvance','Admin\EmployeeController@getAdvance')->name('admin.emp.advance.list');
-    Route::post('employee/deladvance','Admin\EmployeeController@delAdvance')->name('admin.emp.advance.del');
-    Route::post('employee/updateadvance','Admin\EmployeeController@updateAdvance')->name('admin.emp.advance.update');
+    Route::post('employee/deladvance','Admin\EmployeeController@delAdvance')->name('admin.emp.advance.del')->middleware('authority');;
+    Route::post('employee/updateadvance','Admin\EmployeeController@updateAdvance')->name('admin.emp.advance.update')->middleware('authority');
+
+    // XXX products
+    Route::group(['prefix' => 'product'], function () {
+        Route::name('product.')->group(function(){
+            Route::get('','Admin\ProductController@index')->name('home');
+            Route::post('add','Admin\ProductController@add')->name('add');
+            Route::post('update','Admin\ProductController@update')->name('update')->middleware('authority');
+            Route::post('del','Admin\ProductController@del')->name('del')->middleware('authority');
+        });
+    });
 
 
     Route::group(['prefix' => 'report'], function () {
@@ -159,9 +169,13 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'milk','ReportController@milk')->name('milk');
             Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');
             Route::match(['GET','POST'],'distributor','ReportController@distributor')->name('dis');
+            Route::match(['GET','POST'],'employee','ReportController@employee')->name('emp');
+            Route::post('employee/changeSession','ReportController@employeeSession')->name('emp.session');
 
         });
     });
 });
+
+
 
 

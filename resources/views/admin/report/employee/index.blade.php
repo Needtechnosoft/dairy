@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
 @section('head-title')
-    <a href="{{route('report.home')}}">Report</a> / Farmer
+    <a href="{{route('report.home')}}">Report</a> / Distributor
 
 @endsection
 @section('toobar')
@@ -12,42 +12,22 @@
 @endsection
 @section('content')
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label for="date">Year</label>
         <select name="year" id="year" class="form-control show-tick ms select2">
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label for="date">Month</label>
         <select name="month" id="month" class="form-control show-tick ms select2">
         </select>
     </div>
-    <div class="col-md-3">
-        <label for="date">Session</label>
-        <select name="session" id="session" class="form-control show-tick ms select2">
-            <option value="1">1</option>
-            <option value="2">2</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="date">Collection Center</label>
-            <select name="center_id" id="center_id" class="form-control show-tick ms next" data-next="session">
-                <option></option>
-                @foreach(\App\Models\Center::all() as $c)
-                <option value="{{$c->id}}">{{ $c->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-md-4 pt-md-4">
         <span class="btn btn-primary" onclick="loadData()"> Load Report</span>
-
         <span class="btn btn-success" onclick="printDiv('allData');"> Print</span>
     </div>
 </div>
-<div id="allData">
+<div id="allData" class="mt-4">
 
 </div>
 @endsection
@@ -82,10 +62,9 @@
         var d={
             'year':$('#year').val(),
             'month':$('#month').val(),
-            'session':$('#session').val(),
-            'center_id':$('#center_id').val(),
+
         };
-        axios.post("{{route('report.farmer')}}",d)
+        axios.post("{{route('report.emp')}}",d)
         .then(function(response){
             $('#allData').html(response.data);
 

@@ -10,21 +10,16 @@ class AuthController extends Controller
     public function login(Request $request){
         if($request->getMethod()=="POST"){
             // dd($request->all());
-            
+
             $request->validate([
                 'phone' => 'required|numeric',
                 'password' => 'required|string',
-             
+
             ]);
             $phone=$request->phone;
             $password=$request->password;
             if (Auth::attempt(['phone' => $phone, 'password' => $password], true)) {
-                
-                if(Auth::user()->role==0){
-                    return redirect()->route('admin.dashboard');
-                }else{
-                    return redirect()->route('login');
-                }
+                    return redirect()->route(Auth::user()->getRole().'.dashboard');
             }else{
                 return redirect()->back()->withErrors('Credential do not match');
             }

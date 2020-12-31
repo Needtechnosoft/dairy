@@ -42,7 +42,18 @@
         </span>
         <span class="divider"></span>
         <span class="text">
-            Distributor Report
+            Distributor
+            <br>
+            Report
+        </span>
+    </div>
+    <div class="col-md-2 section href" data-target="{{route('report.emp')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-truck"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text">
+            Employee <br> Report
         </span>
     </div>
 </div>

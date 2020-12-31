@@ -27,7 +27,8 @@ class ExpenseController extends Controller
         return view('admin.expense.single',compact('exp'));
     }
 
-    public function listExpense(){
+    public function listExpense(Request $request){
+        $range=
         $exps = Expense::latest()->get();
         return view('admin.expense.list',compact('exps'));
     }
