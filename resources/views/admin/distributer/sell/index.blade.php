@@ -3,6 +3,17 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
+<style>
+    td,th{
+            border:1px solid black !important;
+        }
+        table{
+            width:100%;
+            border-collapse: collapse;
+        }
+        thead {display: table-header-group;}
+        tfoot {display: table-header-group;}
+</style>
 @endsection
 @section('head-title','Distributer Sell')
 @section('toobar')
@@ -10,7 +21,33 @@
 @endsection
 @section('content')
 <div class="row">
-    <div class="col-md-12 bg-light pt-2">
+    @include('admin.distributer.sell.productmodal')
+    <div class="col-md-3">
+        <div>
+            <input type="text" placeholder="Search Distributor" id="s_dis" class="form-control mb-3">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody id="distributors">
+                @foreach(\App\Models\Distributer::get() as $d)
+                    <tr style="cursor:pointer;" onclick="setData('id',{{$d->id}})" id="dis-{{$d->id}}" data-name="{{ $d->user->name }}" class="searchable">
+                        <td>
+                            {{$d->id}}
+                        </td>
+                        <td>
+                            {{$d->user->name}}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-9 bg-light pt-2">
         <form action="" id="sellitemData">
             @csrf
             <div class="row">
@@ -22,21 +59,22 @@
                 </div>
 
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="unumber">Distributer</label>
-                        <select name="user_id" id="u_id" class="form-control show-tick ms select2" data-placeholder="Select" required>
-                            <option></option>
-                            @foreach(\App\Models\Distributer::get() as $d)
-                             <option value="{{ $d->id }}" id="opt-{{ $d->id }}" data-rate="{{ $d->rate }}" data-qty="{{ $d->amount }}">{{ $d->user->name }}</option>
-                            @endforeach
-                        </select>
+                        <label for="id">Distributer</label>
+                        <input type="number" id="id" name="id" class="form-control next" data-next="product_id">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="product_id"><span id="productsearch"  data-toggle="modal" data-target="#productmodal">Product ( search )</span></label>
+                        <input type="number" id="product_id" name="product_id"  class="form-control next" data-next="rate">
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="rate">Rate</label>
-                    <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control  next" data-next="qty" min="0.001">
+                    <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control  next focus-select" data-next="qty" min="0.001">
                 </div>
 
                 <div class="col-md-2">
@@ -51,7 +89,7 @@
 
                 <div class="col-md-3">
                     <label for="paid">Paid</label>
-                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control" min="0.001">
+                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control focus-select" min="0.001">
                 </div>
 
                 <div class="col-md-3">
@@ -76,6 +114,7 @@
                         <thead>
                             <tr>
                                 <th>Distributer</th>
+                                <th>Product</th>
                                 <th>Rate</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
@@ -105,12 +144,14 @@
 <script>
     // $( "#x" ).prop( "disabled", true );
     initTableSearch('sId', 'sellDisDataBody', ['name']);
+    initTableSearch('s_dis', 'distributors', ['name']);
+    initTableSearch('productsearch', 'products', ['name']);
 
 
     function saveData() {
-        if ($('#nepali-datepicker').val() == '' || $('#u_id').val() == '' || $('#total').val() == 0) {
+        if ($('#nepali-datepicker').val() == '' || $('#id').val() == ''||$('#product_id').val() == '' || $('#total').val() == 0) {
             alert('Please enter data in empty field !');
-            $('#u_id').focus();
+            $('#id').focus();
             return false;
         } else {
             var bodyFormData = new FormData(document.getElementById('sellitemData'));
@@ -126,12 +167,14 @@
                     console.log(response.data);
                     showNotification('bg-success', 'Sellitem added successfully !');
                     $('#sellDisDataBody').prepend(response.data);
-                    $('#u_id').val('');
+                    $('#id').val('');
+                    $('#product_id').val('');
                     $('#rate').val('');
                     $('#qty').val(1);
                     $('#total').val(0);
                     $('#paid').val(0);
                     $('#due').val(0);
+                    $('#id').focus();
                 })
                 .catch(function(response) {
                     showNotification('bg-danger', 'You have entered invalid data !');
@@ -189,6 +232,8 @@
    });
 
     function loaddata(){
+        $('#sellDisDataBody').html("");
+
         // list
         axios.post('{{ route("admin.dis.sell.list")}}',{'date': $('#nepali-datepicker').val()})
         .then(function(response) {
@@ -209,13 +254,43 @@
         mainInput.nepaliDatePicker();
         var edit = document.getElementById("enepali-datepicker");
         edit.nepaliDatePicker();
-        $('#u_id').focus();
+        $('#id').focus();
         loaddata();
     };
 
 
     $('#paid').bind('keydown', 'return', function(e){
         saveData();
+    });
+
+    $('#id').focusout(function(){
+        if($(this).val()!=""){
+
+            if(!exists('#dis-'+$(this).val())){
+                alert('Distributor Not Found');
+                $(this).focus();
+                $(this).select();
+
+            }
+        }
+    });
+    $('#product_id').focusout(function(){
+        if($(this).val()!=""){
+            if(!exists('#product-'+$(this).val())){
+                alert('Product Not Found');
+                $(this).focus();
+                $(this).select();
+            }
+
+            product=($('#product-'+$(this).val()).data('product'));
+            $('#rate').val(product.price).change();
+
+
+        }
+    });
+
+    $('#nepali-datepicker').bind('changed', function() {
+        loaddata();
     });
 
 </script>

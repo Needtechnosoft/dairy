@@ -11,4 +11,8 @@ class Distributorsell extends Model
     public function distributer(){
         return $this->belongsTo(Distributer::class);
     }
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }

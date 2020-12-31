@@ -1,5 +1,6 @@
 <tr id="sell-{{$sell->id}}" data-name="{{ $sell->distributer->user->name }}" class="searchable">
     <td>{{ $sell->distributer->user->name }}</td>
+    <td>{{ $sell->product->name }}</td>
     <td>{{ $sell->rate }}</td>
     <td>{{ $sell->qty }}</td>
     <td>{{ $sell->total }}</td>

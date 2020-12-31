@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Product</th>
             <th>Rate</th>
             <th>Quantity</th>
             <th>Total</th>
@@ -20,6 +21,9 @@
             <tr>
                 <td>
                     {{_nepalidate($bill->date)}}
+                </td>
+                <td>
+                    {{$bill->product->name}}
                 </td>
                 <td>
                     {{$bill->rate}}
@@ -48,7 +52,7 @@
             </tr>
         @endforeach
         <tr>
-            <td colspan="3" class="text-right">
+            <td colspan="4" class="text-right">
                 Total
             </td>
             <td>

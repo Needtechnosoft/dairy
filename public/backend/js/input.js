@@ -65,6 +65,9 @@ $('.checkitem').focusout(function(){
     }
 });
 
+$('.focus-select').focusin(function(){
+    $(this).select();
+})
 function CheckItem(id){
     return exists('#item-'+id);
 }
@@ -80,3 +83,17 @@ function printDiv(id)
         newWin.document.close();
 
 }
+
+function closeModal(modal){
+    $('#'+modal).modal('close');
+}
+
+function setData(id,value){
+    $('#'+id).val(value).change();
+
+}
+
+function closeModal(id,value){
+    $('#'+id).val(value).change();
+}
+

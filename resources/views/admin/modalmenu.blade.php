@@ -78,6 +78,24 @@
             Products ( {{\App\Models\Product::count()}} )
         </span>
     </div>
+    <div class="col-md-2 section section_1 href" data-target="{{route('product.home')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-truck"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text text-center">
+            Distributors ( {{\App\Models\Distributer::count()}} )
+        </span>
+    </div>
+    <div class="col-md-2 section section_1 href" data-target="{{route('admin.dis.sell')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-assignment"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text text-center">
+            Distributors <br> Sell
+        </span>
+    </div>
     @if (env('tier',1)==1)
         <div class="col-md-2 section section_1 href" data-target="{{route('admin.exp')}}">
             <span class="icon">
