@@ -69,31 +69,20 @@
                 <th>Fat%</th>
                 <th>Price/l</th>
                 @if ($usecc || $usetc)
-                    <th>
-                        MilK Total
-                    </th>
-                    <th>
-                        TS
-                    </th>
-                    <th>
-                        Cooling Cost
-                    </th>
+                    <th>MilK Total</th>
+                    <th>TS</th>
+                    <th>Cooling Cost</th>
                 @endif
                 <th>Total</th>
                 @if (env('hasextra',0)==1)
-                    <th>
-                        Bonus ( {{ round($center->bonus,2) }} % )
-                    </th>
+                    <th>Bonus({{ round($center->bonus,2) }}%)</th>
                 @endif
                 <th>Due</th>
                 <th>Avance</th>
-                <th>
-                    Prev Due
-                </th>
+                <th>Prev Due</th>
                 <th>Net Total</th>
                 <th>Due Balance</th>
-
-                    <th>Signature</th>
+                <th>Signature</th>
 
             </tr>
         </thead>
