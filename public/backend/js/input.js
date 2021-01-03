@@ -1,5 +1,6 @@
 $(".next").keydown(function(event){
     var key = (event.keyCode ? event.keyCode : event.which);
+    console.log(key);
     if(key=='13'){
         event.preventDefault()
         id=$(this).data('next');

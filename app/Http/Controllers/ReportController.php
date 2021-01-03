@@ -36,12 +36,15 @@ class ReportController extends Controller
             $year=$request->year;
             $month=$request->month;
             $session=$request->session;
+            $usetc=(env('usetc',0)==1)&& ($center->tc>0);
+            $usecc=(env('usecc',0)==1)&& ($center->cc>0);
             $range = NepaliDate::getDate($request->year,$request->month,$request->session);
-            if(SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()>0){
-                $data=FarmerReport::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->get();
-                return view('admin.report.farmer.data1',compact('data','year','month','session','center'));
+            $newsession=SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()>0;
+            // if(SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()>0){
+            //     $data=FarmerReport::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->get();
+            //     return view('admin.report.farmer.data1',compact('usecc','usetc','data','year','month','session','center'));
 
-            }else{
+            // }else{
 
                 $data=[];
                 foreach($farmers as $farmer){
@@ -58,6 +61,9 @@ class ReportController extends Controller
                         $farmer->advance=$_data->advance;
                         $farmer->nettotal=$_data->nettotal;
                         $farmer->advance=$_data->advance;
+                        $farmer->tc=$_data->tc;
+                        $farmer->cc=$_data->cc;
+                        $farmer->grandtotal=$_data->grandtotal;
                         $farmer->old=true;
 
                     }else{
@@ -76,14 +82,25 @@ class ReportController extends Controller
 
 
                         if($snfavg!=null || $fatavg!=null){
-                            $rate=($center->snf_rate* $farmer->snf ) + ($center->fat_rate*  $farmer->fat );
+                            $rate=truncate_decimals(($center->snf_rate* $farmer->snf ) + ($center->fat_rate*  $farmer->fat ));
                             $farmer->rate=(float)truncate_decimals($rate);
-                            $farmer->total=(float)round( $rate*($farmer->milk));
+                            $farmer->total=(float)truncate_decimals( $rate*($farmer->milk));
                             $farmer->bonus=0;
-                            if (env('hasextra',0)==1){
-                                $farmer->bonus=(int)($farmer->total*$center->bonus/100);
-
+                            $farmer->tc=0;
+                            $farmer->cc=0;
+                            // $farmer->grandtotal=;
+                            if ($usetc){
+                                $farmer->tc=truncate_decimals($farmer->milk*($center->tc*($farmer->snf+$farmer->fat)/100));
                             }
+                            if ($usecc){
+                                $farmer->cc=truncate_decimals($farmer->milk*$center->cc);
+                            }
+
+                            $farmer->grandtotal=(int)($farmer->total+$farmer->cc+$farmer->tc);
+                            if (env('hasextra',0)==1){
+                                $farmer->bonus=(int)($farmer->grandtotal*$center->bonus/100);
+                            }
+
                         }
                         $due=Sellitem::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due');
                         $farmer->due=(float)$due;
@@ -95,8 +112,8 @@ class ReportController extends Controller
                     }
                     array_push($data,$farmer);
                 }
-                return view('admin.report.farmer.data',compact('data','year','month','session','center'));
-            }
+                return view('admin.report.farmer.data',compact('newsession','usetc','usecc','data','year','month','session','center'));
+            // }
         }else{
 
             return view('admin.report.farmer.index');
@@ -109,9 +126,9 @@ class ReportController extends Controller
         $ledger=new LedgerManage($request->id);
 
 
-            if($request->due > ($request->total)){
+            if($request->due > ($request->grandtotal)){
                     $due = Sellitem::where('user_id',$request->id)->where('due','>',0)->get();
-                    $paidmaount=$request->total;
+                    $paidmaount=$request->grandtotal;
                     foreach ($due as $key => $value) {
                         if($paidmaount<=0){
                             break;
@@ -161,6 +178,9 @@ class ReportController extends Controller
             $farmerreport->advance=$request->advance??0;
             $farmerreport->nettotal=$request->nettotal??0;
             $farmerreport->balance=$request->balance??0;
+            $farmerreport->tc=$request->tc??0;
+            $farmerreport->cc=$request->cc??0;
+            $farmerreport->grandtotal=$request->grandtotal??$request->total;
             $farmerreport->year=$request->year;
             $farmerreport->month=$request->month;
             $farmerreport->session=$request->session;
@@ -179,11 +199,11 @@ class ReportController extends Controller
             $data=json_decode($farmer);
 
             $ledger=new LedgerManage($data->id);
+            $grandtotal=$data->grandtotal??0;
 
-
-            if($data->due > ($data->total)){
+            if($data->due > ($grandtotal)){
                     $due = Sellitem::where('user_id',$data->id)->where('due','>',0)->get();
-                    $paidmaount=$data->total;
+                    $paidmaount=$data->grandtotal;
                     foreach ($due as $key => $value) {
                         if($paidmaount<=0){
                             break;
@@ -207,9 +227,10 @@ class ReportController extends Controller
                                 ]);
             }
 
+            $ledger->addLedger("Payment for milk (".($data->milk)."l X ".($data->rate??0).")",2,$data->total??0,$lastdate,'108');
+
             if($data->nettotal>0 ||$data->balance>0){
 
-                $ledger->addLedger("Payment for milk (".($data->milk)."l X ".($data->rate??0).")",2,$data->total,$lastdate,'108');
 
                 if($data->nettotal>0){
                         $ledger->addLedger("Payment Given To Farmer",1,$data->nettotal,$lastdate,'110');
@@ -233,6 +254,9 @@ class ReportController extends Controller
             $farmerreport->advance=$data->advance??0;
             $farmerreport->nettotal=$data->nettotal??0;
             $farmerreport->balance=$data->balance??0;
+            $farmerreport->tc=$data->tc??0;
+            $farmerreport->cc=$data->cc??0;
+            $farmerreport->grandtotal=$data->grandtotal??($data->total??0);
             $farmerreport->year=$request->year;
             $farmerreport->month=$request->month;
             $farmerreport->session=$request->session;

@@ -15,11 +15,22 @@
                 <th>#Id</th>
                 <th>Center Name</th>
                 <th>Center Address</th>
-                <th>Fat Rate (Rs.)</th>
-                <th>Snf Rate (Rs.)</th>
+                <th>Fat <br> Rate (Rs.)</th>
+                <th>Snf <br> Rate (Rs.)</th>
                 @if (env('hasextra',0)==1)
                     <th>
                         Bonus (%)
+                    </th>
+                @endif
+                @if (env('usetc',0)==1)
+                    <th>
+                        TC
+                    </th>
+                @endif
+                @if (env('usecc',0)==1)
+                    <th>
+                        Cooling <br>
+                        Cost
                     </th>
                 @endif
                 <th>Action</th>
@@ -27,7 +38,7 @@
         </thead>
         <tbody id="farmerData">
             @foreach($centers as $c)
-            <tr id="center-{{ $c->id }}" data-name="{{ $c->name }}">
+            {{-- <tr id="center-{{ $c->id }}" data-name="{{ $c->name }}">
                 <form action="#" id="collectionForm-{{ $c->id }}">
                     <td>@csrf{{ $c->id }}</td>
                     <input type="hidden" name="id" value="{{$c->id}}">
@@ -43,7 +54,8 @@
                     @endif
                     <td><span onclick="editCollection({{$c->id}});" form="collectionForm-{{ $c->id }}" class="btn btn-primary btn-sm"> Update </span> <span class="btn btn-danger btn-sm" onclick="removeCenter({{$c->id}});">Delete</span></td>
                 </form>
-            </tr>
+            </tr> --}}
+                @include('admin.center.single',['center'=>$c])
             @endforeach
 
         </tbody>
@@ -93,7 +105,19 @@
                             <div class="col-lg-6 {{env('hasextra',0)==1?"":"d-none"}}" >
                                 <label for="name">Bonus (%)</label>
                                 <div class="form-group">
-                                    <input type="number" id="bonus" name="bonus" class="form-control" step="0.001" placeholder="Enter " value="0" required>
+                                    <input type="number" id="bonus" name="bonus" class="form-control" step="0.001" placeholder="Enter Bonus" value="0" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 {{env('usetc',0)==1?"":"d-none"}}" >
+                                <label for="name">TC Commission (%)</label>
+                                <div class="form-group">
+                                    <input type="number" id="tc" name="tc" class="form-control" step="0.001" placeholder="Enter TC Commission" value="0" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 {{env('usecc',0)==1?"":"d-none"}}" >
+                                <label for="name">Cooling Cost (%)</label>
+                                <div class="form-group">
+                                    <input type="number" id="cc" name="cc" class="form-control" step="0.001" placeholder="Enter Cooling Cost" value="0" required>
                                 </div>
                             </div>
                         </div>

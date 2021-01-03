@@ -24,6 +24,7 @@
     @include('admin.distributer.sell.productmodal')
     <div class="col-md-3">
         <div>
+            <input type="hidden" id="currentdate">
             <input type="text" placeholder="Search Distributor" id="s_dis" class="form-control mb-3">
         </div>
         <table class="table">
@@ -189,8 +190,12 @@
     function removeData(id) {
         if (confirm('Are you sure?')) {
             axios({
-                    method: 'get',
-                    url: '/admin/distributer-sell-del/' + id,
+                    method: 'post',
+                    url: '{{route("admin.dis.sell.del")}}',
+                    data:{
+                        'id':id,
+                        'date':$('#currentdate').val()
+                    }
                 })
                 .then(function(response) {
                     showNotification('bg-danger', 'Sellitem deleted successfully!');
@@ -248,6 +253,7 @@
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
     var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
     $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+    $('#currentdate').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");

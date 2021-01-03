@@ -75,6 +75,9 @@
                             </tr>
                     </table>
                         <strong>Grand Total : {{ $m + $e }}</strong> (Liter) <br>
+                        @php
+                            $milkamount=$m+$e;
+                        @endphp
                 </div>
             </div>
 
@@ -112,12 +115,34 @@
                             @endforeach
                     </table>
                     <div style="display: flex">
-                        <div style="flex:7;padding:10px;">
-                            <strong>Snf Average : {{ round($snfAvg,2) }}</strong> <br> <br>
-                            <strong>Per Liter Rate : {{ round($perLiterAmount,2) }} (Rs.)</strong> <br>
-                            <strong>Total Amount : {{ round(($m + $e) * $perLiterAmount) }} (Rs.)</strong>
+                        <div style="flex:8;padding:10px;">
+                            <strong>Snf Average : {{ round($snfAvg,2) }}</strong> <br>
+                            <strong>Per Liter Rate : {{ round($perLiterAmount,2) }} </strong> <br>
+                            @php
+                                $milktotal=truncate_decimals(($m + $e) * $perLiterAmount,2);
+                                if($tc==0 && $cc==0){
+                                    $grandtotal=(int)$milktotal;
+                                }else{
+                                    $tctotal=truncate_decimals(($m + $e)*$tc,2);
+                                    $cctotal=truncate_decimals(($m + $e)*$cc,2);
+                                    $grandtotal=(int)($milktotal+$tctotal+$cctotal);
+
+                                }
+                            @endphp
+                            @if ($cc>0||$tc>0)
+                                <strong>Milk Total : {{ $milktotal }} </strong><br>
+                                <strong>+TS Commission ({{(float)($center->tc)}}%) : {{ $tctotal }}</strong> <br>
+                                <strong>+Cooling Cost: {{ $cctotal }}</strong>
+                                <hr>
+                                <strong>Total Amount: {{$grandtotal}}</strong>
+
+
+                            @else
+                             <strong>Total Amount : {{ $milktotal }} (Rs.)</strong>
+                            @endif
+
                         </div>
-                        <div style="flex:5;padding:10px;">
+                        <div style="flex:4;padding:10px;">
                             <strong>Fat Average : {{ round($fatAvg,2) }}</strong>
                         </div>
                     </div>
@@ -254,7 +279,18 @@
                 <th>
                     Rate
                 </th>
-
+                @if ($cc>0 || $tc>0)
+                    <th>
+                        Milk Total
+                    </th>
+                    <th>
+                        TS %
+                    </th>
+                    <th>
+                        Cooling <br>
+                        cost
+                    </th>
+                @endif
                 <th>
                     Total
                 </th>
@@ -284,7 +320,7 @@
             </tr>
             <tr>
                 <td>
-                    {{ $m + $e }}
+                    {{ $milkamount }}
                 </td>
                 <td>
                     {{ round($fatAvg,2) }}
@@ -295,10 +331,25 @@
                 <td>
                     {{ round($perLiterAmount,2) }}
                 </td>
+                @if ($tc>0||$cc>0)
+                    <td>
+                        {{$milktotal}}
+                    </td>
+                    <td>
+                        {{$tctotal}}
+                    </td>
+                    <td>
+                        {{$cctotal}}
+                    </td>
+                    <td>
+                        {{$grandtotal}}
+                    </td>
+                    @else
 
-                <td>
-                    {{ round(($m + $e) * $perLiterAmount) }}
-                </td>
+                    <td>
+                        {{ $grandtotal }}
+                    </td>
+                @endif
                 @if(env('hasextra',0)==1)
                     <td>
                         {{ $farmer1->bonus??0}}
@@ -314,7 +365,13 @@
                     {{$farmer1->prevdue}}
                 </td>
                 @php
-                    $tt=round(($m + $e) * $perLiterAmount)-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus;
+                    if($cc>0||$tc>0){
+                        $tt=$grandtotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus;
+
+                    }else{
+
+                        $tt=$milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus;
+                    }
                     $balance=$tt<0?(-1*$tt):0;
                     $nettotal=$tt>0?$tt:0;
                 @endphp
@@ -335,8 +392,11 @@
                         <input type="hidden" name="snf" value="{{ round($snfAvg,2) }}">
                         <input type="hidden" name="fat" value="{{ round($fatAvg,2) }}">
                         <input type="hidden" name="rate" value=" {{ round($perLiterAmount,2) }}">
-                        <input type="hidden" name="milk" value="{{ $m + $e }}">
-                        <input type="hidden" name="total" value=" {{ round(($m + $e) * $perLiterAmount) }}">
+                        <input type="hidden" name="milk" value="{{ $milkamount }}">
+                        <input type="hidden" name="total" value=" {{ $milktotal }}">
+                        <input type="hidden" name="total" value=" {{ $grandtotal }}">
+                        <input type="hidden" name="cc" value=" {{ $cctotal }}">
+                        <input type="hidden" name="tc" value=" {{ $tctotal }}">
                         <input type="hidden" name="due" value=" {{ $farmer1->due}}">
                         <input type="hidden" name="bonus" value=" {{ $farmer1->bonus}}">
                         <input type="hidden" name="advance" value=" {{ $farmer1->advance }}">

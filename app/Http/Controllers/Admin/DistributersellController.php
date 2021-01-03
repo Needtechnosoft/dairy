@@ -31,7 +31,7 @@ class DistributersellController extends Controller
         $sell->save();
         $user = Distributer::where('id',$request->id)->first();
         $ledger = new LedgerManage($user->user_id);
-        $ledger->addLedger('Sold to distributer ('.$request->rate .' X '.$request->qty.')',1,$request->total,$date,'105',$sell->id);
+        $ledger->addLedger($sell->product->name.' ('.$request->rate .' X '.$request->qty.''.$sell->product->unit. ')',1,$request->total,$date,'105',$sell->id);
         if($request->paid >0){
             $ledger->addLedger('Paid amount received',2,$request->paid,$date,'114',$sell->id);
         }
@@ -44,11 +44,17 @@ class DistributersellController extends Controller
         return view('admin.distributer.sell.list',compact('sells'));
     }
 
-    public function deleteDistributersell($id){
-        $sell = Distributorsell::find($id);
+    public function deleteDistributersell(Request $request){
+        $date = str_replace('-','',$request->date);
+        $sell = Distributorsell::find($request->id);
+        $tempamount=$sell->total;
+        $tempid=$sell->id;
+        $title=$sell->product->name.' ('.$sell->rate .' X '.$sell->qty.''.$sell->product->unit. ')';
         $sell->delete();
-
-        Ledger::where('foreign_key',$id)->delete();
+        $distributor = Distributer::where('id',$sell->distributer_id)->first();
+        $ledger = new LedgerManage($distributor->user_id);
+        $ledger->addLedger('Sell Canceled: '.$title,2,$tempamount,$date,'115',$tempid);
+        return response('ok');
     }
 
 

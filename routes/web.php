@@ -124,7 +124,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');
     Route::post('distributer-sell-add', 'Admin\DistributersellController@addDistributersell')->name('admin.dis.sell.add');
     Route::post('distributer-sell-list', 'Admin\DistributersellController@listDistributersell')->name('admin.dis.sell.list');
-    Route::get('distributer-sell-del/{id}', 'Admin\DistributersellController@deleteDistributersell')->middleware('authority');
+    Route::post('distributer-sell-del', 'Admin\DistributersellController@deleteDistributersell')->name('admin.dis.sell.del')->middleware('authority');
 
     //XXX Distributor Payments
     Route::get('distributer-payment', 'Admin\DistributorPaymentController@index')->name('admin.dis.payemnt');

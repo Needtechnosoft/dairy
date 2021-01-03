@@ -15,8 +15,10 @@ class LedgerManage{
     * "102"= "farmer opening balance/advance"
     * "103" = "item sell"
     * "104" = "Farmer Advance"
+
     * "105" = "Sold to distributer"
     * "114" = "distributer Payment"
+    * "115" = "distributer sell cancel"
 
     * "106" = "Farmer amount paid at Selling item"
     * "107" = "Due amount paid by farmer"

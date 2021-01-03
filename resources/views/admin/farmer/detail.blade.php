@@ -58,6 +58,7 @@
 
 
     function loadData(){
+
         var user = {{ $user->id }};
         console.log(user);
         var data={

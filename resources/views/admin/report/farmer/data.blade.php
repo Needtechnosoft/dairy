@@ -28,17 +28,22 @@
         Center : {{$center->name}}
     </span>
 </div>
+@if ($newsession)
 <form action="{{route('report.farmer.session')}}" method="POST">
     <input type="hidden" name="year" value="{{$year}}" >
     <input type="hidden" name="month" value="{{$month}}" >
     <input type="hidden" name="session" value="{{$session}}" >
     <input type="hidden" name="center_id" value="{{$center->id}}" >
+@endif
     @php
         $i=1;
         $d=0;
         $start=true;
         $point=false;
 
+        $tctotal=0;
+        $cctotal=0;
+        $grandtotal=0;
         $milktotal=0;
         $bonustotal=0;
         $totaltotal=0;
@@ -63,6 +68,17 @@
                 <th>Snf%</th>
                 <th>Fat%</th>
                 <th>Price/l</th>
+                @if ($usecc || $usetc)
+                    <th>
+                        MilK Total
+                    </th>
+                    <th>
+                        TS
+                    </th>
+                    <th>
+                        Cooling Cost
+                    </th>
+                @endif
                 <th>Total</th>
                 @if (env('hasextra',0)==1)
                     <th>
@@ -92,12 +108,13 @@
                 <tr>
                     <td>
                         {{$farmer->no}}
-                        @php
-                        $tt=$farmer->total-$farmer->advance-$farmer->due-$farmer->prevdue-$farmer->bonus;
-                        $farmer->balance=$tt<0?(-1*$tt):0;
-                        $farmer->nettotal=$tt>0?$tt:0;
-                        @endphp
-                        @if ($farmer->old==false)
+                        @if ($farmer->old==false &&  $newsession)
+                            @php
+
+                            $tt=$farmer->grandtotal-$farmer->advance-$farmer->due-$farmer->prevdue-$farmer->bonus;
+                            $farmer->balance=$tt<0?(-1*$tt):0;
+                            $farmer->nettotal=$tt>0?$tt:0;
+                            @endphp
                             <input type="hidden" name="farmers[]" value="{{$farmer->toJson()}}" >
                         @endif
                     </td>
@@ -131,10 +148,31 @@
                         {{-- <input type="hidden" name="rate[{{$t}}]" value="{{($farmer->rate)}}" > --}}
 
                     </td>
+                    @if ($usecc || $usetc)
+                        <td>
+                            {{$farmer->total}}
+                            @php
+                                $totaltotal+=$farmer->total;
+                            @endphp
+                        </td>
+                        <td>
+                            {{$farmer->tc}}
+                            @php
+                                $tctotal+=$farmer->tc;
+                            @endphp
+                        </td>
+                        <td>
+                            {{$farmer->cc}}
+
+                            @php
+                                $cctotal+=$farmer->cc;
+                            @endphp
+                        </td>
+                    @endif
                     <td>
-                        {{$farmer->total}}
+                        {{$farmer->grandtotal}}
                         @php
-                            $totaltotal+=$farmer->total;
+                            $grandtotal+=$farmer->grandtotal;
                         @endphp
                         {{-- <input type="hidden" name="total[{{$t}}]" value="{{($farmer->total)}}" > --}}
 
@@ -185,9 +223,7 @@
                     </td>
 
                     <td>
-                        @if ($farmer->old)
-                           Already Taken
-                        @endif
+
                     </td>
 
                 </tr>
@@ -213,7 +249,21 @@
                     <td>--</td>
                     <td>--</td>
                     <td>--</td>
-                    <td>{{$totaltotal}}</td>
+                    @if ($usecc || $usetc)
+                        <td>
+                            {{$totaltotal}}
+
+                        </td>
+                        <td>
+                            {{$tctotal}}
+
+                        </td>
+                        <td>
+                            {{$cctotal}}
+
+                        </td>
+                    @endif
+                    <td>{{$grandtotal}}</td>
                     @if(env('hasextra',0)==1)
                         <td>{{$bonustotal}}</td>
                     @endif
@@ -236,14 +286,17 @@
                 </tr>
             @php
                 $point=false;
+                $tctotal=0;
+                $cctotal=0;
+                $grandtotal=0;
                 $milktotal=0;
                 $bonustotal=0;
-                    $totaltotal=0;
-                    $duetotal=0;
-                    $advancetotal=0;
-                    $prevduetotal=0;
-                    $nettotaltotal=0;
-                    $balancetotal=0;
+                $totaltotal=0;
+                $duetotal=0;
+                $advancetotal=0;
+                $prevduetotal=0;
+                $nettotaltotal=0;
+                $balancetotal=0;
             @endphp
             </tbody>
         </table>
@@ -258,7 +311,21 @@
             <td>--</td>
             <td>--</td>
             <td>--</td>
-            <td>{{$totaltotal}}</td>
+            @if ($usecc || $usetc)
+                        <td>
+                            {{$totaltotal}}
+
+                        </td>
+                        <td>
+                            {{$tctotal}}
+
+                        </td>
+                        <td>
+                            {{$cctotal}}
+
+                        </td>
+            @endif
+            <td>{{$grandtotal}}</td>
             @if(env('hasextra',0)==1)
                 <td>{{$bonustotal}}</td>
             @endif
@@ -282,10 +349,13 @@
             </tbody>
         </table>
         @endif
-    <div class="py-2 d-print-none">
-        <input type="submit" value="Update Session Data" class="btn btn-success">
-    </div>
-</form>
+    @if ($newsession)
+
+        <div class="py-2 d-print-none">
+            <input type="submit" value="Update Session Data" class="btn btn-success">
+        </div>
+    </form>
+    @endif
 
 
 
