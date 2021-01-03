@@ -39,7 +39,7 @@ class ReportController extends Controller
             $usetc=(env('usetc',0)==1)&& ($center->tc>0);
             $usecc=(env('usecc',0)==1)&& ($center->cc>0);
             $range = NepaliDate::getDate($request->year,$request->month,$request->session);
-            $newsession=SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()>0;
+            $newsession=SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()==0;
             // if(SessionWatch::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->count()>0){
             //     $data=FarmerReport::where(['year'=>$year,'month'=>$month,'session'=>$session,'center_id'=>$center->id])->get();
             //     return view('admin.report.farmer.data1',compact('usecc','usetc','data','year','month','session','center'));
