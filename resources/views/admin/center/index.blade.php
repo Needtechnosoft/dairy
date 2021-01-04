@@ -24,7 +24,7 @@
                 @endif
                 @if (env('usetc',0)==1)
                     <th>
-                        TC
+                        TS
                     </th>
                 @endif
                 @if (env('usecc',0)==1)
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 {{env('usetc',0)==1?"":"d-none"}}" >
-                                <label for="name">TC Commission (%)</label>
+                                <label for="name">TS Commission (%)</label>
                                 <div class="form-group">
                                     <input type="number" id="tc" name="tc" class="form-control" step="0.001" placeholder="Enter TC Commission" value="0" required>
                                 </div>
