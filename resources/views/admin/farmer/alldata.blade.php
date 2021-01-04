@@ -370,7 +370,7 @@
 
                     }else{
 
-                        $tt=$milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus;
+                        $tt=(int)($milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus);
                     }
                     $balance=$tt<0?(-1*$tt):0;
                     $nettotal=$tt>0?$tt:0;
