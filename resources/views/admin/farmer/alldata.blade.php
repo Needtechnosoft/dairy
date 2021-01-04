@@ -394,9 +394,9 @@
                         <input type="hidden" name="rate" value=" {{ round($perLiterAmount,2) }}">
                         <input type="hidden" name="milk" value="{{ $milkamount }}">
                         <input type="hidden" name="total" value=" {{ $milktotal }}">
-                        <input type="hidden" name="total" value=" {{ $grandtotal }}">
-                        <input type="hidden" name="cc" value=" {{ $cctotal }}">
-                        <input type="hidden" name="tc" value=" {{ $tctotal }}">
+                        <input type="hidden" name="grandtotal" value=" {{ $grandtotal }}">
+                        <input type="hidden" name="cc" value=" {{ $cctotal??0 }}">
+                        <input type="hidden" name="tc" value=" {{ $tctotal??0 }}">
                         <input type="hidden" name="due" value=" {{ $farmer1->due}}">
                         <input type="hidden" name="bonus" value=" {{ $farmer1->bonus}}">
                         <input type="hidden" name="advance" value=" {{ $farmer1->advance }}">
