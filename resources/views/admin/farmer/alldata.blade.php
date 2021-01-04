@@ -138,7 +138,7 @@
 
 
                             @else
-                             <strong>Total Amount : {{ $milktotal }} (Rs.)</strong>
+                             <strong>Total Amount : {{ $grandtotal }} (Rs.)</strong>
                             @endif
 
                         </div>
