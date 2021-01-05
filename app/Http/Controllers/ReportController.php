@@ -157,7 +157,10 @@ class ReportController extends Controller
                 $ledger->addLedger("Payment for milk (".($request->milk)."l X ".($request->rate??0).")",2,$request->total,$lastdate,'108');
 
                 if($request->nettotal>0){
+                    if(env('paywhenupdate',0)==1){
+
                         $ledger->addLedger("Payment Given To Farmer",1,$request->nettotal,$lastdate,'110');
+                    }
                 }else{
                     if($request->balance>0){
                         $ledger->addLedger("Closing Balance",2,$request->balance,$lastdate,'109');
@@ -233,7 +236,10 @@ class ReportController extends Controller
 
 
                 if($data->nettotal>0){
+                    if(env('paywhenupdate',0)==1){
+
                         $ledger->addLedger("Payment Given To Farmer",1,$data->nettotal,$lastdate,'110');
+                    }
                 }else{
                     if($data->balance>0){
                         $ledger->addLedger("Closing Balance",2,$data->balance,$lastdate,'109');

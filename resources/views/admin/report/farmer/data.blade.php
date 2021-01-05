@@ -82,6 +82,11 @@
                 <th>Prev Due</th>
                 <th>Net Total</th>
                 <th>Due Balance</th>
+                @if (env('paywhenupdate',0)==1)
+                    <th>
+                        Paid Amount
+                    </th>
+                @endif
                 <th>Signature</th>
 
             </tr>
@@ -211,6 +216,11 @@
                         {{-- <input type="hidden" name="balance[{{$t}}]" value=" {{$tt<0?(-1*$tt):0}}" > --}}
                     </td>
 
+                    @if (env('paywhenupdate',0)==1)
+                        <td>
+
+                        </td>
+                    @endif
                     <td>
 
                     </td>
@@ -271,6 +281,7 @@
                     <td>
                         {{$balancetotal}}
                     </td>
+                    <td></td>
                     <td></td>
                 </tr>
             @php
@@ -333,6 +344,7 @@
             <td>
                 {{$balancetotal}}
             </td>
+            <td></td>
             <td></td>
         </tr>
             </tbody>

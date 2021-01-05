@@ -156,6 +156,16 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         });
     });
 
+    Route::group(['prefix' => 'milk-payment'], function () {
+        Route::name('milk.payment.')->group(function(){
+            Route::match(['GET','POST'],'','Admin\MilkPaymentController@index')->name('home');
+            // Route::post('load','Admin\ProductController@index')->name('load');
+            Route::post('add','Admin\MilkPaymentController@add')->name('add');
+            Route::post('update','Admin\MilkPaymentController@update')->name('update')->middleware('authority');
+            // Route::post('del','Admin\ProductController@del')->name('del')->middleware('authority');
+        });
+    });
+
 
     Route::group(['prefix' => 'report'], function () {
         Route::name('report.')->group(function(){
