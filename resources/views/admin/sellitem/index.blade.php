@@ -17,6 +17,7 @@
         </div>
     </div>
 
+    <input type="hidden" id="curdate">
     <div class="col-md-9 bg-light pt-2">
         <form action="" id="sellitemData">
             @csrf
@@ -176,10 +177,11 @@
                     $('#paid').val(0);
                     $('#due').val(0);
                 })
-                .catch(function(response) {
-                    showNotification('bg-danger', 'You have entered invalid data !');
+                .catch(function(error) {
+                    showNotification('bg-danger', error.response.data);
                     //handle error
-                    console.log(response);
+                    console.log(error.response);
+
                 });
         }
     }
@@ -227,16 +229,21 @@
 
     function removeData(id) {
         if (confirm('Are you sure?')) {
+            data={
+                'id':id,
+                'date':$('#curdate').val()
+            }
             axios({
-                    method: 'get',
-                    url: '/admin/sell-item-delete/' + id,
+                    method: 'post',
+                    url: '/admin/sell-item-delete',
+                    data:data
                 })
                 .then(function(response) {
                     showNotification('bg-danger', 'Sellitem deleted successfully!');
                     $('#itemsell-' + id).remove();
                 })
-                .catch(function(response) {
-                    showNotification('bg-danger','You do not have authority to delete!');
+                .catch(function(error) {
+                    showNotification('bg-danger',error.response.data);
 
                     console.log(response)
                 })
@@ -252,12 +259,22 @@
     }
 
     function paidTotal() {
+
         var total = parseFloat($('#total').val());
         var paid = parseFloat($('#paid').val());
-        $('#due').val(total - paid);
+        var due=total - paid;
+        if(due<0){
+            due=0;
+        }
+        $('#due').val(due);
+
         var etotal = parseFloat($('#etotal').val());
         var epaid = parseFloat($('#epaid').val());
-        $('#edue').val(etotal - epaid);
+        var edue=etotal - epaid;
+        if(edue<0){
+            edue=0;
+        }
+        $('#edue').val(due);
     }
 
     function farmerId(id) {
@@ -282,15 +299,22 @@
             // console.log(response.data);
             $('#sellDataBody').html(response.data);
         })
-        .catch(function(response) {
+        .catch(function(error) {
+            alert('error.response.data');
             //handle error
-            console.log(response);
+            // console.log(error);
+            if(error.response){
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
         });
     })
         // list
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
     var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
     $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+    $('#curdate').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
@@ -307,6 +331,7 @@
     $(document).bind('keydown', 'alt+s', function(e){
        $('#itemmodal').modal('show');
     });
+
     $('#item_id').bind('keydown', 'alt+s', function(e){
        $('#itemmodal').modal('show');
     });

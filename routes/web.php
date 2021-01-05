@@ -82,7 +82,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('sell-item-add','Admin\SellitemController@addSellItem')->name('admin.sell.item.add');
     Route::post('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
     Route::post('sell-item-update','Admin\SellitemController@updateSellItem')->name('admin.sell.item.update');
-    Route::get('sell-item-delete/{id}', 'Admin\SellitemController@deleteSellitem')->middleware('authority');
+    Route::post('sell-item-delete', 'Admin\SellitemController@deleteSellitem')->middleware('authority');
 
 
 

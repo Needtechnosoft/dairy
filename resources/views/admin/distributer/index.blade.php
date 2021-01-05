@@ -16,8 +16,8 @@
                 <th>Distributer Name</th>
                 <th>Distributer phone</th>
                 <th>Distributer Address</th>
-                <th>Rate</th>
-                <th>Amount</th>
+                {{-- <th>Rate</th>
+                <th>Amount</th> --}}
                 <th>Action</th>
             </tr>
         </thead>
@@ -58,11 +58,11 @@
                             <div class="col-lg-12">
                                 <label for="name">Distributer Address</label>
                                 <div class="form-group">
-                                    <input type="text" id="address" name="address" class="form-control next" data-next="rate" placeholder="Enter distributer address" required>
+                                    <input type="text" id="address" name="address" class="form-control " data-next="rate" placeholder="Enter distributer address" required>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="rate">Rate</label>
                                 <div class="form-group">
                                     <input type="number" id="rate" name="rate" step="0.001" min="0.001" class="form-control next" data-next="amt" placeholder="Enter rate" required>
@@ -73,7 +73,7 @@
                                 <div class="form-group">
                                     <input type="number" id="amt" name="amount" step="0.001" min="0.001" class="form-control" placeholder="Enter amount" required>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="rate">Rate</label>
                                 <div class="form-group">
                                     <input type="number" id="erate" name="rate" step="0.001" min="0.001" class="form-control next" data-next="eamt" placeholder="Enter rate" required>
@@ -134,7 +134,7 @@
                                 <div class="form-group">
                                     <input type="number" id="eamt" name="amount" step="0.001" min="0.001" class="form-control" placeholder="Enter amount" required>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                 </div>
             </div>
@@ -155,8 +155,8 @@
         $('#ename').val(distributer.name);
         $('#ephone').val(distributer.phone);
         $('#eaddress').val(distributer.address);
-        $('#erate').val(ele.dataset.rate);
-        $('#eamt').val(ele.dataset.amount);
+        // $('#erate').val(ele.dataset.rate);
+        // $('#eamt').val(ele.dataset.amount);
         $('#eid').val(distributer.id);
         $('#editModal').modal('show');
     }

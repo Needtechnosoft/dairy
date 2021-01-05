@@ -42,7 +42,7 @@ class SellitemController extends Controller
             }
             return view('admin.sellitem.single',compact('sell_item'));
         }else{
-            return response()->json('Item Stok is not available');
+            return response('item Stock is not available',500);
         }
         // LedgerManage::addLedger('Sell Item', 1,$request->total,$date,'101');
     }
@@ -100,18 +100,23 @@ class SellitemController extends Controller
         return view('admin.sellitem.list',compact('sell'));
     }
 
-    public function deleteSellitem($id){
-        return response('error',500);
-        // $sell = Sellitem::find($id);
-        // $item = Item::where('id',$sell->item_id)->first();
-        // $total=$sell->total;
-        // $item->stock = $item->stock + $sell->qty;
-        // $user_id=$sell->user_id;
-        // $item->save();
-        // $sell->delete();
-        // $manager=new LedgerManage($user_id);
-        // $manager->addLedger('Paid amount',2,$request->paid,$date,'106',$sell_item->id);
+    public function deleteSellitem(Request $request){
+        $date = str_replace('-','',$request->date);
 
-        // Ledger::where('foreign_key',$id)->delete();
+        $sell = Sellitem::find($request->id);
+        $item = Item::where('id',$sell->item_id)->first();
+
+        $total=$sell->total;
+        $user_id=$sell->user_id;
+        $title=$item->title.' ( Rs.'.$sell->rate.' x '.$sell->qty. ')';
+
+        $item->stock = $item->stock + $sell->qty;
+
+        $item->save();
+        $sell->delete();
+        $manager=new LedgerManage($user_id);
+        $manager->addLedger('Cancel sell: '.$title,2,$total,$date,'116',$request->id);
+        return response('Sell Deleted Sucessfully');
+
     }
 }

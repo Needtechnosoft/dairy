@@ -26,8 +26,8 @@ class DistributerController extends Controller
         $user->save();
         $dis = new Distributer();
         $dis->user_id = $user->id;
-        $dis->rate = $request->rate;
-        $dis->amount = $request->amount;
+        $dis->rate = $request->rate??0;
+        $dis->amount = $request->amount??0;
         $dis->save();
         return view('admin.distributer.single',compact('user'));
     }
@@ -46,8 +46,8 @@ class DistributerController extends Controller
         $user->password = bcrypt($request->phone);
         $user->save();
         $dis = Distributer::where('user_id',$user->id)->first();
-        $dis->rate = $request->rate;
-        $dis->amount = $request->amount;
+        $dis->rate = $request->rate??0;
+        $dis->amount = $request->amount??0;
         $dis->save();
         return view('admin.distributer.single',compact('user'));
 
@@ -60,7 +60,7 @@ class DistributerController extends Controller
 
     public function distributerDetailLoad(Request $r){
         $range=NepaliDate::getDate($r->year,$r->month,$r->session);
-        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->orderBy('ledgers.id','asc')->get();
         $d = Distributer::where('user_id',$r->user_id)->first();
         $sell = Distributorsell::where('distributer_id',$d->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
         return view('admin.distributer.data',compact('ledger','sell'));

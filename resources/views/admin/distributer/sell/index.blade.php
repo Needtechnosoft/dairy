@@ -210,7 +210,14 @@
 
     function calTotal() {
         $('#total').val($('#rate').val() * $('#qty').val());
-        $('#due').val($('#rate').val() * $('#qty').val());
+        // $('#due').val($('#rate').val() * $('#qty').val());
+        var total = parseFloat($('#total').val());
+        var paid = parseFloat($('#paid').val());
+        due=total-paid;
+        if(due<0){
+            due=0;
+        }
+        $('#due').val(0);
         $('#etotal').val($('#erate').val() * $('#eqty').val());
         $('#edue').val($('#erate').val() * $('#eqty').val());
     }
@@ -218,7 +225,11 @@
     function paidTotal() {
         var total = parseFloat($('#total').val());
         var paid = parseFloat($('#paid').val());
-        $('#due').val(total - paid);
+        due=total-paid;
+        if(due<0){
+            due=0;
+        }
+        $('#due').val(0);
         var etotal = parseFloat($('#etotal').val());
         var epaid = parseFloat($('#epaid').val());
         $('#edue').val(etotal - epaid);

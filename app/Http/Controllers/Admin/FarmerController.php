@@ -26,7 +26,13 @@ class FarmerController extends Controller
     public function addFarmer(Request $request){
         if($request->isMethod('post')){
             // dd($request->advance);
-                $max=User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center_id)->max('users.no')??0;
+            // dd($request);
+                if($request->filled('no')){
+                    $max=$request->no;
+                }else{
+
+                    $max=(User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center_id)->max('users.no')??0)+1;
+                }
                 // dd($max);
                 // $max=User::max('no')??0;
                 $user = new User();
@@ -35,7 +41,7 @@ class FarmerController extends Controller
                 $user->address = $request->address;
                 $user->role = 1;
                 $user->password = bcrypt($request->phone);
-                $user->no=$max+1;
+                $user->no=$max;
                 $user->save();
 
                 $id=$user->id;
@@ -121,7 +127,11 @@ class FarmerController extends Controller
         // dd($request->all());
         $user = User::where('id',$request->id)->where('role',1)->first();
         // dd($user);
-        $user->phone = $request->phone;
+        if($request->filled('phone')){
+
+            $user->phone = $request->phone;
+        }
+        $user->no = $request->no;
         $user->name = $request->name;
         $user->address = $request->address;
         $user->save();

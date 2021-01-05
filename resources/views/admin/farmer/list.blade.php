@@ -1,5 +1,5 @@
 @foreach($farmers as $f)
-<tr id="farmer-{{$f->id}}" data-name="{{ $f->name }}" class="searchable">
+<tr id="farmer-{{$f->id}}" data-no="{{ $f->no }}" data-name="{{ $f->name }}" class="searchable">
     <td>{{ $f->no }}</td>
     <td>{{ $f->name }}</td>
     @if(env('requirephone',1)==1)

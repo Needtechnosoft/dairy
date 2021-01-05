@@ -1,9 +1,11 @@
 $(".next").keydown(function(event){
     var key = (event.keyCode ? event.keyCode : event.which);
-    console.log(key);
+    // console.log(key);
     if(key=='13'){
         event.preventDefault()
+
         id=$(this).data('next');
+        console.log("next id",id);
         $('#'+id).focus();
     }
 });

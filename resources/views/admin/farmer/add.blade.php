@@ -70,11 +70,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-lg-6" id="noid">
+                                 <label for="no">Farmer No</label>
+                                 <div class="form-group">
+                                     <input type="text" id="no" name="no" class="form-control next" data-next="name" placeholder="Enter farmer no" required>
+                                 </div>
+                             </div>
                             <div class="col-lg-6">
                                <input type="hidden" name="date" id="nepali-datepicker">
                                 <label for="name">Farmer Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="name" name="name" class="form-control next" data-next="phone" placeholder="Enter farmer name" required>
+                                    <input type="text" id="name" name="name" class="form-control next" data-next="{{env('requirephone',1)==1?'phone':'address'}}" placeholder="Enter farmer name" required>
                                 </div>
                             </div>
                             @if(env('requirephone',1)==1)
@@ -112,6 +118,9 @@
                 <span>
                     <input type="checkbox" id="another"> Add Another
                 </span>
+                <span>
+                    <input type="checkbox" id="auto"> Auto Increment
+                </span>
             </div>
         </div>
     </div>
@@ -134,19 +143,26 @@
                         <input type="hidden" name="id" id="eid">
                         <div class="row">
                             <div class="col-lg-6">
+                                <label for="name">Farmer No</label>
+                                <div class="form-group">
+                                    <input type="text" id="eno" name="no" class="form-control next" data-next="ename" placeholder="Enter farmer no" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <label for="name">Farmer Name</label>
                                 <div class="form-group">
-                                    <input type="text" id="ename" name="name" class="form-control next" data-next="ephone" placeholder="Enter farmer name" required>
+                                    <input type="text" id="ename" name="name" class="form-control next" data-next="{{env('requirephone',1)==1?'ephone':'eaddress'}}" placeholder="Enter farmer name" required>
                                 </div>
                             </div>
 
+                            @if(env('requirephone',1)==1)
                             <div class="col-lg-6">
                                 <label for="name">Farmer Phone</label>
                                 <div class="form-group">
                                     <input type="number" id="ephone" name="phone" class="form-control next" data-next="eaddress" placeholder="Enter farmer phone" required>
                                 </div>
                             </div>
-
+                            @endif
                             <div class="col-lg-6">
                                 <label for="name">Farmer Address</label>
                                 <div class="form-group">
@@ -185,7 +201,9 @@
         console.log(farmer);
         $('#ecenter_id').val(farmer.center_id).change();
         $('#ename').val(farmer.name);
+        $('#eno').val(farmer.no);
         $('#ephone').val(farmer.phone);
+        $('#eaddress').val(farmer.address);
         $('#eaddress').val(farmer.address);
         // $('#eadvance').val(ele.dataset.advance);
         $('#eid').val(farmer.id);
@@ -216,7 +234,13 @@
                 if(!(document.getElementById('another').checked)){
                     $('#largeModal').modal('toggle');
                 }
-                $('#form_validation').trigger("reset");
+                // $('#form_validation').trigger("reset");
+                $('#name').val('');
+                $('#no').val('');
+                $('#advance').val(0);
+                $('#phone').val('');
+                $('#address').val('');
+
                 $('#name').focus();
                 $('#farmerData').prepend(response.data);
                 $('#center_id').val(center).change();
@@ -302,7 +326,7 @@
             // console.log(response.data);
             $('#farmerData').empty();
             $('#farmerData').html(response.data);
-            initTableSearch('sid', 'farmerData', ['name']);
+            initTableSearch('sid', 'farmerData', ['name','no']);
         })
         .catch(function(response) {
             //handle error
@@ -314,6 +338,15 @@
     $(document).bind('keydown', 'alt+n', function(e){
        $('#largeModal').modal('show');
     });
+
+    $('#auto').change(function(){
+        if((document.getElementById('auto').checked)){
+            $('#no').attr('disabled', 'disabled');
+        }else{
+            $('#no').removeAttr('disabled');
+
+        }
+    })
 
 </script>
 @endsection

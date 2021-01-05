@@ -1,4 +1,4 @@
-<tr id="farmer-{{$user->id}}" data-name="{{ $user->name }}" class="searchable">
+<tr id="farmer-{{$user->id}}" data-no="{{ $user->no }}" data-name="{{ $user->name }}" class="searchable">
     <td>{{ $user->no }}</td>
     <td>{{ $user->name }}</td>
     @if(env('requirephone',1)==1)
