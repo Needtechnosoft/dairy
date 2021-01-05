@@ -21,8 +21,7 @@ class SellitemController extends Controller
         $date = str_replace('-','',$request->date);
         $item_id = Item::where('number',$request->number)->first();
         if($item_id->stock>0){
-            $item_id->stock = $item_id->stock - 1;
-
+            $item_id->stock = $item_id->stock - $request->qty;
             $sell_item = new Sellitem();
             $sell_item->total = $request->total;
             $sell_item->qty = $request->qty;
@@ -102,11 +101,17 @@ class SellitemController extends Controller
     }
 
     public function deleteSellitem($id){
-        $sell = Sellitem::find($id);
-        $item = Item::where('id',$sell->item_id)->first();
-        $item->stock = $item->stock + $sell->qty;
-        $item->save();
-        $sell->delete();
-        Ledger::where('foreign_key',$id)->delete();
+        return response('error',500);
+        // $sell = Sellitem::find($id);
+        // $item = Item::where('id',$sell->item_id)->first();
+        // $total=$sell->total;
+        // $item->stock = $item->stock + $sell->qty;
+        // $user_id=$sell->user_id;
+        // $item->save();
+        // $sell->delete();
+        // $manager=new LedgerManage($user_id);
+        // $manager->addLedger('Paid amount',2,$request->paid,$date,'106',$sell_item->id);
+
+        // Ledger::where('foreign_key',$id)->delete();
     }
 }
