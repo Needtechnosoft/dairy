@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
-@section('title','Distributer-Details')
+@section('title')
+    <a href="{{route('admin.dis')}}">Distributors</a> / Details / {{$user->name}}
+@endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection

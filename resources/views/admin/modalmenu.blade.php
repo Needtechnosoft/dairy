@@ -78,7 +78,7 @@
             Products ( {{\App\Models\Product::count()}} )
         </span>
     </div>
-    <div class="col-md-2 section section_1 href" data-target="{{route('product.home')}}">
+    <div class="col-md-2 section section_1 href" data-target="{{route('admin.dis')}}">
         <span class="icon">
             <i class="zmdi zmdi-truck"></i>
         </span>
