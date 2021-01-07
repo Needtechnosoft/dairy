@@ -31,7 +31,7 @@ class ReportController extends Controller
     public function farmer(Request $request){
 
         if($request->getMethod()=="POST"){
-            $farmers=Farmer::join('users','users.id','=','farmers.user_id')->where('farmers.center_id',$request->center_id)->select('users.id','users.name','users.no','farmers.center_id')->get();
+            $farmers=Farmer::join('users','users.id','=','farmers.user_id')->where('farmers.center_id',$request->center_id)->select('users.id','users.name','users.no','farmers.center_id')->orderBy('users.no','asc')->get();
             $center=Center::find($request->center_id);
             $year=$request->year;
             $month=$request->month;
