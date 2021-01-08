@@ -67,14 +67,14 @@ class FarmerController extends Controller
     }
 
     public function listFarmer(){
-        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',1)->where('users.role',1)->select('users.*','farmers.center_id')->get();
+        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',1)->where('users.role',1)->select('users.*','farmers.center_id')->orderBy('users.no','asc')->get();
         // return response()->json($farmers);
         return view('admin.farmer.list',['farmers'=>$farmers]);
     }
 
     public function listFarmerByCenter(Request $request){
         // dd($request->all());
-        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center)->where('users.role',1)->select('users.*','farmers.center_id')->get();
+        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center)->where('users.role',1)->select('users.*','farmers.center_id')->orderBy('users.no','asc')->get();
         // dd($farmers);
         return view('admin.farmer.list',['farmers'=>$farmers]);
     }

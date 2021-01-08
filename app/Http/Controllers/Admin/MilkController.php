@@ -72,7 +72,7 @@ class MilkController extends Controller
     }
 
     public function loadFarmerData(Request $request){
-        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center)->where('users.role',1)->select('users.*','farmers.center_id')->get();
+        $farmers = User::join('farmers','farmers.user_id','=','users.id')->where('farmers.center_id',$request->center)->where('users.role',1)->select('users.*','farmers.center_id')->orderBy('users.no')->get();
         return view('admin.farmer.minlist',compact('farmers'));
     }
 
