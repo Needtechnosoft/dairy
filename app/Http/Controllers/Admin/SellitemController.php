@@ -106,6 +106,7 @@ class SellitemController extends Controller
         $sell = Sellitem::find($request->id);
         $item = Item::where('id',$sell->item_id)->first();
 
+        $paid=$sell->paid;
         $total=$sell->total;
         $user_id=$sell->user_id;
         $title=$item->title.' ( Rs.'.$sell->rate.' x '.$sell->qty. ')';
@@ -116,6 +117,10 @@ class SellitemController extends Controller
         $sell->delete();
         $manager=new LedgerManage($user_id);
         $manager->addLedger('Cancel sell: '.$title,2,$total,$date,'116',$request->id);
+        if($paid>0){
+            $manager->addLedger('Cancel paid: '.$title,1,$paid,$date,'117',$request->id);
+        }
+
         return response('Sell Deleted Sucessfully');
 
     }
