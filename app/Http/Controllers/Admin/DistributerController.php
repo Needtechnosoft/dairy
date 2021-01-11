@@ -74,37 +74,50 @@ class DistributerController extends Controller
             $range=[];
             $data=[];
             $date=1;
-
+            $title="";
             $ledger=Ledger::where('user_id',$request->user_id);
             if($type==0){
                 $range = NepaliDate::getDate($request->year,$request->month,$request->session);
                 $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+                $title="<span class='mx-2'>Year:".$year ."</span>";
+                $title.="<span class='mx-2'>Month:".$month ."</span>";
+                $title.="<span class='mx-2'>Session:".$session ."</span>";
 
             }elseif($type==1){
                 $date=$date = str_replace('-','',$request->date1);
                $ledger=$ledger->where('date','=',$date);
+               $title="<span class='mx-2'>Date:"._nepalidate($date) ."</span>";
 
             }elseif($type==2){
                 $range=NepaliDate::getDateWeek($request->year,$request->month,$request->week);
-               $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
-
+                $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+                $title="<span class='mx-2'>Year:".$year ."</span>";
+                $title.="<span class='mx-2'>Month:".$month ."</span>";
+                $title.="<span class='mx-2'>Week:".$week ."</span>";
 
             }elseif($type==3){
                 $range=NepaliDate::getDateMonth($request->year,$request->month);
                $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+               $title="<span class='mx-2'>Year:".$year ."</span>";
+                $title.="<span class='mx-2'>Month:".$month ."</span>";
+
             }elseif($type==4){
                 $range=NepaliDate::getDateYear($request->year);
                 $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+                $title="<span class='mx-2'>Year:".$year ."</span>";
 
 
             }elseif($type==5){
                 $range[1]=str_replace('-','',$request->date1);;
                 $range[2]=str_replace('-','',$request->date2);;
                  $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+                 $title="<span class='mx-2'>from:".$request->date1 ."</span>";
+                $title.="<span class='mx-2'>To:".$request->date2 ."</span>";
+
             }
             $ledgers=$ledger->get();
             $user=User::find($request->user_id);
-        return view('admin.distributer.data',compact('ledgers','type','range','user','date'));
+        return view('admin.distributer.data',compact('ledgers','type','user','title'));
 
     }
 

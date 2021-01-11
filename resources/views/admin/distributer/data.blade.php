@@ -77,13 +77,8 @@
                     </h2>
 
                     <div style="font-weight:800;text-align:center;">
-                        <span class="mx-3">  Ledger For : {{$user->name}}</span>
-                        @if ($type==1)
-                            <span class="mx-3">Date: {{_nepalidate($date)}}</span>
-                        @else
-                            <span class="mx-3">From: {{_nepalidate($range[1])}}</span>
-                            <span class="mx-3">To: {{_nepalidate($range[2])}}</span>
-                        @endif
+                        <span class="mx-3">  Ledger For : {{$user->name}} , </span>
+                        {!!$title!!}
                     </div>
                 </div>
                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
