@@ -36,6 +36,7 @@
             </thead>
             <tbody id="distributors">
                 @foreach(\App\Models\Distributer::get() as $d)
+                @if ($d->user!=null)
                     <tr style="cursor:pointer;" onclick="setData('id',{{$d->id}})" id="dis-{{$d->id}}" data-name="{{ $d->user->name }}" class="searchable">
                         <td>
                             {{$d->id}}
@@ -44,6 +45,7 @@
                             {{$d->user->name}}
                         </td>
                     </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

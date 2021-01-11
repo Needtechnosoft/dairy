@@ -28,7 +28,10 @@
                                     <select name="user_id" id="eu_id" class="form-control show-tick ms select2" data-placeholder="Select" required>
                                         <option></option>
                                         @foreach(\App\Models\Distributer::get() as $d)
-                                         <option value="{{ $d->id }}" id="opt-{{ $d->id }}" data-rate="{{ $d->rate }}" data-qty="{{ $d->amount }}">{{ $d->user->name }}</option>
+                                        @if ($d->user!=null)
+
+                                            <option value="{{ $d->id }}" id="opt-{{ $d->id }}" data-rate="{{ $d->rate }}" data-qty="{{ $d->amount }}">{{ $d->user->name }}</option>
+                                        @endif
                                         @endforeach
                                     </select>
                                 </div>
