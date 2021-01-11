@@ -26,6 +26,9 @@ class LedgerManage{
     * "105" = "Sold to distributer"
     * "114" = "distributer Payment"
     * "115" = "distributer sell cancel"
+    * "118" = "Account Adjustment"
+    * "119" = "Distributor opening balance"
+    * "120" = ""
 
     * "111" = "Distributor Payment"
     * "112" = "Employee Advaance payment"

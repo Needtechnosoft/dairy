@@ -119,6 +119,10 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('distributer/detail','Admin\DistributerController@distributerDetailLoad')->name('distributer.detail.load');
 
 
+    Route::get('distributer/opening','Admin\DistributerController@opening')->name('distributer.detail.opening');
+    Route::post('distributer/opening/list','Admin\DistributerController@loadLedger')->name('distributer.detail.opening.list');
+    Route::post('distributer/ledger','Admin\DistributerController@ledger')->name('distributer.detail.ledger');
+
     // XXX distributer sell
 
     Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');

@@ -14,4 +14,8 @@ class Ledger extends Model
             return Advance::find($this->foreign_key);
         }
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

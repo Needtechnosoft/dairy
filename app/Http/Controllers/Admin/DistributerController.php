@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\LedgerManage;
 use App\Models\Distributer;
 use App\Models\Distributorsell;
 use App\Models\Ledger;
@@ -73,4 +74,24 @@ class DistributerController extends Controller
         $user = User::where('id',$id)->where('role',2)->first();
         $user->delete();
     }
+
+    public function opening(){
+        return view('admin.distributer.balance.index');
+    }
+
+    public function loadLedger(Request $request){
+        $date = str_replace('-','',$request->date);
+        $ledgers=Ledger::where('date',$date)->where('identifire','119')->get();
+        return view('admin.distributer.balance.list',compact('ledgers'));
+
+    }
+    public function ledger(Request $request){
+        $date = str_replace('-','',$request->date);
+        $dis=Distributer::where('id',$request->id)->first();
+        $ledger=new LedgerManage($dis->user_id);
+        $d=$ledger->addLedger("Opening Balance",$request->type,$request->amount,$date,'119');
+        return view('admin.distributer.balance.single',compact('d'));
+
+    }
+
 }
