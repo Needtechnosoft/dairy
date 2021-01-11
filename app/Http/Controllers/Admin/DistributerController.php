@@ -61,12 +61,50 @@ class DistributerController extends Controller
         return view('admin.distributer.detail',compact('user'));
     }
 
-    public function distributerDetailLoad(Request $r){
-        $range=NepaliDate::getDate($r->year,$r->month,$r->session);
-        $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->orderBy('ledgers.id','asc')->get();
-        $d = Distributer::where('user_id',$r->user_id)->first();
-        $sell = Distributorsell::where('distributer_id',$d->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
-        return view('admin.distributer.data',compact('ledger','sell'));
+    public function distributerDetailLoad(Request $request){
+        // $range=NepaliDate::getDate($r->year,$r->month,$r->session);
+        // $ledger = Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->orderBy('ledgers.id','asc')->get();
+        // $d = Distributer::where('user_id',$r->user_id)->first();
+        // $sell = Distributorsell::where('distributer_id',$d->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->get();
+            $year=$request->year;
+            $month=$request->month;
+            $week=$request->week;
+            $session=$request->session;
+            $type=$request->type;
+            $range=[];
+            $data=[];
+            $date=1;
+
+            $ledger=Ledger::where('user_id',$request->user_id);
+            if($type==0){
+                $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+                $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+
+            }elseif($type==1){
+                $date=$date = str_replace('-','',$request->date1);
+               $ledger=$ledger->where('date','=',$date);
+
+            }elseif($type==2){
+                $range=NepaliDate::getDateWeek($request->year,$request->month,$request->week);
+               $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+
+
+            }elseif($type==3){
+                $range=NepaliDate::getDateMonth($request->year,$request->month);
+               $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+            }elseif($type==4){
+                $range=NepaliDate::getDateYear($request->year);
+                $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+
+
+            }elseif($type==5){
+                $range[1]=str_replace('-','',$request->date1);;
+                $range[2]=str_replace('-','',$request->date2);;
+                 $ledger=$ledger->where('date','>=',$range[1])->where('date','<=',$range[2]);
+            }
+            $ledgers=$ledger->get();
+            $user=User::find($request->user_id);
+        return view('admin.distributer.data',compact('ledgers','type','range','user','date'));
 
     }
 

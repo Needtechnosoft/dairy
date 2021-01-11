@@ -8,6 +8,10 @@ td, th{
     display:none !important;
 }
 
+.d-print-show{
+    display:block !important;
+}
+
 @media print {
     .fs {page-break-after: always;}
   }
