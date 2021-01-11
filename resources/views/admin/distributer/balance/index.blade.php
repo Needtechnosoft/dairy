@@ -21,7 +21,7 @@
 @endsection
 @section('content')
 <div class="row">
-    @include('admin.distributer.sell.productmodal')
+    {{-- @include('admin.distributer.sell.productmodal') --}}
     <div class="col-md-3">
         <div>
             <input type="hidden" id="currentdate">
@@ -120,7 +120,7 @@
 
 <!-- edit modal -->
 
-@include('admin.distributer.sell.editmodal')
+{{-- @include('admin.distributer.sell.editmodal') --}}
 @endsection
 @section('js')
 <script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
