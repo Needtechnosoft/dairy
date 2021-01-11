@@ -9,6 +9,7 @@ use App\Models\Ledger;
 use App\Models\User;
 use App\NepaliDate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DistributerController extends Controller
 {
@@ -33,7 +34,8 @@ class DistributerController extends Controller
     }
 
     public function DistributerList(){
-        $distributer = User::latest()->where('role',2)->get();
+        $distributer = User::join('distributers','distributers.user_id','=','users.id')->select('users.*',DB::raw('distributers.id as dis_id'))->where('users.role',2)->orderBy('distributers.id','asc')->get();
+        // dd($distributer);
         return view('admin.distributer.list',compact('distributer'));
     }
 

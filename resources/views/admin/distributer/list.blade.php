@@ -1,7 +1,6 @@
 @foreach($distributer as $user)
-@if ($user->distributer()!=null)
     <tr id="distributer-{{$user->id}}" data-name="{{ $user->name }}" class="searchable">
-        <td>{{ $user->distributer()->id }}</td>
+        <td>{{ $user->dis_id }}</td>
         <td>{{ $user->name }}</td>
         <td>{{ $user->phone }}</td>
         <td>{{ $user->address }}</td>
@@ -14,5 +13,4 @@
             |
             <button class="btn btn-danger btn-sm" onclick="removeData({{$user->id}});">Delete</button></td>
     </tr>
-@endif
 @endforeach
