@@ -60,22 +60,23 @@
                         <input readonly type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="user_id" placeholder="Date" onchange="">
                     </div>
                 </div>
+            </div>
+            <div class="row">
 
-
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="id">Distributer</label>
                         <input type="number" id="id" name="id" class="form-control next" data-next="product_id">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="amount">Amount</label>
                         <input type="number" id="amount" name="amount" class="form-control next" data-next="product_id">
 
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="type">Type</label>
                         <select name="type" id="type"  class="form-control show-tick ms ">
