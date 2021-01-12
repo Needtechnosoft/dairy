@@ -31,7 +31,7 @@ class DistributersellController extends Controller
         $sell->save();
         $user = Distributer::where('id',$request->id)->first();
         $ledger = new LedgerManage($user->user_id);
-        $ledger->addLedger($sell->product->name.' ('.$request->qty.''.$sell->product->unit. ')',1,$request->total,$date,'105',$sell->id);
+        $ledger->addLedger($sell->product->name.' (<span class="d-show-rate">'.$request->rate .' X </span>'.$request->qty.''.$sell->product->unit. ')',1,$request->total,$date,'105',$sell->id);
         if($request->paid >0){
             $ledger->addLedger('Paid amount received',2,$request->paid,$date,'114',$sell->id);
         }

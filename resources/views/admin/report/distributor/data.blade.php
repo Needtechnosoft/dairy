@@ -10,6 +10,7 @@
         }
         thead {display: table-header-group;}
         tfoot {display: table-header-group;}
+
     </style>
     <table class="table">
         <tr>

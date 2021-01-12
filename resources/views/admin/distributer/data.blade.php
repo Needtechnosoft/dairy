@@ -2,6 +2,7 @@
     .d-print-show{
         display:none !important;
     }
+
 </style>
 <div class="row">
     {{-- <div class="col-md-12 mt-3">
@@ -62,7 +63,13 @@
                 <div class="d-print-show">
                     <style>
                         td,th{
-                            border:1px solid black;
+                            border:1px solid black !important;
+                            padding:2px !important;
+
+                        }
+                        td{
+                            font-size: 1.2rem !important;
+                            font-weight: 600 !important;
                         }
                         table{
                             width:100%;
@@ -70,6 +77,14 @@
                         }
                         thead {display: table-header-group;}
                         tfoot {display: table-header-group;}
+                        .d-show-rate{
+
+                            @if(env('showdisrate',0)==1)
+                                display:inline;
+                            @else
+                                display:none !important;
+                            @endif
+                        }
                     </style>
                     <h2 style="text-align: center;margin-bottom:0px;font-weight:800;font-size:2rem;">
                         {{env('APP_NAME','Dairy')}} <br>
@@ -93,7 +108,7 @@
                     @foreach ($ledgers as $l)
                         <tr>
                             <td>{{ _nepalidate($l->date) }}</td>
-                            <td>{{ $l->title }}</td>
+                            <td>{!! $l->title !!}</td>
 
                             <td>
                                 @if ($l->type==1)
