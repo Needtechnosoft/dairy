@@ -122,6 +122,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('distributer/opening','Admin\DistributerController@opening')->name('distributer.detail.opening');
     Route::post('distributer/opening/list','Admin\DistributerController@loadLedger')->name('distributer.detail.opening.list');
     Route::post('distributer/ledger','Admin\DistributerController@ledger')->name('distributer.detail.ledger');
+    Route::post('distributer/ledger/update','Admin\DistributerController@updateLedger')->name('distributer.detail.ledger.update');
 
     // XXX distributer sell
 
@@ -167,6 +168,15 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::post('add','Admin\MilkPaymentController@add')->name('add');
             Route::post('update','Admin\MilkPaymentController@update')->name('update')->middleware('authority');
             // Route::post('del','Admin\ProductController@del')->name('del')->middleware('authority');
+        });
+    });
+
+
+    // XXX Ledgers
+    Route::group(['prefix' => 'ledger'], function () {
+        Route::name('ledger.')->group(function(){
+            Route::match(['GET','POST'],'update','LedgerController@upate')->name('update');
+
         });
     });
 

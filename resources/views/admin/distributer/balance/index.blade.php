@@ -105,7 +105,7 @@
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Amount</th>
-
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="sellDisDataBody">
@@ -171,18 +171,17 @@
         if (confirm('Are you sure?')) {
             axios({
                     method: 'post',
-                    url: '{{route("admin.dis.sell.del")}}',
+                    url: '{{route("distributer.detail.ledger.update")}}',
                     data:{
-                        'id':id,
-                        'date':$('#currentdate').val()
+                        'id':id
                     }
                 })
                 .then(function(response) {
                     showNotification('bg-danger', 'Sellitem deleted successfully!');
-                    $('#sell-' + id).remove();
+                    $('#ledger-' + id).remove();
                 })
-                .catch(function(response) {
-                    console.log(response)
+                .catch(function(err) {
+                    showNotification('bg-danger', err.response.data);
                 })
         }
     }

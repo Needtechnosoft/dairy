@@ -145,4 +145,19 @@ class DistributerController extends Controller
 
     }
 
+    public function updateLedger(Request $request){
+        // return response("multiple Ledger Already added Cannot be Deleted for distributor",500);
+
+        $oldledger=Ledger::find($request->id);
+        $user=User::find($oldledger->user_id);
+        if(Ledger::where('user_id',$oldledger->user_id)->count()>1){
+            return response("multiple Ledger Already added Cannot be Deleted",500);
+        }
+        $oldledger->delete();
+        $user->amount=0;
+        $user->save();
+    }
+
+
+
 }
