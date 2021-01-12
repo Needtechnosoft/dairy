@@ -62,15 +62,18 @@
             <div id="ledger">
                 <div class="d-print-show">
                     <style>
+                        @media print {
+                            td{
+                                font-size: 1.2rem !important;
+                                font-weight: 600 !important;
+                            }
+                        }
                         td,th{
                             border:1px solid black !important;
                             padding:2px !important;
 
                         }
-                        td{
-                            font-size: 1.2rem !important;
-                            font-weight: 600 !important;
-                        }
+
                         table{
                             width:100%;
                             border-collapse: collapse;
