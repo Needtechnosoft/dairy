@@ -138,7 +138,9 @@
                                 @if ( $l->identifire==119)
                                     <button onclick="initLedgerChange(this);"  data-ledger="{{$l->toJson()}}">Edit</button>
                                 @elseif($l->identifire==105)
-                                    <button onclick="sellLedgerChange(this);" data-foreign="{{$l->getForeign()->toJson()}}"  data-ledger="{{$l->toJson()}}">Edit</button>
+                                    @if ($l->getForeign()!=null)
+                                        <button onclick="sellLedgerChange(this);" data-foreign="{{$l->getForeign()->toJson()}}"  data-ledger="{{$l->toJson()}}">Edit</button>
+                                    @endif
                                 @elseif($l->identifire==114)
                                     <button onclick="payLedgerChange(this);" data-foreign="{{$l->getForeign()->toJson()}}"  data-ledger="{{$l->toJson()}}">Edit</button>
 
