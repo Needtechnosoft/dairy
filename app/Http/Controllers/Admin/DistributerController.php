@@ -115,8 +115,10 @@ class DistributerController extends Controller
                 $title.="<span class='mx-2'>To:".$request->date2 ."</span>";
 
             }
-            $ledgers=$ledger->get();
+            // dd($ledger->toSql(),$ledger->getBindings());
+            $ledgers=$ledger->orderBy('id','asc')->get();
             $user=User::find($request->user_id);
+
         return view('admin.distributer.data',compact('ledgers','type','user','title'));
 
     }

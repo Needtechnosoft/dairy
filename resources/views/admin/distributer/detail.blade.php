@@ -87,6 +87,9 @@
 <div id="allData">
 
 </div>
+@include('admin.distributer.balance.change')
+@include('admin.distributer.balance.sellitem_change')
+@include('admin.distributer.balance.payment_change')
 @endsection
 @section('js')
 <script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
@@ -165,5 +168,147 @@
         loadData();
     };
 
+
+    // XXX simple ledger change
+    initlock=false;
+    function initLedgerChange(ele){
+        data=$(ele).data('ledger');
+        console.log(data);
+        $('#title').html(data.title);
+        // debugger;
+        $('#amount').val(data.amount);
+        // debugger;
+
+        $('#id').val(data.id);
+        // debugger;
+
+        $('#l_type').val(data.type).change();
+        // debugger;
+
+        $('#change').modal('show');
+    }
+
+    function saveLedgerChange(){
+        if(!initlock){
+            if(confirm('Do You Want TO Update Ledger ')){
+
+                data={
+                    id:$('#id').val(),
+                    amount:$('#amount').val(),
+                    type:$('#l_type').val(),
+                };
+
+                initlock=true;
+                axios.post("{{route('ledger.update')}}",data)
+                .then(function(response){
+                    console.log(response);
+                    initlock=false;
+                    $('#change').modal('hide');
+                    loadData();
+                })
+                .catch(function(err){
+                    initlock=false;
+                    alert('Ledger Cannot be Updated');
+                })
+            }
+        }
+    }
+
+    // XXX sell item change
+    selllock=false;
+    function sellLedgerChange(ele){
+        data=$(ele).data('ledger');
+        selldata=$(ele).data('foreign');
+        console.log(data);
+        $('#s_title').html(data.title);
+        // debugger;
+        $('#s_amount').val(selldata.total);
+        // debugger;
+
+        $('#id').val(data.id);
+        // debugger;
+
+        $('#s_rate').val(selldata.rate).change();
+        $('#s_qty').val(selldata.qty).change();
+        // debugger;
+
+        $('#sellitem_change').modal('show');
+    }
+
+    function s_calculate(){
+        $('#s_amount').val($('#s_rate').val()*$('#s_qty').val());
+    }
+
+    function saveSellLedgerChange(){
+        if(!selllock){
+            if(confirm('Do You Want TO Update Ledger ')){
+
+                data={
+                    id:$('#id').val(),
+                    amount:$('#s_amount').val(),
+                    rate:$('#s_rate').val(),
+                    qty:$('#s_qty').val(),
+                };
+
+                selllock=true;
+                axios.post("{{route('ledger.sellupdate')}}",data)
+                .then(function(response){
+                    console.log(response);
+                    selllock=false;
+                    $('#sellitem_change').modal('hide');
+                    loadData();
+                })
+                .catch(function(err){
+                    selllock=false;
+                    alert('Ledger Cannot be Updated');
+                })
+            }
+        }
+    }
+
+      // XXX payment change
+      paylock=false;
+    function payLedgerChange(ele){
+        data=$(ele).data('ledger');
+        selldata=$(ele).data('foreign');
+        console.log(data);
+        $('#p_title').html(data.title);
+        // debugger;
+        $('#p_amount').val(selldata.paid);
+        // debugger;
+
+        $('#id').val(data.id);
+        // debugger;
+
+        $('#pay_change').modal('show');
+    }
+
+
+
+    function savePayLedgerChange(){
+        if(!paylock){
+            if(confirm('Do You Want TO Update Ledger ')){
+
+                data={
+                    id:$('#id').val(),
+                    amount:$('#p_amount').val(),
+
+                };
+
+                paylock=true;
+                axios.post("{{route('ledger.payupdate')}}",data)
+                .then(function(response){
+                    console.log(response);
+                    paylock=false;
+                    $('#payment_change').modal('hide');
+                    loadData();
+                })
+                .catch(function(err){
+                    paylock=false;
+                    alert('Ledger Cannot be Updated');
+                })
+            }
+        }
+    }
 </script>
 @endsection

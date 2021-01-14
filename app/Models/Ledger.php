@@ -12,6 +12,8 @@ class Ledger extends Model
     public function getForeign(){
         if($this->identifier=="102"){
             return Advance::find($this->foreign_key);
+        }elseif($this->identifier='105'){
+            return Distributorsell::find($this->foreign_key);
         }
     }
 

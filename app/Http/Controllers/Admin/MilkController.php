@@ -76,4 +76,18 @@ class MilkController extends Controller
         return view('admin.farmer.minlist',compact('farmers'));
     }
 
+    public function update(Request $request){
+        $milkdata=Milkdata::find($request->id);
+        $milkdata->e_amount=$request->evening;
+        $milkdata->m_amount=$request->morning;
+        $milkdata->save();
+        return response('ok',200);
+    }
+    public function delete(Request $request){
+        $milkdata=Milkdata::find($request->id);
+
+        $milkdata->delete();
+        return response('ok',200);
+    }
+
 }

@@ -52,6 +52,7 @@
                             <th>Date</th>
                             <th>Morning (Liter)</th>
                             <th>Evening (liter)</th>
+                            <td class="d-print-none"></td>
                         </tr>
                         @php
                             $m = 0;
@@ -62,6 +63,14 @@
                                 <td>{{ _nepalidate($milk->date) }}</td>
                                 <td>{{ $milk->m_amount }}</td>
                                 <td>{{ $milk->e_amount }}</td>
+                                <td class="d-print-none">
+                                    <button class="btn btn-primary" data-milk="{{$milk->toJson()}}" onclick="showMilkUpdate(this)">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger" data-milk="{{$milk->toJson()}}" onclick="delMilkData(this);">
+                                        delete
+                                    </button>
+                                </td>
                             </tr>
                             @php
                                 $m += $milk->m_amount;
@@ -72,6 +81,7 @@
                                 <td><strong>Total</strong></td>
                                 <td>{{ $m }}</td>
                                 <td>{{ $e }}</td>
+
                             </tr>
                     </table>
                         <strong>Grand Total : {{ $m + $e }}</strong> (Liter) <br>
@@ -104,12 +114,23 @@
                             <th>Date</th>
                             <th>Snf (%)</th>
                             <th>Fats (%)</th>
+                            <td class="d-print-none">
+
+                            </td>
                         </tr>
                             @foreach ($snfFats as $sf)
                                 <tr>
                                 <td>{{ _nepalidate($sf->date) }}</td>
                                     <td>{{ $sf->snf }}</td>
                                     <td>{{ $sf->fat }}</td>
+                                    <td class="d-print-none">
+                                        <button class="btn btn-primary" data-snffat="{{$sf->toJson()}}" onclick="showSnfFatUpdate(this)">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-danger" data-snffat="{{$sf->toJson()}}" onclick="delSnfFat(this);">
+                                            delete
+                                        </button>
+                                    </td>
                                 </tr>
 
                             @endforeach

@@ -24,6 +24,7 @@ Route::get('/','HomeController@home');
 
 
 
+
 Route::match(['get', 'post'], 'login', 'AuthController@login')->name('login');
 Route::match(['get', 'post'], 'logout', 'AuthController@logout')->name('logout');
 
@@ -63,6 +64,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX milk data
     Route::get('milk-data','Admin\MilkController@index')->name('admin.milk');
     Route::post('milk-data-save/{type}','Admin\MilkController@saveMilkData')->name('store.milk');
+    Route::post('milk-data-update','Admin\MilkController@update')->name('store.milk.update');
+    Route::post('milk-data-delete','Admin\MilkController@delete')->name('store.milk.delete');
     Route::post('milk-data-load','Admin\MilkController@milkDataLoad')->name('load.milk.data');
     Route::post('farmer-data-load','Admin\MilkController@loadFarmerData')->name('load.farmer.data');
 
@@ -70,6 +73,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('snf-fats','Admin\SnffatController@index')->name('admin.snf.fat');
     Route::post('snf-fats-data','Admin\SnffatController@snffatDataLoad')->name('load.snffat.data');
     Route::post('snf-fats-save','Admin\SnffatController@saveSnffatData')->name('store.snffat');
+    Route::post('snf-fats-update','Admin\SnffatController@update')->name('store.snffat.update');
+    Route::post('snf-fats-delete','Admin\SnffatController@delete')->name('store.snffat.delete');
 
     // XXX items
     Route::get('items','Admin\ItemController@index')->name('admin.item');
@@ -175,8 +180,9 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX Ledgers
     Route::group(['prefix' => 'ledger'], function () {
         Route::name('ledger.')->group(function(){
-            Route::match(['GET','POST'],'update','LedgerController@upate')->name('update');
-
+            Route::match(['GET','POST'],'update','LedgerController@update')->name('update');
+            Route::match(['GET','POST'],'sellupdate','LedgerController@sellUpdate')->name('sellupdate');
+            Route::match(['GET','POST'],'payupdate','LedgerController@payUpdate')->name('payupdate');
         });
     });
 

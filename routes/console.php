@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Distributer;
+use App\Models\Distributorsell;
+use App\Models\Ledger;
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -17,3 +21,11 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('clear', function () {
+    $user=User::find(685);
+    Ledger::where('user_id',685)->delete();
+    Distributorsell::where('distributer_id',1)->delete();
+    $user->amount=0;
+    $user->save();
+})->purpose('clear 685');

@@ -12,6 +12,9 @@
 @php
 
 @endphp
+@include('admin.farmer.snippet.updatesnf')
+@include('admin.farmer.snippet.updatemilkdata')
+
 <div class="row">
     <div class="col-md-3">
         <select name="year" id="year" class="form-control show-tick ms select2">
@@ -97,5 +100,19 @@
         loadData();
     };
 
+    function snfUpdated(data){
+        loadData();
+    }
+
+    function snfDeleted(data){
+        loadData();
+    }
+     function milkUpdated(data){
+        loadData();
+    }
+
+    function milkDeleted(data){
+        loadData();
+    }
 </script>
 @endsection

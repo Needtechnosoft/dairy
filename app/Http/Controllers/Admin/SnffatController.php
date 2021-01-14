@@ -26,8 +26,8 @@ class SnffatController extends Controller
 
             }
         }
-        $checkData = Snffat::where(['date'=>$date,'user_id'=>$user->id,'center_id'=>$request->center_id])->first();
-        if($checkData == null){
+        // $checkData = Snffat::where(['date'=>$date,'user_id'=>$user->id,'center_id'=>$request->center_id])->first();
+        // if($checkData == null){
             $snffat = new Snffat();
             $snffat->snf = $request->snf;
             $snffat->fat = $request->fat;
@@ -37,12 +37,12 @@ class SnffatController extends Controller
             $snffat->save();
             $snffat->no=$request->user_id;
             return view('admin.snf.single',compact('snffat'));
-        }else{
-            $checkData->snf = $request->snf;
-            $checkData->fat = $request->fat;
-            $checkData->save();
-            return response()->json($checkData);
-        }
+        // }else{
+        //     $checkData->snf = $request->snf;
+        //     $checkData->fat = $request->fat;
+        //     $checkData->save();
+        //     return response()->json($checkData);
+        // }
 
     }
 
@@ -51,6 +51,21 @@ class SnffatController extends Controller
         $date = str_replace('-', '', $request->date);
         $data = Snffat::where(['date'=>$date ,'center_id'=>$request->center_id])->get();
         return view('admin.snf.dataload',['data'=>$data]);
+    }
+
+    public function delete(Request $request){
+        // dd($request->all());
+        $snffat=Snffat::find($request->id);
+        $snffat->delete();
+        return response('ok',200);
+    }
+
+    public function update(Request $request){
+        $snffat=Snffat::find($request->id);
+        $snffat->snf = $request->snf;
+        $snffat->fat = $request->fat;
+        $snffat->save();
+        return response('ok',200);
     }
 
 }

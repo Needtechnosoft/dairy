@@ -67,11 +67,17 @@
                                 font-size: 1.2rem !important;
                                 font-weight: 600 !important;
                             }
+
+
+                            th:last-child, td:last-child {
+                                display: none;
+                            }
+
                         }
                         td,th{
                             border:1px solid black !important;
                             padding:2px !important;
-
+                            font-weight: 600 !important;
                         }
 
                         table{
@@ -106,27 +112,37 @@
                         <th>Cr. (Rs.)</th>
                         <th>Dr. (Rs.)</th>
                         <th>Balance (Rs.)</th>
+                        <th></th>
                     </tr>
 
                     @foreach ($ledgers as $l)
-                        <tr>
+                        <tr data-id="ledger{{$l->id}}">
                             <td>{{ _nepalidate($l->date) }}</td>
                             <td>{!! $l->title !!}</td>
 
                             <td>
                                 @if ($l->type==1)
-                                    {{ $l->amount }}
+                                    {{ rupee((float)$l->amount) }}
                                 @endif
                             </td>
                             <td>
                                 @if($l->type==2)
-                                {{ $l->amount }}
+                                {{ rupee((float)$l->amount) }}
                                 @endif
                             </td>
                             <td>
-                                {{ $l->dr == null?"":"Dr. ".$l->dr }}
+                                {{ (($l->dr == null)|| ($l->dr<=0))?"":"Dr. ".rupee((float)$l->dr) }}
+                                {{(($l->cr == null)|| ($l->cr<=0))?"":"Cr. ".rupee((float)$l->cr )}}
+                            </td>
+                            <td>
+                                @if ( $l->identifire==119)
+                                    <button onclick="initLedgerChange(this);"  data-ledger="{{$l->toJson()}}">Edit</button>
+                                @elseif($l->identifire==105)
+                                    <button onclick="sellLedgerChange(this);" data-foreign="{{$l->getForeign()->toJson()}}"  data-ledger="{{$l->toJson()}}">Edit</button>
+                                @elseif($l->identifire==114)
+                                    <button onclick="payLedgerChange(this);" data-foreign="{{$l->getForeign()->toJson()}}"  data-ledger="{{$l->toJson()}}">Edit</button>
 
-                                {{ $l->cr == null?"--":"Cr. ".$l->cr }}
+                                @endif
                             </td>
                         </tr>
                     @endforeach

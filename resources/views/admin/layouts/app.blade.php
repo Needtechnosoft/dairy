@@ -91,6 +91,9 @@
         </div>
       </div>
     <!-- Jquery Core Js -->
+    <script>
+        const printcss ='{{ asset("backend/css/print.css") }}';
+    </script>
     <script src="{{ asset('backend/bundles/libscripts.bundle.js') }}"></script> <!-- Lib Scripts Plugin Js ( jquery.v3.2.1, Bootstrap4 js) -->
     <script src="{{ asset('backend/bundles/vendorscripts.bundle.js') }}"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 

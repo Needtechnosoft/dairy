@@ -9,6 +9,7 @@
 
 @endsection
 @section('content')
+@include('admin.farmer.snippet.updatesnf')
 <div class="row">
     <div class="col-md-3">
         <div id="_farmers">
@@ -291,6 +292,16 @@
         });
     })
 
+    function snfUpdated(data){
+        console.log(data);
+        $("#"+data.id+"_snf").html(data.snf);
+        $("#"+data.id+"_fat").html(data.fat);
+    }
+
+    function snfDeleted(data){
+        console.log('datadeleted',data);
+        $("#snffat_"+data.id).remove();
+    }
 </script>
 
 @endsection
