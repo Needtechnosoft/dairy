@@ -17,6 +17,7 @@ use App\Models\SessionWatch;
 use App\Models\FarmerSession;
 use App\Models\EmployeeAdvance;
 use App\Models\EmployeeReport;
+
 use App\NepaliDate;
 use Illuminate\Http\Request;
 
@@ -454,13 +455,68 @@ class ReportController extends Controller
 
     public function distributor(Request $request){
         if($request->getMethod()=="POST"){
+            $elements=[];
             $range = NepaliDate::getDate($request->year,$request->month,$request->session);
             $data=Distributorsell::join('distributers','distributorsells.distributer_id','=',"distributers.id")
             ->join('users','users.id','=','distributers.user_id')
             ->where('distributorsells.date','>=',$range[1])
             ->where('distributorsells.date','<=',$range[2])
-            ->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty, users.name,sum(distributorsells.total) total'))->groupBy('id','name')->get();
+            ->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty,users.id as users_id, users.name,sum(distributorsells.total) total,sum(distributorsells.paid) paid'))->groupBy('id','name','users_id')->get();
+            foreach($data as $d){
+                $element=$d->toArray();
+                $ledgers=Ledger::where('user_id',$d->users_id)
+                        ->where('date','>=',$range[1])
+                        ->where('date','<=',$range[2])->OrderBy('id','asc')->get();
 
+                $last=$ledgers->last();
+
+                $first=$ledgers->first();
+                $balance=0;
+                if($last->cr>0){
+                    $element['due']=$last->cr;
+                    $element['advance']=0;
+
+                }elseif($last->dr>0){
+                    $element['advance']=$last->dr;
+                    $element['due']=0;
+
+                }
+
+                if($first->identifire==119){
+                    if($first->type==1){
+                        $balance=(-1)*$first->amount;
+                    }else{
+                        $balance=$first->amount;
+                    }
+                }else{
+
+
+                    if($first->cr>0){
+                        $balance=(-1)*$first->cr;
+
+                    }elseif($first->dr>0){
+                        $balance=$first->dr;
+                    }
+
+                    if($first->type==1){
+                        $balance+=$first->amount;
+                    }else{
+                        $balance-=$first->amount;
+
+                    }
+                }
+
+                if($balance>0){
+                    $element['prevadvance']=$balance;
+                    $element['prevdue']=0;
+                }else{
+                    $element['prevadvance']=0;
+                    $element['prevdue']=(-1)*$balance;
+                }
+
+                array_push($elements,$element);
+            }
+            dd($elements);
             return view('admin.report.distributor.data',compact('data'));
 
         }else{

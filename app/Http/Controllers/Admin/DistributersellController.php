@@ -40,21 +40,26 @@ class DistributersellController extends Controller
 
     public function listDistributersell(Request $r){
         $date = str_replace('-','',$r->date);
+
         $sells = Distributorsell::where('date',$date)->get();
+        // dd($sells,$date);
         return view('admin.distributer.sell.list',compact('sells'));
     }
 
     public function deleteDistributersell(Request $request){
-        $date = str_replace('-','',$request->date);
+        // $date = str_replace('-','',$request->date);
         $sell = Distributorsell::find($request->id);
-        $tempamount=$sell->total;
-        $tempid=$sell->id;
-        $title=$sell->product->name.' ('.$sell->rate .' X '.$sell->qty.''.$sell->product->unit. ')';
+        // $tempamount=$sell->total;
+        // $tempid=$sell->id;
+        // $title=$sell->product->name.' ('.$sell->rate .' X '.$sell->qty.''.$sell->product->unit. ')';
         $sell->delete();
-        $distributor = Distributer::where('id',$sell->distributer_id)->first();
-        $ledger = new LedgerManage($distributor->user_id);
-        $ledger->addLedger('Sell Canceled: '.$title,2,$tempamount,$date,'115',$tempid);
-        return response('ok');
+        // $distributor = Distributer::where('id',$sell->distributer_id)->first();
+        // $ledger = new LedgerManage($distributor->user_id);
+        // $ledger->addLedger('Sell Canceled: '.$title,2,$tempamount,$date,'115',$tempid);
+
+        $data=Ledger::where('foreign_key',$request->id)->get();
+        LedgerManage::delLedger($data);
+        // return response('ok');
     }
 
 
