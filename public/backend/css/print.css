@@ -14,4 +14,7 @@ td, th{
 
 @media print {
     .fs {page-break-after: always;}
+    td, th{
+       font-weight:600;
+    }
   }

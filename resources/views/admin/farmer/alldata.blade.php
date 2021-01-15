@@ -151,7 +151,8 @@
                                 }
                             @endphp
                             @if ($cc>0||$tc>0)
-                                <strong>Milk Total : {{ $milktotal }} </strong><br>
+                                <strong>Milk Total : {{ $milkamount }} </strong><br>
+                                <strong>Amount : {{ $milktotal }} </strong><br>
                                 <strong>+TS Commission ({{(float)($center->tc)}}%) : {{ $tctotal }}</strong> <br>
                                 <strong>+Cooling Cost: {{ $cctotal }}</strong>
                                 <hr>
