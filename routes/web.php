@@ -48,11 +48,13 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('farmer-advance-delete/{id}', 'Admin\AdvanceController@deleteFarmerAdvance')->middleware('authority');
     Route::post('farmer-advance-list-by-date', 'Admin\AdvanceController@advanceListByDate')->name('admin.advance.list.by.date');
 
-    // farmer due payments
+    // XXX farmer due payments
     Route::get('farmer-due','Admin\FarmerController@due')->name('admin.farmer.due');
     Route::post('farmer-due-load','Admin\FarmerController@dueLoad')->name('admin.farmer.due.load');
     Route::post('farmer-pay-save','Admin\FarmerController@paymentSave')->name('admin.farmer.pay.save');
 
+    Route::match(['GET','POST'],'farmer-add-due-list','Admin\FarmerController@addDueList')->name('admin.farmer.due.add.list');
+    Route::match(['GET','POST'],'farmer-add-due','Admin\FarmerController@addDue')->name('admin.farmer.due.add');
 
     // XXX collection centers
     Route::get('collection-centers', 'Admin\CenterController@index')->name('admin.collection');
@@ -183,6 +185,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'update','LedgerController@update')->name('update');
             Route::match(['GET','POST'],'sellupdate','LedgerController@sellUpdate')->name('sellupdate');
             Route::match(['GET','POST'],'payupdate','LedgerController@payUpdate')->name('payupdate');
+
+            Route::match(['GET','POST'],'del','LedgerController@del')->name('del');
         });
     });
 

@@ -187,4 +187,35 @@ class FarmerController extends Controller
         $ledger = new LedgerManage($user->id);
         $ledger->addLedger('Farmer due amount paid',2,$paidmaount,$date,'107',$farmerPay->id);
     }
+
+    public function addDueList(Request $request){
+        if($request->getMethod()=="POST"){
+            $date = str_replace('-','',$request->date);
+
+            $ledgers = User::join('farmers','users.id','=','farmers.user_id')
+            ->join('ledgers','ledgers.user_id','=','users.id')
+            ->where('farmers.center_id',$request->center)
+            ->where('ledgers.date',$date)
+            ->where('ledgers.identifire',120)
+            ->select('ledgers.id','ledgers.amount','ledgers.type','users.no','users.name','farmers.center_id')->get();
+            // dd($ledgers,$request->all());
+            return view('admin.farmer.due.list.list',compact('ledgers'));
+
+        }else{
+            return view('admin.farmer.due.list.index');
+        }
+    }
+
+    public function addDue(Request $request){
+        $date = str_replace('-','',$request->date);
+        $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->id)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
+        $ledger = new LedgerManage($user->id);
+        $l=$ledger->addLedger('previous Balance',$request->type,$request->amount,$date,'120');
+        $l->name=$user->name;
+        $l->no=$user->no;
+        return view('admin.farmer.due.list.single',['ledger'=>$l]);
+    }
+
+
+
 }
