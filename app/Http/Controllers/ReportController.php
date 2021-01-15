@@ -456,13 +456,45 @@ class ReportController extends Controller
     public function distributor(Request $request){
         if($request->getMethod()=="POST"){
             $elements=[];
-            $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+            $year=$request->year;
+            $month=$request->month;
+            $week=$request->week;
+            $session=$request->session;
+            $type=$request->type;
+            $range=[];
+            $data=[];
+
             $data=Distributorsell::join('distributers','distributorsells.distributer_id','=',"distributers.id")
-            ->join('users','users.id','=','distributers.user_id')
-            ->where('distributorsells.date','>=',$range[1])
-            ->where('distributorsells.date','<=',$range[2])
-            ->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty,users.id as users_id, users.name,sum(distributorsells.total) total,sum(distributorsells.paid) paid'))->groupBy('id','name','users_id')->get();
-            foreach($data as $d){
+            ->join('users','users.id','=','distributers.user_id');
+            if($type==0){
+                $range = NepaliDate::getDate($request->year,$request->month,$request->session);
+                $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+            }elseif($type==1){
+                $date=$date = str_replace('-','',$request->date1);
+               $data=$data->where('distributorsells.date','=',$date);
+
+            }elseif($type==2){
+                $range=NepaliDate::getDateWeek($request->year,$request->month,$request->week);
+               $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+
+            }elseif($type==3){
+                $range=NepaliDate::getDateMonth($request->year,$request->month);
+               $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+            }elseif($type==4){
+                $range=NepaliDate::getDateYear($request->year);
+               $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+
+
+            }elseif($type==5){
+                $range[1]=str_replace('-','',$request->date1);;
+                $range[2]=str_replace('-','',$request->date2);;
+               $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+            }
+
+            $datas=$data->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty,users.id as users_id, users.name,sum(distributorsells.total) total,sum(distributorsells.paid) paid'))->groupBy('id','name','users_id')->get();
+            foreach($datas as $d){
                 $element=$d->toArray();
                 $ledgers=Ledger::where('user_id',$d->users_id)
                         ->where('date','>=',$range[1])
@@ -525,8 +557,8 @@ class ReportController extends Controller
 
                 array_push($elements,$element);
             }
-            dd($elements);
-            return view('admin.report.distributor.data',compact('data'));
+            // dd($elements);
+            return view('admin.report.distributor.data',compact('elements'));
 
         }else{
             return view('admin.report.distributor.index');

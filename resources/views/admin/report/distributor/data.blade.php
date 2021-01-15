@@ -21,17 +21,33 @@
                 Name
             </th>
             <th>
-                Milk (ℓ)
+                Prev Due
             </th>
             <th>
-                Total (Rs.)
+                Prev Advance
             </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Paid
+            </th>
+            <th>
+                 Due
+            </th>
+            <th>
+                 Advance
+            </th>
+
         </tr>
         @php
             $totalQty=0;
             $total=0;
         @endphp
-        @foreach ($data as $_data)
+        @foreach ($elements as $data)
+            @php
+                $_data=(object)$data;
+            @endphp
             <tr>
                 <td>
                     {{$_data->id}}
@@ -40,22 +56,37 @@
                     {{$_data->name}}
                 </td>
                 <td>
+                    {{(float)$_data->prevdue}}
+                </td>
+                <td>
+                    {{(float)$_data->prevadvance}}
+                </td>
+                {{-- <td>
                     {{$_data->qty}}
                     @php
                         $totalQty+=$_data->qty;
                     @endphp
-                </td>
+                </td> --}}
                 <td>
-                    {{$_data->total}}
+                    {{(float)$_data->total}}
                     @php
                         $total+=$_data->total;
                     @endphp
+                </td>
+                <td>
+                    {{(float)$_data->paid}}
+                </td>
+                <td>
+                    {{(float)$_data->due}}
+                </td>
+                <td>
+                    {{(float)$_data->advance}}
                 </td>
             </tr>
 
         @endforeach
 
-        <tr class="font-weight-bold">
+        {{-- <tr class="font-weight-bold">
             <td colspan="2" class="text-right">
                 Total
             </td>
@@ -65,6 +96,6 @@
             <td>
                 {{$total}}
             </td>
-        </tr>
+        </tr> --}}
     </table>
 </div>
