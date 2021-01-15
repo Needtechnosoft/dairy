@@ -499,9 +499,9 @@ class ReportController extends Controller
                     }
 
                     if($first->type==1){
-                        $balance+=$first->amount;
-                    }else{
                         $balance-=$first->amount;
+                    }else{
+                        $balance+=$first->amount;
 
                     }
                 }
