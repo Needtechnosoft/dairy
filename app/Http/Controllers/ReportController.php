@@ -466,11 +466,13 @@ class ReportController extends Controller
                 $element=$d->toArray();
                 $ledgers=Ledger::where('user_id',$d->users_id)
                         ->where('date','>=',$range[1])
-                        ->where('date','<=',$range[2])->OrderBy('id','asc')->get();
+                        ->where('date','<=',$range[2])->where('identifire','<>',115)->OrderBy('id','asc')->get();
 
                 $last=$ledgers->last();
 
+                $tt=true;
                 $first=$ledgers->first();
+
                 $balance=0;
                 if($last->cr>0){
                     $element['due']=$last->cr;
@@ -489,7 +491,14 @@ class ReportController extends Controller
                         $balance=$first->amount;
                     }
                 }else{
-
+                    $i=0;
+                    while($tt){
+                        $tt=Ledger::where('foreign_key',$first->foreign_key)->where('identifire',115)->count()>0;
+                        if($tt){
+                            $i+=1;
+                            $first=$ledgers[$i];
+                        }
+                    }
 
                     if($first->cr>0){
                         $balance=(-1)*$first->cr;
@@ -499,9 +508,9 @@ class ReportController extends Controller
                     }
 
                     if($first->type==1){
-                        $balance-=$first->amount;
-                    }else{
                         $balance+=$first->amount;
+                    }else{
+                        $balance-=$first->amount;
 
                     }
                 }

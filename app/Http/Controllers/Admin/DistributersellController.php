@@ -59,7 +59,7 @@ class DistributersellController extends Controller
 
         $data=Ledger::where('foreign_key',$request->id)->get();
         LedgerManage::delLedger($data);
-        // return response('ok');
+        return response('ok');
     }
 
 
