@@ -282,6 +282,7 @@ class LedgerController extends Controller
         $user=User::find($ledger->user_id);
         $ledgers=Ledger::where('id','>',$request->id)->where('user_id',$ledger->user_id)->orderBy('id','asc')->get();
         $track=0;
+
         //find first point
         if($ledger->cr>0){
             $track=(-1)*$ledger->cr;
@@ -299,6 +300,7 @@ class LedgerController extends Controller
             $track-=$ledger->amount;
         }
         $ledger->delete();
+
 
         foreach($ledgers as $l){
 

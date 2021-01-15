@@ -253,22 +253,22 @@
                         @foreach ($ledger as $l)
                             <tr>
                                 <td>{{ _nepalidate($l->date) }}</td>
-                                <td>{{ $l->title }}</td>
+                                <td>{{(float) $l->title }}</td>
 
                                 <td>
                                     @if ($l->type==1)
-                                        {{ $l->amount }}
+                                        {{ (float)$l->amount }}
                                     @endif
                                 </td>
                                 <td>
                                     @if($l->type==2)
-                                    {{ $l->amount }}
+                                    {{ (float)$l->amount }}
                                     @endif
                                 </td>
                                 <td>
-                                    {{ $l->dr == null?"":"Dr. ".$l->dr }}
+                                    {{ $l->dr>0 ?"Dr. ".(float)$l->dr:""}}
 
-                                    {{ $l->cr == null?"--":"Cr. ".$l->cr }}
+                                    {{ $l->cr>0 ?"Cr. ".(float)$l->cr:"" }}
                                 </td>
                             </tr>
                         @endforeach
