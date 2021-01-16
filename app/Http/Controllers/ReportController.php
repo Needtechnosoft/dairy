@@ -106,7 +106,8 @@ class ReportController extends Controller
                         $due=Sellitem::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due');
                         $farmer->due=(float)$due;
                         $previousMonth=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
-                        $farmer->prevdue=(float)$previousMonth;
+                        $previousMonth1=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','120')->where('type',1)->sum('amount');
+                        $farmer->prevdue=(float)$previousMonth+(float)$previousMonth;
                         $farmer->nettotal=(float)($farmer->total-$farmer->due-$farmer->prevdue);
                         $farmer->advance=(float)(Advance::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount'));
                         $farmer->old=false;
