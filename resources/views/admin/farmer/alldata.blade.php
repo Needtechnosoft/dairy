@@ -284,6 +284,8 @@
                                     {{ $l->dr>0 ?"Dr. ".(float)$l->dr:""}}
 
                                     {{ $l->cr>0 ?"Cr. ".(float)$l->cr:"" }}
+
+                                     {{($l->cr==0 || $l->cr==null) && ($l->dr==0 || $l->dr==null)?"--":""}}
                                 </td>
                             </tr>
                         @endforeach
@@ -459,6 +461,7 @@
                         <input type="hidden" name="prevdue" value=" {{ $farmer1->prevdue}}">
                         <input type="hidden" name="nettotal" value=" {{ $nettotal }}">
                         <input type="hidden" name="balance" value=" {{ $balance}}">
+                        <input type="hidden" name="prevbalance" value=" {{ $farmer1->prevbalance}}">
                         <button class="btn btn-sm btn-success">Close Session</button>
                     </form>
                     @else

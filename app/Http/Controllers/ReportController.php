@@ -127,10 +127,10 @@ class ReportController extends Controller
         $lastdate=NepaliDate::getDate($request->year,$request->month,$request->session)[2];
         $ledger=new LedgerManage($request->id);
 
-        Sellitem::where('user_id',$request->id)->update([
-                            'due'=>0,
-                            'paid'=>DB::raw("`total`")
-        ]);
+        // Sellitem::where('user_id',$request->id)->update([
+        //                     'due'=>0,
+        //                     'paid'=>DB::raw("`total`")
+        // ]);
 
 
             if($request->nettotal>0 ||$request->balance>0){
@@ -167,6 +167,7 @@ class ReportController extends Controller
             $farmerreport->advance=$request->advance??0;
             $farmerreport->nettotal=$request->nettotal??0;
             $farmerreport->balance=$request->balance??0;
+            $farmerreport->prevbalance=$request->prevbalance??0;
             $farmerreport->tc=$request->tc??0;
             $farmerreport->cc=$request->cc??0;
             $farmerreport->grandtotal=$request->grandtotal??$request->total;
