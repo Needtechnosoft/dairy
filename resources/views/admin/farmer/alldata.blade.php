@@ -320,6 +320,7 @@
                     <th>
                         Milk Total
                     </th>
+                    @if ($milktotal>0)
                     <th>
                         TS %
                     </th>
@@ -327,10 +328,13 @@
                         Cooling <br>
                         cost
                     </th>
+                    @endif
                 @endif
+                @if ($milktotal>0)
                 <th>
                     Total
                 </th>
+                @endif
                 @if (env('hasextra',0)==1)
                     <th>
                         Bonus ( {{ round($center->bonus,2) }} % )
@@ -346,6 +350,9 @@
 
                 <th>Due</th>
                 <th>Avance</th>
+                <th>
+                    Prev Balance
+                </th>
                 <th>
                     Prev Due
                 </th>
@@ -372,15 +379,18 @@
                     <td>
                         {{$milktotal}}
                     </td>
-                    <td>
-                        {{$tctotal}}
-                    </td>
-                    <td>
-                        {{$cctotal}}
-                    </td>
-                    <td>
-                        {{$grandtotal}}
-                    </td>
+                    @if ($milktotal>0)
+
+                        <td>
+                            {{$tctotal}}
+                        </td>
+                        <td>
+                            {{$cctotal}}
+                        </td>
+                        <td>
+                            {{$grandtotal}}
+                        </td>
+                    @endif
                     @else
 
                     <td>
@@ -399,15 +409,24 @@
                     {{$farmer1->advance}}
                 </td>
                 <td>
+                    {{  $farmer1->prevadvance}}
+                </td>
+                <td>
                     {{$farmer1->prevdue}}
                 </td>
                 @php
                     if($cc>0||$tc>0){
-                        $tt=$grandtotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus;
+                        if($milktotal==0){
+                            $tt=$milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+  $farmer1->prevadvance;
+
+                        }else{
+
+                            $tt=$grandtotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+  $farmer1->prevadvance;
+                        }
 
                     }else{
 
-                        $tt=(int)($milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus);
+                        $tt=(int)($milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+$farmer1->prevadvance);
                     }
                     $balance=$tt<0?(-1*$tt):0;
                     $nettotal=$tt>0?$tt:0;
@@ -431,7 +450,7 @@
                         <input type="hidden" name="rate" value=" {{ round($perLiterAmount,2) }}">
                         <input type="hidden" name="milk" value="{{ $milkamount }}">
                         <input type="hidden" name="total" value=" {{ $milktotal }}">
-                        <input type="hidden" name="grandtotal" value=" {{ $grandtotal }}">
+                        <input type="hidden" name="grandtotal" value=" {{ $milktotal==0?0:$grandtotal }}">
                         <input type="hidden" name="cc" value=" {{ $cctotal??0 }}">
                         <input type="hidden" name="tc" value=" {{ $tctotal??0 }}">
                         <input type="hidden" name="due" value=" {{ $farmer1->due}}">

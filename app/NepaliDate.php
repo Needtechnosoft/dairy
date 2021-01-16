@@ -22,7 +22,7 @@ class NepaliDate{
     public static function getDate($year,$month,$session){
         $data=[];
         $date=$year*10000+$month*100;
-        $data[1]=$date+($session==1?0:16);
+        $data[1]=$date+($session==1?1:16);
         $data[2]=$date+($session==1?15:32);
         return $data;
     }

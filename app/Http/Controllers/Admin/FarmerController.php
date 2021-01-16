@@ -117,8 +117,11 @@ class FarmerController extends Controller
         $farmer1->bonus=0;
 
         $previousMonth=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
-        $farmer1->prevdue=(float)$previousMonth;
+        $previousMonth1=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','120')->where('type',1)->sum('amount');
+        $previousAdvance=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','120')->where('type',2)->sum('amount');
 
+        $farmer1->prevdue=(float)$previousMonth+(float)$previousMonth;
+        $farmer1->prevadvance=(float)$previousAdvance;
         return view('admin.farmer.alldata',compact('tc','cc','center','data','farmer1','sellitem','milkData','milkData','snfFats','snfAvg','fatAvg','ledger','perLiterAmount'));
     }
 

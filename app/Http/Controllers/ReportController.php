@@ -127,41 +127,25 @@ class ReportController extends Controller
         $lastdate=NepaliDate::getDate($request->year,$request->month,$request->session)[2];
         $ledger=new LedgerManage($request->id);
 
+        Sellitem::where('user_id',$request->id)->update([
+                            'due'=>0,
+                            'paid'=>DB::raw("`total`")
+        ]);
 
-            if($request->due > ($request->grandtotal)){
-                    $due = Sellitem::where('user_id',$request->id)->where('due','>',0)->get();
-                    $paidmaount=$request->grandtotal;
-                    foreach ($due as $key => $value) {
-                        if($paidmaount<=0){
-                            break;
-                        }
-                        if($paidmaount>=$value->due){
-                            $paidmaount -= $value->due;
-                            $value->due =0;
-                            $value->save();
-                        }else{
-                            $value->due-=$paidmaount;
-                            $paidmaount=0;
-                            $value->save();
-                        }
-                    }
-
-
-            }else{
-                Sellitem::where('user_id',$request->id)->update([
-                                    'due'=>0,
-                                    'paid'=>DB::raw("`total`")
-                                ]);
-            }
 
             if($request->nettotal>0 ||$request->balance>0){
 
-                $ledger->addLedger("Payment for milk (".($request->milk)."l X ".($request->rate??0).")",2,$request->total,$lastdate,'108');
+                if($request->milktotal>0){
+
+                    $ledger->addLedger("Payment for milk (".($request->milk)."l X ".($request->rate??0).")",2,$request->total,$lastdate,'108');
+                }
 
                 if($request->nettotal>0){
                     if(env('paywhenupdate',0)==1){
-
                         $ledger->addLedger("Payment Given To Farmer",1,$request->nettotal,$lastdate,'110');
+                    }else{
+                        $ledger->addLedger("Closing Balance",1,$request->nettotal,$lastdate,'109');
+                        $ledger->addLedger("Previous Balance",2,$request->nettotal,$nextdate,'120');
                     }
                 }else{
                     if($request->balance>0){
