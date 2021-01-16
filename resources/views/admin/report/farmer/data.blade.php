@@ -79,6 +79,7 @@
                 @endif
                 <th>Due</th>
                 <th>Avance</th>
+                <th>Prev Balance</th>
                 <th>Prev Due</th>
                 <th>Net Total</th>
                 <th>Due Balance</th>
@@ -104,8 +105,7 @@
                         {{$farmer->no}}
                         @if ($farmer->old==false &&  $newsession)
                             @php
-
-                            $tt=$farmer->grandtotal-$farmer->advance-$farmer->due-$farmer->prevdue-$farmer->bonus;
+                            $tt=$farmer->grandtotal-$farmer->advance-$farmer->due-$farmer->prevdue-$farmer->bonus+$farmer->prevbalance;
                             $farmer->balance=$tt<0?(-1*$tt):0;
                             $farmer->nettotal=$tt>0?$tt:0;
                             @endphp
@@ -192,6 +192,9 @@
                         @php
                             $advancetotal+=$farmer->advance;
                         @endphp
+                    </td>
+                    <td>
+                        {{$farmer->prevbalance}}
                     </td>
                     <td>
                         {{$farmer->prevdue}}

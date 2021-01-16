@@ -65,6 +65,7 @@ class ReportController extends Controller
                         $farmer->tc=$_data->tc;
                         $farmer->cc=$_data->cc;
                         $farmer->grandtotal=$_data->grandtotal;
+                        $farmer->prevbalance=$_data->prevbalance;
                         $farmer->old=true;
 
                     }else{
@@ -80,20 +81,22 @@ class ReportController extends Controller
                         $farmer->snf=(float)truncate_decimals( $snfavg);
                         $farmer->fat=(float)truncate_decimals( $fatavg) ;
                         $farmer->milk=(float)($m_amount+$e_amount);
-
-
+                        $farmer->total=0;
+                        $farmer->rate=0;
+                        $farmer->bonus=0;
+                        $farmer->tc=0;
+                        $farmer->cc=0;
+                        $farmer->grandtotal=0;
                         if($snfavg!=null || $fatavg!=null){
                             $rate=truncate_decimals(($center->snf_rate* $farmer->snf ) + ($center->fat_rate*  $farmer->fat ));
                             $farmer->rate=(float)truncate_decimals($rate);
                             $farmer->total=(float)truncate_decimals( $rate*($farmer->milk));
-                            $farmer->bonus=0;
-                            $farmer->tc=0;
-                            $farmer->cc=0;
+
                             // $farmer->grandtotal=;
-                            if ($usetc){
+                            if ($usetc && $farmer->total>0){
                                 $farmer->tc=truncate_decimals($farmer->milk*($center->tc*($farmer->snf+$farmer->fat)/100));
                             }
-                            if ($usecc){
+                            if ($usecc && $farmer->total>0){
                                 $farmer->cc=truncate_decimals($farmer->milk*$center->cc);
                             }
 
@@ -107,8 +110,10 @@ class ReportController extends Controller
                         $farmer->due=(float)$due;
                         $previousMonth=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
                         $previousMonth1=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','120')->where('type',1)->sum('amount');
+                        $prevbalance=Ledger::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','120')->where('type',2)->sum('amount');
                         $farmer->prevdue=(float)$previousMonth+(float)$previousMonth;
                         $farmer->nettotal=(float)($farmer->total-$farmer->due-$farmer->prevdue);
+                        $farmer->prevbalance=(float)($prevbalance??0);
                         $farmer->advance=(float)(Advance::where('user_id',$farmer->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount'));
                         $farmer->old=false;
                     }
@@ -191,33 +196,10 @@ class ReportController extends Controller
             $ledger=new LedgerManage($data->id);
             $grandtotal=$data->grandtotal??0;
 
-            if($data->due > ($grandtotal)){
-                    $due = Sellitem::where('user_id',$data->id)->where('due','>',0)->get();
-                    $paidmaount=$data->grandtotal;
-                    foreach ($due as $key => $value) {
-                        if($paidmaount<=0){
-                            break;
-                        }
-                        if($paidmaount>=$value->due){
-                            $paidmaount -= $value->due;
-                            $value->due =0;
-                            $value->save();
-                        }else{
-                            $value->due-=$paidmaount;
-                            $paidmaount=0;
-                            $value->save();
-                        }
-                    }
+            if($data->total>0 ){
 
-
-            }else{
-                Sellitem::where('user_id',$data->id)->update([
-                                    'due'=>0,
-                                    'paid'=>DB::raw("`total`")
-                                ]);
+                $ledger->addLedger("Payment for milk (".($data->milk)."l X ".($data->rate??0).")",2,$data->total??0,$lastdate,'108');
             }
-
-            $ledger->addLedger("Payment for milk (".($data->milk)."l X ".($data->rate??0).")",2,$data->total??0,$lastdate,'108');
 
             if($data->nettotal>0 ||$data->balance>0){
 
@@ -226,6 +208,9 @@ class ReportController extends Controller
                     if(env('paywhenupdate',0)==1){
 
                         $ledger->addLedger("Payment Given To Farmer",1,$data->nettotal,$lastdate,'110');
+                    }else{
+                        $ledger->addLedger("Closing Balance",1,$data->nettotal,$lastdate,'109');
+                        $ledger->addLedger("Previous Balance",2,$data->nettotal,$nextdate,'120');
                     }
                 }else{
                     if($data->balance>0){
@@ -252,6 +237,7 @@ class ReportController extends Controller
             $farmerreport->grandtotal=$data->grandtotal??($data->total??0);
             $farmerreport->year=$request->year;
             $farmerreport->month=$request->month;
+            $farmerreport->prevbalance=$data->prevbalance;
             $farmerreport->session=$request->session;
             $farmerreport->center_id=$request->center_id;
             $farmerreport->save();
