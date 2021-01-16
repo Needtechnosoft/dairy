@@ -229,9 +229,24 @@
 
                 <div id="ledger-data">
                     <style>
-                        td,th{
-                            border:1px solid black;
+                        @media print {
+                            td{
+                                font-size: 1.2rem !important;
+                                font-weight: 600 !important;
+                            }
+
+
+                            th:last-child, td:last-child {
+                                display: none;
+                            }
+
                         }
+                        td,th{
+                            border:1px solid black !important;
+                            padding:2px !important;
+                            font-weight: 600 !important;
+                        }
+
                         table{
                             width:100%;
                             border-collapse: collapse;
