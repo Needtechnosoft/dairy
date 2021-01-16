@@ -253,7 +253,7 @@
                         @foreach ($ledger as $l)
                             <tr>
                                 <td>{{ _nepalidate($l->date) }}</td>
-                                <td>{{(float) $l->title }}</td>
+                                <td>{{ $l->title }}</td>
 
                                 <td>
                                     @if ($l->type==1)
