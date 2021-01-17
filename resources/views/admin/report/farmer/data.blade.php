@@ -52,6 +52,8 @@
         $prevduetotal=0;
         $nettotaltotal=0;
         $balancetotal=0;
+        $prevbalancetotal=0;
+        $paidamounttotal=0;
     @endphp
 
 
@@ -79,15 +81,11 @@
                 @endif
                 <th>Due</th>
                 <th>Avance</th>
-                <th>Prev Balance</th>
                 <th>Prev Due</th>
+                <th>Prev Balance</th>
+                <th>Paid Amount</th>
                 <th>Net Total</th>
                 <th>Due Balance</th>
-                @if (env('paywhenupdate',0)==1)
-                    <th>
-                        Paid Amount
-                    </th>
-                @endif
                 <th>Signature</th>
 
             </tr>
@@ -104,11 +102,7 @@
                     <td>
                         {{$farmer->no}}
                         @if ($farmer->old==false &&  $newsession)
-                            @php
-                            $tt=$farmer->grandtotal-$farmer->advance-$farmer->due-$farmer->prevdue-$farmer->bonus+$farmer->prevbalance;
-                            $farmer->balance=$tt<0?(-1*$tt):0;
-                            $farmer->nettotal=$tt>0?$tt:0;
-                            @endphp
+
                             <input type="hidden" name="farmers[]" value="{{$farmer->toJson()}}" >
                         @endif
                     </td>
@@ -194,16 +188,24 @@
                         @endphp
                     </td>
                     <td>
-                        {{$farmer->prevbalance}}
-                    </td>
-                    <td>
                         {{$farmer->prevdue}}
                         {{-- <input type="hidden" name="prevdue[{{$t}}]" value="{{($farmer->prevdue)}}" > --}}
                         @php
                             $prevduetotal+=$farmer->prevdue;
+                            @endphp
+                    </td>
+                    <td>
+                        {{$farmer->prevbalance}}
+                        @php
+                            $prevbalancetotal+=$farmer->prevbalance;
                         @endphp
                     </td>
-
+                    <td>
+                        {{$farmer->paidamount}}
+                        @php
+                            $paidamounttotal+=$farmer->paidamount;
+                        @endphp
+                    </td>
                     <td>
                         {{$farmer->nettotal}}
                         {{-- <input type="hidden" name="nettotal[{{$t}}]" value=" {{$tt>0?$tt:0}}" > --}}
@@ -279,6 +281,12 @@
                         {{$prevduetotal}}
                     </td>
                     <td>
+                        {{$prevbalancetotal}}
+                    </td>
+                    <td>
+                        {{$paidamounttotal}}
+                    </td>
+                    <td>
                         {{$nettotaltotal}}
                     </td>
                     <td>
@@ -300,6 +308,8 @@
                 $prevduetotal=0;
                 $nettotaltotal=0;
                 $balancetotal=0;
+                $prevbalancetotal=0;
+                $paidamounttotal=0;
             @endphp
             </tbody>
         </table>
@@ -340,6 +350,12 @@
             </td>
             <td>
                 {{$prevduetotal}}
+            </td>
+            <td>
+                {{$prevbalancetotal}}
+            </td>
+            <td>
+                {{$paidamounttotal}}
             </td>
             <td>
                 {{$nettotaltotal}}

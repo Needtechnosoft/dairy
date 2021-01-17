@@ -164,23 +164,23 @@ class FarmerController extends Controller
 
         $farmer1->milkamount=Milkdata::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('e_amount')+Milkdata::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('m_amount');
 
-        $farmer1->totalamount = truncate_decimals(($farmer1->milkrate * $farmer1->milkamount),2);
+        $farmer1->total = truncate_decimals(($farmer1->milkrate * $farmer1->milkamount),2);
 
         $farmer1->tc=0;
         $farmer1->cc=0;
 
 
-        if($farmer1->farmer()->usetc==1 && $farmer1->totalamount>0 ){
+        if($farmer1->farmer()->usetc==1 && $farmer1->total>0 ){
             $farmer1->tc= truncate_decimals(( ($center->tc *($snfAvg+$fatAvg)/100)* $farmer1->milkamount),2);
         }
-        if($farmer1->farmer()->usecc==1 && $farmer1->totalamount>0 ){
+        if($farmer1->farmer()->usecc==1 && $farmer1->total>0 ){
             $farmer1->cc=truncate_decimals( $center->cc * $farmer1->milkamount,2);
         }
 
 
 
 
-        $farmer1->grandtotal=(int)( $farmer1->totalamount+$farmer1->tc+$farmer1->cc);
+        $farmer1->grandtotal=(int)( $farmer1->total+$farmer1->tc+$farmer1->cc);
 
         $farmer1->bonus=0;
         if (env('hasextra',0)==1){

@@ -153,7 +153,7 @@ class LedgerManage{
     }
 
 
-    public static function farmerReport($user_id,$range){
+    public static function farmerReport($user_id,$range,$needledger=false){
         $farmer1=User::find($user_id);
 
 
@@ -165,29 +165,29 @@ class LedgerManage{
         $fatAmount = ($fatAvg * $center->fat_rate);
         $snfAmount = ($snfAvg * $center->snf_rate);
 
-        $farmer1->snfavg=$snfAvg;
-        $farmer1->fatavg=$fatAvg;
+        $farmer1->snf=$snfAvg;
+        $farmer1->fat=$fatAvg;
         if($farmer1->farmer()->userate==1){
 
-            $farmer1->milkrate=$farmer1->farmer()->rate;
+            $farmer1->rate=$farmer1->farmer()->rate;
         }else{
 
-            $farmer1->milkrate=truncate_decimals( $fatAmount + $snfAmount);
+            $farmer1->rate=truncate_decimals( $fatAmount + $snfAmount);
         }
 
-        $farmer1->milkamount=Milkdata::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('e_amount')+Milkdata::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('m_amount');
+        $farmer1->milk=Milkdata::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('e_amount')+Milkdata::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('m_amount');
 
-        $farmer1->totalamount = truncate_decimals(($farmer1->milkrate * $farmer1->milkamount),2);
+        $farmer1->totalamount = truncate_decimals(($farmer1->rate * $farmer1->milk),2);
 
         $farmer1->tc=0;
         $farmer1->cc=0;
 
 
         if($farmer1->farmer()->usetc==1 && $farmer1->totalamount>0 ){
-            $farmer1->tc= truncate_decimals(( ($center->tc *($snfAvg+$fatAvg)/100)* $farmer1->milkamount),2);
+            $farmer1->tc= truncate_decimals(( ($center->tc *($snfAvg+$fatAvg)/100)* $farmer1->milk),2);
         }
         if($farmer1->farmer()->usecc==1 && $farmer1->totalamount>0 ){
-            $farmer1->cc=truncate_decimals( $center->cc * $farmer1->milkamount,2);
+            $farmer1->cc=truncate_decimals( $center->cc * $farmer1->milk,2);
         }
 
 
@@ -208,15 +208,20 @@ class LedgerManage{
         $farmer1->paidamount=(float)Ledger::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','121')->where('type',1)->sum('amount');
         $balance=$farmer1->grandtotal+$farmer1->balance - $farmer1->prevdue -$farmer1->advance-$farmer1->due-$farmer1->paidamount+$farmer1->prevbalance-$farmer1->bonus;
         $farmer1->balance=0;
-        $farmer1->total=0;
+        $farmer1->nettotal=0;
         if($balance<0){
             $farmer1->balance=(-1)* $balance ;
         }
         if($balance>0){
-            $farmer1->total= $balance;
+            $farmer1->nettotal= $balance;
         }
 
-        $farmer1->ledger = Ledger::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->orderBy('id','asc')->get();
+        if($needledger){
+
+            $farmer1->ledger = Ledger::where('user_id',$user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->orderBy('id','asc')->get();
+        }else{
+            $farmer1->ledger=[];
+        }
 
         return $farmer1;
     }
