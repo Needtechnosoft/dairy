@@ -105,6 +105,15 @@
                                     <input type="number" id="advance" name="advance" step="0.001" value="0" class="form-control" placeholder="Enter advance">
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                                    <input type="checkbox" name="usecc" class="mx-3" value="1">Has Cooling Cost
+                                    <input type="checkbox" name="usetc" class="mx-3" value="1">Has TS <br>
+                                    <input type="checkbox"  name="userate" class="mx-2" value="1">Fixed Rate
+                                    <input type="number" min="0" value="0" name="rate">
+                                </div>
+                            </div>
                         </div>
                 </div>
             </div>
@@ -169,6 +178,16 @@
                                     <input type="text" id="eaddress" name="address" value="" class="form-control" placeholder="Enter farmer address" required>
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                                    <input type="checkbox" id="eusecc" name="usecc" class="mx-2" value="1">Has Cooling Cost <br>
+                                    <input type="checkbox" id="eusetc" name="usetc" class="mx-2" value="1">Has TS <br>
+                                    <input type="checkbox" id="euserate" name="userate" class="mx-2" value="1">Fixed Rate
+                                    <input type="number" min="0" value="0" name="rate" id="erate">
+
+                                </div>
+                            </div>
 
                             <!-- <div class="col-lg-6">
                                 <label for="name">Advance Amount </label>
@@ -204,7 +223,11 @@
         $('#eno').val(farmer.no);
         $('#ephone').val(farmer.phone);
         $('#eaddress').val(farmer.address);
-        $('#eaddress').val(farmer.address);
+
+        $('#eusetc')[0].checked=farmer.usetc==1;
+        $('#eusecc')[0].checked=farmer.usecc==1;
+        $('#euserate')[0].checked=farmer.userate==1;
+        $('#erate').val(farmer.rate).change();
         // $('#eadvance').val(ele.dataset.advance);
         $('#eid').val(farmer.id);
         $('#editModal').modal('show');

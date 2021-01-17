@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
+use App\Models\Ledger;
 use App\Models\MilkPayment;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class MilkPaymentController extends Controller
         $payment->name=$user->name;
         $payment->no=$user->no;
         $ledger=new LedgerManage($user->id);
-        $ledger->addLedger('Payment Milk Payment Given To Farmer',1,$request->amount,$date,'110',$payment->id);
+        $ledger->addLedger('Payment Milk Payment Given To Farmer',1,$request->amount,$date,'121',$payment->id);
         return view('admin.milk.payment.single',compact('payment'));
     }
 
@@ -50,13 +51,159 @@ class MilkPaymentController extends Controller
         $date = str_replace('-', '', $request->date);
         $payment=MilkPayment::find($request->id);
         $oldamount=$payment->amount;
-
         $payment->amount=$request->amount;
         $payment->save();
 
-        $ledger=new LedgerManage($payment->user_id);
-        $ledger->addLedger('Payment For Milk canceled',2,$oldamount,$date,'108',$payment->id);
-        $ledger->addLedger('Payment For Milk',1,$request->amount,$date,'109',$payment->id);
+        $ledger=Ledger::find($request->ledger_id);
+        $user=User::find($ledger->user_id);
+        $ledgers=Ledger::where('id','>',$request->ledger_id)->where('user_id',$ledger->user_id)->orderBy('id','asc')->get();
+
+        $track=0;
+
+        //find first point
+        if($ledger->cr>0){
+            $track=(-1)*$ledger->cr;
+        }
+        if($ledger->dr>0){
+            $track=$ledger->dr;
+        }
+        echo 'first'.$track."<br>";
+
+        //find old data
+
+        if($ledger->type==1){
+            $track+=$ledger->amount;
+        }else{
+            $track-=$ledger->amount;
+        }
+
+        echo 'second'.$track."<br>";
+
+
+        if($request->type==1){
+            $track-=$request->amount;
+        }else{
+            $track+=$request->amount;
+        }
+
+        echo 'third'.$track."<br>";
+
+        $ledger->type=$request->type;
+        $ledger->amount=$request->amount;
+
+        if($track<0){
+            $ledger->cr=(-1)*$track;
+            $ledger->dr=0;
+        }else{
+            $ledger->dr=$track;
+            $ledger->cr=0;
+        }
+        $ledger->save();
+
+        foreach($ledgers as $l){
+
+            if($l->type==1){
+                $track-=$l->amount;
+            }else{
+                $track+=$l->amount;
+            }
+
+            if($track<0){
+                $l->cr=(-1)*$track;
+                $l->dr=0;
+            }else{
+                $l->dr=$track;
+                $l->cr=0;
+            }
+
+            $l->save();
+
+            echo $l->title . ",".$track."<br>";
+        }
+
+        $t=0;
+        if($track>0){
+            $t=2;
+
+        }else if($track<0){
+            $t=1;
+
+
+        }
+
+
+        $user->amount=$track;
+        $user->amounttype=$t;
+        $user->save();
+    }
+
+    public function del(Request $request){
+        $date = str_replace('-', '', $request->date);
+        $payment=MilkPayment::find($request->id);
+
+        $payment->delete();
+
+        $ledger=Ledger::find($request->ledger_id);
+        $user=User::find($ledger->user_id);
+        $ledgers=Ledger::where('id','>',$request->ledger_id)->where('user_id',$ledger->user_id)->orderBy('id','asc')->get();
+
+        $track=0;
+
+        $track=0;
+
+        //find first point
+        if($ledger->cr>0){
+            $track=(-1)*$ledger->cr;
+        }
+        if($ledger->dr>0){
+            $track=$ledger->dr;
+        }
+        echo 'first'.$track."<br>";
+
+        //find old data
+
+        if($ledger->type==1){
+            $track+=$ledger->amount;
+        }else{
+            $track-=$ledger->amount;
+        }
+        $ledger->delete();
+
+
+        foreach($ledgers as $l){
+
+            if($l->type==1){
+                $track-=$l->amount;
+            }else{
+                $track+=$l->amount;
+            }
+
+            if($track<0){
+                $l->cr=(-1)*$track;
+                $l->dr=0;
+            }else{
+                $l->dr=$track;
+                $l->cr=0;
+            }
+            $l->save();
+
+            echo $l->title . ",".$track."<br>";
+        }
+
+        $t=0;
+        if($track>0){
+            $t=2;
+
+        }else if($track<0){
+            $t=1;
+            $track=(-1)*$track;
+
+        }
+
+
+        $user->amount=$track;
+        $user->amounttype=$t;
+        $user->save();
         return response('ok');
     }
 }

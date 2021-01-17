@@ -189,6 +189,15 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'payupdate','LedgerController@payUpdate')->name('payupdate');
 
             Route::match(['GET','POST'],'del','LedgerController@del')->name('del');
+            Route::group(['prefix' => 'farmer'], function () {
+                Route::name('farmer.')->group(function(){
+                    Route::match(['GET','POST'],'update','FarmerLedgerController@update')->name('update');
+                    Route::match(['GET','POST'],'sellupdate','FarmerLedgerController@sellUpdate')->name('sellupdate');
+                    Route::match(['GET','POST'],'selldel','FarmerLedgerController@sellDel')->name('selldel');
+                    Route::match(['GET','POST'],'payupdate','FarmerLedgerController@payUpdate')->name('payupdate');
+                    Route::match(['GET','POST'],'del','FarmerLedgerController@del')->name('del');
+                });
+            });
         });
     });
 

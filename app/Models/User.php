@@ -70,6 +70,10 @@ class User extends Authenticatable
         return Advance::where('user_id',$this->id)->first();
     }
 
+    public function farmer(){
+        return Farmer::where('user_id',$this->id)->first();
+    }
+
 
     public function ledgers(){
         return $this->hasMany(Ledger::class);

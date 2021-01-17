@@ -14,6 +14,8 @@
 @endphp
 @include('admin.farmer.snippet.updatesnf')
 @include('admin.farmer.snippet.updatemilkdata')
+@include('admin.farmer.snippet.updatesell')
+@include('admin.farmer.snippet.updateledger')
 
 <div class="row">
     <div class="col-md-3">

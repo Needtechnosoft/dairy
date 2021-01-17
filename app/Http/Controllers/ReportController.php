@@ -172,6 +172,7 @@ class ReportController extends Controller
             $farmerreport->advance=$request->advance??0;
             $farmerreport->nettotal=$request->nettotal??0;
             $farmerreport->balance=$request->balance??0;
+            $farmerreport->paidamount=$request->paidamount??0;
             $farmerreport->prevbalance=$request->prevbalance??0;
             $farmerreport->tc=$request->tc??0;
             $farmerreport->cc=$request->cc??0;
