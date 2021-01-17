@@ -168,6 +168,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         });
     });
 
+
+    // XXX Milk payment
     Route::group(['prefix' => 'milk-payment'], function () {
         Route::name('milk.payment.')->group(function(){
             Route::match(['GET','POST'],'','Admin\MilkPaymentController@index')->name('home');

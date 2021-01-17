@@ -42,7 +42,7 @@ class MilkPaymentController extends Controller
         $payment->name=$user->name;
         $payment->no=$user->no;
         $ledger=new LedgerManage($user->id);
-        $ledger->addLedger('Payment For Milk',1,$request->amount,$date,'109',$payment->id);
+        $ledger->addLedger('Payment Milk Payment Given To Farmer',1,$request->amount,$date,'110',$payment->id);
         return view('admin.milk.payment.single',compact('payment'));
     }
 

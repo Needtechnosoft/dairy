@@ -419,7 +419,7 @@
                 @php
                     if($cc>0||$tc>0){
                         if($milktotal==0){
-                            $tt=$milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+  $farmer1->prevadvance;
+                            $tt=0-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+  $farmer1->prevadvance;
 
                         }else{
 
@@ -428,7 +428,7 @@
 
                     }else{
 
-                        $tt=(int)($milktotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+$farmer1->prevadvance);
+                        $tt=(int)($grandtotal-$farmer1->advance-$farmer1->due-$farmer1->prevdue-$farmer1->bonus+$farmer1->prevadvance);
                     }
                     $balance=$tt<0?(-1*$tt):0;
                     $nettotal=$tt>0?$tt:0;
