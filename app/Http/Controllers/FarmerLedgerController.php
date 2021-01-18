@@ -168,6 +168,7 @@ class FarmerLedgerController extends Controller
     public function update(Request $request){
         $ledger=Ledger::find($request->id);
         $user=User::find($ledger->user_id);
+
         $ledgers=Ledger::where('id','>',$request->id)->where('user_id',$ledger->user_id)->orderBy('id','asc')->get();
 
         $track=0;
@@ -234,17 +235,18 @@ class FarmerLedgerController extends Controller
         }
 
         $t=0;
+        $amount=0;
         if($track>0){
             $t=2;
-
+            $amount=$track;
         }else if($track<0){
             $t=1;
-
+            $amount=(-1)*$track;
 
         }
 
 
-        $user->amount=$track;
+        $user->amount=$amount;
         $user->amounttype=$t;
         $user->save();
         // LedgerManage::ad();

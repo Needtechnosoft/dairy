@@ -135,10 +135,8 @@
                     <div style="display: flex">
                         <div style="flex:8;padding:10px;">
                             <strong>Snf Average : {{ round($farmer1->snfavg,2) }}</strong> <br>
+                            <strong>Milk Total : {{ $farmer1->milkamount }} </strong><br>
                             <strong>Per Liter Rate : {{ round($farmer1->milkrate,2) }} </strong> <br>
-
-
-                                <strong>Milk Total : {{ $farmer1->milkamount }} </strong><br>
                                 <strong>Amount : {{ $farmer1->totalamount }} </strong><br>
                                 @if ($farmer1->farmer()->usetc)
                                     <strong>+TS Commission ({{(float)($center->tc)}}%) : {{ $farmer1->tc }}</strong> <br>
@@ -148,10 +146,6 @@
                                 @endif
                                 <hr>
                                 <strong>Total Amount: {{$farmer1->grandtotal}}</strong>
-
-
-
-
                         </div>
                         <div style="flex:4;padding:10px;">
                             <strong>Fat Average : {{ round($farmer1->fatavg,2) }}</strong>
