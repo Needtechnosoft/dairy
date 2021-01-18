@@ -280,8 +280,13 @@
                                     </td>
                                     <td class="d-print-none">
                                         @if ($l->identifire==103)
+                                            @if($l->getForeign()!=null)
                                             <button data-ledger="{{$l->toJson()}}" data-data="{{$l->getForeign()->toJson()}}" onclick="sellLedgerChange(this);">Edit</button>
                                             <button data-ledger="{{$l->toJson()}}" data-data="{{$l->getForeign()->toJson()}}" onclick="sellLedgerDelete(this);">Delete</button>
+                                            @else
+                                            <button data-ledger="{{$l->toJson()}}"  onclick="initLedgerChange(this);">Edit</button>
+                                            <button data-ledger="{{$l->toJson()}}"  onclick="delLedger({{$l->id}});">Delete</button>
+                                            @endif
                                         @else
                                             <button data-ledger="{{$l->toJson()}}"  onclick="initLedgerChange(this);">Edit</button>
                                             <button data-ledger="{{$l->toJson()}}"  onclick="delLedger({{$l->id}});">Delete</button>
