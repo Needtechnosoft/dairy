@@ -175,6 +175,7 @@ class LedgerController extends Controller
 
         }else if($track<0){
             $t=1;
+            $track=(-1)*$track;
 
 
         }

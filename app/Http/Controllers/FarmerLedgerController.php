@@ -88,7 +88,7 @@ class FarmerLedgerController extends Controller
 
         }else if($track<0){
             $t=1;
-
+            $track=(-1)*$track;
 
         }
 
@@ -153,7 +153,7 @@ class FarmerLedgerController extends Controller
 
         }else if($track<0){
             $t=1;
-
+            $track=(-1)*$track;
 
         }
 
