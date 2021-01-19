@@ -77,12 +77,12 @@
 
                 <div class="col-md-2">
                     <label for="rate">Rate</label>
-                    <input type="number" name="rate" onkeyup="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control  next focus-select" data-next="qty" min="0.001">
+                    <input type="number" name="rate" oninput="calTotal(); paidTotal();" id="rate" step="0.001" value="0" placeholder="Item rate" class="form-control  next focus-select" data-next="qty" min="0.001">
                 </div>
 
                 <div class="col-md-2">
                     <label for="qty">Quantity</label>
-                    <input type="number" onfocus="$(this).select();" name="qty" id="qty" onkeyup="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control  next" data-next="paid" min="0.001">
+                    <input type="number" onfocus="$(this).select();" name="qty" id="qty" oninput="calTotal(); paidTotal();" step="0.001" value="1" placeholder="Item quantity" class="form-control  next" data-next="paid" min="0.001">
                 </div>
 
                 <div class="col-md-3">
@@ -92,7 +92,7 @@
 
                 <div class="col-md-3">
                     <label for="paid">Paid</label>
-                    <input type="number" name="paid" onkeyup="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control focus-select" min="0.001">
+                    <input type="number" name="paid" oninput="paidTotal();" id="paid" step="0.001" placeholder="Paid" value="0" class="form-control focus-select" min="0.001">
                 </div>
 
                 <div class="col-md-3">
@@ -219,7 +219,7 @@
         if(due<0){
             due=0;
         }
-        $('#due').val(0);
+        $('#due').val(due);
         $('#etotal').val($('#erate').val() * $('#eqty').val());
         $('#edue').val($('#erate').val() * $('#eqty').val());
     }
@@ -231,7 +231,7 @@
         if(due<0){
             due=0;
         }
-        $('#due').val(0);
+        $('#due').val(due);
         var etotal = parseFloat($('#etotal').val());
         var epaid = parseFloat($('#epaid').val());
         $('#edue').val(etotal - epaid);
@@ -303,7 +303,7 @@
 
             product=($('#product-'+$(this).val()).data('product'));
             $('#rate').val(product.price).change();
-
+            calTotal();
 
         }
     });

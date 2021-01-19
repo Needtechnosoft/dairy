@@ -1,3 +1,5 @@
+const { template } = require("lodash");
+
 $(function () {
     $('.jsdemo-notification-button button').on('click', function () {
         var placementFrom = $(this).data('placement-from');
@@ -24,7 +26,7 @@ function showNotification(colorName, text, placementFrom, placementAlign, animat
             type: colorName,
             allow_dismiss: allowDismiss,
             newest_on_top: true,
-            timer: 100000,
+            timer: 500,
             placement: {
                 from: placementFrom,
                 align: placementAlign

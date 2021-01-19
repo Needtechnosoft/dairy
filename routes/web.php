@@ -233,6 +233,15 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     });
 });
 
+Route::match(['get', 'post'], 'user/login', 'Users\AuthController@login')->name('user.login');
+Route::match(['get', 'post'], 'user/logout', 'Users\AuthController@logout')->name('user.logout');
 
 
+Route::group(['middleware' => 'role:farmer','prefix'=>'farmer'], function (){
+    Route::get('home', 'Users\FarmerDashboardController@index')->name('user.dashboard');
+});
 
+Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], function (){
+    Route::get('home', 'Users\DistributorDashboardController@index')->name('distributor.dashboard');
+
+});

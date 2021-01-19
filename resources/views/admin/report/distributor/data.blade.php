@@ -77,10 +77,10 @@
                     {{(float)$_data->paid}}
                 </td>
                 <td>
-                    {{(float)$_data->due}}
+                    {{(float)$_data->due??0}}
                 </td>
                 <td>
-                    {{(float)$_data->advance}}
+                    {{(float)$_data->advance??0}}
                 </td>
             </tr>
 

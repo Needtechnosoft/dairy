@@ -298,7 +298,8 @@
                     showNotification('bg-danger', 'Deleted Successfully !');
                 })
                 .catch(function(response) {
-                    showNotification('bg-danger','You do not have authority to delete!');
+
+                     showNotification('bg-danger','You do not have authority to delete!');
                     //handle error
                     console.log(response);
                 });
