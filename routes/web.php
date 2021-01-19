@@ -228,6 +228,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'delete/{id}','Admin\UserController@delete')->name('delete');
             Route::match(['GET','POST'],'update/{update}','Admin\UserController@update')->name('update');
             Route::match(['GET','POST'],'change/password','Admin\UserController@changePassword')->name('change.password');
+            Route::match(['GET','POST'],'non-super-admin/change/password/{id}','Admin\UserController@nonSuperadminChangePassword')->name('non.super.admin.change.password');
         });
     });
 });

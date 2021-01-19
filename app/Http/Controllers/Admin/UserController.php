@@ -15,7 +15,9 @@ class UserController extends Controller
 
     public function userAdd(Request $request){
         $request->validate([
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
+            'phone' => 'required|min:10|unique:users,phone'
+
         ]);
         $user = new User();
         $user->name = $request->name;
@@ -57,6 +59,25 @@ class UserController extends Controller
             return redirect()->back()->with('message','Password has been changed successfully !');
         }else{
           return redirect()->back()->with('message_danger','Current Password does not matched !');
+        }
+    }
+
+    public function nonSuperadminChangePassword(Request $request, $id){
+        if($request->isMethod('post')){
+            $request->validate([
+                'n_password' =>'required|min:8'
+                ],
+                [
+                'n_password.min' => 'Password should be at least 8 characters !'
+            ]);
+            $user = User::where('id',$id)->where('role',0)->first();
+            // dd($user);
+            $user->password = bcrypt($request->n_password);
+            $user->save();
+            return redirect()->back()->with('message','Password has been changed successfully !');
+        }else{
+            $user = User::where('id',$id)->where('role',0)->first();
+            return view('admin.users.nonsuperadmin',compact('user'));
         }
     }
 }

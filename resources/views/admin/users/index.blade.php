@@ -49,8 +49,10 @@
                             @if ($user->phone != env("authphone",''))
                                 <button class="badge badge-primary"> Update </button> |
                                 <a href="{{ route('user.delete',$user->id) }}" onclick="return confirm('Are you sure?');" class="badge badge-danger">Delete</a> |
+                                <a href="{{ route('user.non.super.admin.change.password',$user->id) }}" class="btn btn-primary btn-sm">Change Password</a>
+                            @else
+                                <button type="button" class="btn btn-primary btn-sm waves-effect m-r-20"  data-toggle="modal" onclick="getUserId({{$user->id}});" data-target="#ChangePass">Change Password</button>
                             @endif
-                          <button type="button" class="btn btn-primary btn-sm waves-effect m-r-20"  data-toggle="modal" onclick="getUserId({{$user->id}});" data-target="#ChangePass">Change Password</button>
                         </td>
                     </form>
                 </tr>
