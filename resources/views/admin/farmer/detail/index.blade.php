@@ -49,8 +49,8 @@
                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                         <tr>
                             <th>Date</th>
-                            <th>Morning (Liter)</th>
-                            <th>Evening (liter)</th>
+                            <th>Morning (L)</th>
+                            <th>Evening (L)</th>
                             <td class="d-print-none"></td>
                         </tr>
                         @php
@@ -63,10 +63,10 @@
                                 <td>{{ $milk->m_amount }}</td>
                                 <td>{{ $milk->e_amount }}</td>
                                 <td class="d-print-none">
-                                    <button class="btn btn-primary" data-milk="{{$milk->toJson()}}" onclick="showMilkUpdate(this)">
+                                    <button class="btn btn-primary btn-sm" data-milk="{{$milk->toJson()}}" onclick="showMilkUpdate(this)">
                                         Edit
                                     </button>
-                                    <button class="btn btn-danger" data-milk="{{$milk->toJson()}}" onclick="delMilkData(this);">
+                                    <button class="btn btn-danger btn-sm" data-milk="{{$milk->toJson()}}" onclick="delMilkData(this);">
                                         delete
                                     </button>
                                 </td>
@@ -121,10 +121,10 @@
                                     <td>{{ $sf->snf }}</td>
                                     <td>{{ $sf->fat }}</td>
                                     <td class="d-print-none">
-                                        <button class="btn btn-primary" data-snffat="{{$sf->toJson()}}" onclick="showSnfFatUpdate(this)">
+                                        <button class="btn btn-primary btn-sm" data-snffat="{{$sf->toJson()}}" onclick="showSnfFatUpdate(this)">
                                             Edit
                                         </button>
-                                        <button class="btn btn-danger" data-snffat="{{$sf->toJson()}}" onclick="delSnfFat(this);">
+                                        <button class="btn btn-danger btn-sm" data-snffat="{{$sf->toJson()}}" onclick="delSnfFat(this);">
                                             delete
                                         </button>
                                     </td>

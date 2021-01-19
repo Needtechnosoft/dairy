@@ -219,6 +219,17 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
         });
     });
+
+
+    Route::group(['prefix' => 'user'], function(){
+        Route::name('user.')->group(function(){
+            Route::match(['GET','POST'],'','Admin\UserController@index')->name('users');
+            Route::match(['GET','POST'],'add','Admin\UserController@userAdd')->name('add');
+            Route::match(['GET','POST'],'delete/{id}','Admin\UserController@delete')->name('delete');
+            Route::match(['GET','POST'],'update/{update}','Admin\UserController@update')->name('update');
+            Route::match(['GET','POST'],'change/password','Admin\UserController@changePassword')->name('change.password');
+        });
+    });
 });
 
 
