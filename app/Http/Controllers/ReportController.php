@@ -472,6 +472,12 @@ class ReportController extends Controller
             $datas=$data->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty,users.id as users_id, users.name,sum(distributorsells.total) total,sum(distributorsells.paid) paid'))->groupBy('id','name','users_id')->get();
             foreach($datas as $d){
                 $element=$d->toArray();
+                $element['due']=0;
+                $element['advance']=0;
+
+                $element['prevadvance']=0;
+                $element['prevdue']=0;
+
                 $ledgers=Ledger::where('user_id',$d->users_id)
                         ->where('date','>=',$range[1])
                         ->where('date','<=',$range[2])->where('identifire','<>',115)->OrderBy('id','asc')->get();
