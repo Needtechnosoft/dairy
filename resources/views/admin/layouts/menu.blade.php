@@ -21,6 +21,7 @@
                     <li><a href="{{ route('admin.farmer.advance') }}" class="waves-effect waves-block">Advance</a></li>
                     <li><a href="{{ route('admin.farmer.due') }}" class="waves-effect waves-block">Due Payment</a></li>
                     <li><a href="{{ route('admin.farmer.due.add.list') }}" class="waves-effect waves-block">Previous Balance</a></li>
+                    <li><a href="{{ route('milk.payment.home') }}" class="waves-effect waves-block">Milk Payment</a></li>
                 </ul>
             </li>
 
