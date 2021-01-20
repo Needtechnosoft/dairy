@@ -233,15 +233,22 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     });
 });
 
-Route::match(['get', 'post'], 'user/login', 'Users\AuthController@login')->name('user.login');
-Route::match(['get', 'post'], 'user/logout', 'Users\AuthController@logout')->name('user.logout');
 
 
 Route::group(['middleware' => 'role:farmer','prefix'=>'farmer'], function (){
-    Route::get('home', 'Users\FarmerDashboardController@index')->name('user.dashboard');
+    Route::name('farmer.')->group( function(){
+        Route::get('home', 'Users\FarmerDashboardController@index')->name('dashboard');
+        Route::post('change/password', 'Users\FarmerDashboardController@changePassword')->name('change.password');
+        Route::get('transation/detail', 'Users\FarmerDashboardController@transactionDetail')->name('milk.detail');
+        Route::get('purchage/item/detail', 'Users\FarmerDashboardController@purchageItemDetail')->name('purchage.item.detail');
+
+    });
 });
 
 Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], function (){
-    Route::get('home', 'Users\DistributorDashboardController@index')->name('distributor.dashboard');
+    Route::name('distributer.')->group( function(){
+        Route::get('home', 'Users\DistributorDashboardController@index')->name('dashboard');
+        Route::post('change/password', 'Users\DistributorDashboardController@changePassword')->name('change.password');
+    });
 
 });

@@ -54,6 +54,20 @@
         $balancetotal=0;
         $prevbalancetotal=0;
         $paidamounttotal=0;
+
+                $_tctotal=0;
+                $_cctotal=0;
+                $_grandtotal=0;
+                $_milktotal=0;
+                $_bonustotal=0;
+                $_totaltotal=0;
+                $_duetotal=0;
+                $_advancetotal=0;
+                $_prevduetotal=0;
+                $_nettotaltotal=0;
+                $_balancetotal=0;
+                $_prevbalancetotal=0;
+                $_paidamounttotal=0;
     @endphp
 
 
@@ -296,6 +310,20 @@
                     <td></td>
                 </tr>
             @php
+                $_tctotal+=$tctotal;
+                $_cctotal+=$cctotal;
+                $_grandtotal+=$grandtotal;
+                $_milktotal+=$milktotal;
+                $_bonustotal+=$bonustotal;
+                $_totaltotal+=$totaltotal;
+                $_duetotal+=$duetotal;
+                $_advancetotal+=$advancetotal;
+                $_prevduetotal+=$prevduetotal;
+                $_nettotaltotal+=$nettotaltotal;
+                $_balancetotal+=$balancetotal;
+                $_prevbalancetotal+=$prevbalancetotal;
+                $_paidamounttotal+=$paidamounttotal;
+
                 $point=false;
                 $tctotal=0;
                 $cctotal=0;
@@ -316,8 +344,24 @@
         <div class="fs"></div>
         @endif
 
+
             @endforeach
         @if ($i<31)
+        @php
+             $_tctotal+=$tctotal;
+                $_cctotal+=$cctotal;
+                $_grandtotal+=$grandtotal;
+                $_milktotal+=$milktotal;
+                $_bonustotal+=$bonustotal;
+                $_totaltotal+=$totaltotal;
+                $_duetotal+=$duetotal;
+                $_advancetotal+=$advancetotal;
+                $_prevduetotal+=$prevduetotal;
+                $_nettotaltotal+=$nettotaltotal;
+                $_balancetotal+=$balancetotal;
+                $_prevbalancetotal+=$prevbalancetotal;
+                $_paidamounttotal+=$paidamounttotal;
+        @endphp
         <tr>
             <td colspan="2">Total</td>
             <td>{{$milktotal}}</td>
@@ -366,9 +410,58 @@
             <td></td>
             <td></td>
         </tr>
+        <tr>
+            <td colspan="2">Grand Total</td>
+            <td>{{$_milktotal}}</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            @if ($usecc || $usetc)
+                        <td>
+                            {{$_totaltotal}}
+
+                        </td>
+                        <td>
+                            {{$_tctotal}}
+
+                        </td>
+                        <td>
+                            {{$_cctotal}}
+
+                        </td>
+            @endif
+            <td>{{$_grandtotal}}</td>
+            @if(env('hasextra',0)==1)
+                <td>{{$_bonustotal}}</td>
+            @endif
+            <td>
+                {{$_duetotal}}
+            </td>
+            <td>
+                {{$_advancetotal}}
+            </td>
+            <td>
+                {{$_prevduetotal}}
+            </td>
+            <td>
+                {{$_prevbalancetotal}}
+            </td>
+            <td>
+                {{$_paidamounttotal}}
+            </td>
+            <td>
+                {{$_nettotaltotal}}
+            </td>
+            <td>
+                {{$_balancetotal}}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
             </tbody>
         </table>
         @endif
+
     @if ($newsession)
 
         <div class="py-2 d-print-none">
