@@ -168,7 +168,7 @@
                 })
                 .then(function(response) {
                     console.log(response.data);
-                    showNotification('bg-success', 'Sellitem added successfully !');
+                    // showNotification('bg-success', 'Sellitem added successfully !');
                     $('#sellDisDataBody').prepend(response.data);
                     $('#id').val('');
                     $('#product_id').val('');
