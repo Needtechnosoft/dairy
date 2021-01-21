@@ -233,6 +233,9 @@
         var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
 
         $('#currentdate').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+
+        var mainInput = document.getElementById("currentdates");
+        mainInput.nepaliDatePicker();
     };
 
 
