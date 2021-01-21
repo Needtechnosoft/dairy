@@ -10,12 +10,17 @@ class Ledger extends Model
     use HasFactory;
 
     public function getForeign(){
-        if($this->identifier=="102"){
+        if($this->identifire==102){
             return Advance::find($this->foreign_key);
-        }elseif($this->identifier='103'){
+        }
+        if($this->identifire==103){
             return Sellitem::find($this->foreign_key);
-        }elseif($this->identifier='105'){
+        }
+        if($this->identifire==114){
             return Distributorsell::find($this->foreign_key);
+        }
+        if($this->identifire==105){
+            return Distributorsell::where('id',$this->foreign_key)->first();
         }
     }
 

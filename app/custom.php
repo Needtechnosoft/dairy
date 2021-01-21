@@ -16,6 +16,6 @@ function truncate_decimals($number, $decimals=2)
 }
 
 function rupee($amount) {
-    $fmt = new \NumberFormatter($locale = 'en_IN', NumberFormatter::DECIMAL);
+    $fmt = new NumberFormatter($locale = 'en_IN', NumberFormatter::DECIMAL);
     return $fmt->format($amount);
 }

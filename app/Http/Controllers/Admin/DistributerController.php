@@ -117,7 +117,7 @@ class DistributerController extends Controller
             }
             // dd($ledger->toSql(),$ledger->getBindings());
             $ledgers=$ledger->orderBy('id','asc')->get();
-            $user=User::find($request->user_id);
+            $user=User::where('id',$request->user_id)->first();
 
         return view('admin.distributer.data',compact('ledgers','type','user','title'));
 

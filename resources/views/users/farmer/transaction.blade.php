@@ -21,10 +21,9 @@
     </div>
     <div class="col-md-3">
         <span class="btn btn-primary" onclick="loadData()"> Load </span>
-        <span class="btn btn-primary" onclick="printDiv('print')"> Print </span>
     </div>
 </div>
-<div id="">
+<div id="allData">
 
 </div>
 
@@ -63,7 +62,7 @@
         };
         axios({
                 method: 'post',
-                url: '{{ route("farmer.loaddetail") }}',
+                url: '{{ route("farmer.loaddata") }}',
                 data:data ,
         })
         .then(function(response) {
