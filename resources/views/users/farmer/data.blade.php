@@ -30,7 +30,7 @@
     </div>
     <div class="row ">
         <div class="col-md-6">
-            <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
+            <div class="mb-2" style="border: 1px solid rgb(136, 126, 126); padding:.5rem; ">
                 {{-- <button class="btn btn-success" onclick="printDiv('milk-data');">Print</button> --}}
                 <div id="milk-data">
                     <style>
@@ -58,7 +58,7 @@
                         @endphp
                             @foreach ($milkData as $milk)
                             <tr>
-                                <td>{{ _nepalidate($milk->date) }}</td>
+                                <td style="width: 90px;">{{ _nepalidate($milk->date) }}</td>
                                 <td>{{ $milk->m_amount }}</td>
                                 <td>{{ $milk->e_amount }}</td>
                             </tr>
@@ -97,7 +97,7 @@
                     </style>
                     <strong>Snf & Fats </strong>
                     <hr>
-                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable ">
                         <tr>
                             <th>Date</th>
                             <th>Snf (%)</th>
@@ -189,7 +189,7 @@
 
         @if (count($farmer1->ledger)>0)
             <div class="col-md-12 mt-3">
-                <div style="border: 1px solid rgb(136, 126, 126); padding:1rem;">
+                <div style="border: 1px solid rgb(136, 126, 126); padding:.5rem; ">
 
                     <div id="ledger-data">
                         <style>
@@ -231,7 +231,7 @@
 
                             @foreach ($farmer1->ledger as $l)
                                 <tr>
-                                    <td>{{ _nepalidate($l->date) }}</td>
+                                    <td style="width: 90px;">{{ _nepalidate($l->date) }}</td>
                                     <td>{{ $l->title }}</td>
 
                                     <td>
@@ -267,7 +267,7 @@
             </h5>
             <hr>
 
-            <div class="report p-2">
+            <div class="report p-2" style="overflow: scroll;">
                 <table class="table">
                     <tr>
                         <th>

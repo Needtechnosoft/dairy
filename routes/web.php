@@ -239,9 +239,9 @@ Route::group(['middleware' => 'role:farmer','prefix'=>'farmer'], function (){
     Route::name('farmer.')->group( function(){
         Route::get('home', 'Users\FarmerDashboardController@index')->name('dashboard');
         Route::post('change/password', 'Users\FarmerDashboardController@changePassword')->name('change.password');
-        Route::get('transation/detail', 'Users\FarmerDashboardController@transactionDetail')->name('milk.detail');
+        Route::get('transaction/detail', 'Users\FarmerDashboardController@transactionDetail')->name('milk.detail');
         Route::post('load-data','Users\FarmerDashboardController@loadData')->name('loaddata');
-
+        Route::get('change-password', 'Users\FarmerDashboardController@changePasswordPage')->name('password.page');
 
     });
 });
@@ -250,6 +250,13 @@ Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], funct
     Route::name('distributer.')->group( function(){
         Route::get('home', 'Users\DistributorDashboardController@index')->name('dashboard');
         Route::post('change/password', 'Users\DistributorDashboardController@changePassword')->name('change.password');
+        Route::get('transaction/detail', 'Users\DistributorDashboardController@transactionDetail')->name('transaction.detail');
+        Route::post('load-data','Users\DistributorDashboardController@loaddata')->name('loaddata');
+        Route::get('change-password', 'Users\DistributorDashboardController@changePasswordPage')->name('password.page');
+        Route::get('make-a-request', 'Users\DistributorDashboardController@makeArequest')->name('request');
+        Route::post('make-a-request-add', 'Users\DistributorDashboardController@makeArequestAdd')->name('request.add');
+
+
     });
 
 });

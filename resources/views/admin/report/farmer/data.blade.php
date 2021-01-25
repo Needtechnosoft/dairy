@@ -96,8 +96,10 @@
                 <th>Due</th>
                 <th>Avance</th>
                 <th>Prev Due</th>
-                <th>Prev Balance</th>
-                <th>Paid Amount</th>
+                @if(env('tier',0)==1)
+                    <th>Prev Balance</th>
+                    <th>Paid Amount</th>
+                @endif
                 <th>Net Total</th>
                 <th>Due Balance</th>
                 <th>Signature</th>
@@ -208,6 +210,7 @@
                             $prevduetotal+=$farmer->prevdue;
                             @endphp
                     </td>
+                    @if(env('tier',0)==1)
                     <td>
                         {{$farmer->prevbalance}}
                         @php
@@ -220,6 +223,7 @@
                             $paidamounttotal+=$farmer->paidamount;
                         @endphp
                     </td>
+                    @endif
                     <td>
                         {{$farmer->nettotal}}
                         {{-- <input type="hidden" name="nettotal[{{$t}}]" value=" {{$tt>0?$tt:0}}" > --}}
@@ -294,12 +298,14 @@
                     <td>
                         {{$prevduetotal}}
                     </td>
+                    @if(env('tier',0)==1)
                     <td>
                         {{$prevbalancetotal}}
                     </td>
                     <td>
                         {{$paidamounttotal}}
                     </td>
+                    @endif
                     <td>
                         {{$nettotaltotal}}
                     </td>
@@ -443,12 +449,15 @@
             <td>
                 {{$_prevduetotal}}
             </td>
+            @if(env('tier',0)==1)
             <td>
+
                 {{$_prevbalancetotal}}
             </td>
             <td>
                 {{$_paidamounttotal}}
             </td>
+            @endif
             <td>
                 {{$_nettotaltotal}}
             </td>

@@ -1,19 +1,19 @@
 @extends('users.farmer.layout.app')
-@section('title','Farmer')
+@section('title','Farmer Transaction')
 @section('head-title')
 {{ Auth::user()->name }}
 @endsection
 @section('content')
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-2">
         <select name="year" id="year" class="form-control show-tick ms select2">
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 mb-2">
         <select name="month" id="month" class="form-control show-tick ms select2">
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 mb-2">
         <select name="session" id="session" class="form-control show-tick ms select2">
             <option value="1">1</option>
             <option value="2">2</option>

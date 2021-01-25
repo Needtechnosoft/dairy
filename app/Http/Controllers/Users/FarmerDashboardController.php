@@ -19,7 +19,14 @@ use Illuminate\Support\Facades\Hash;
 class FarmerDashboardController extends Controller
 {
     public function index(){
-        return view('users.farmer.indenx');
+        $mMilk = Milkdata::where('user_id',Auth::user()->id)->sum('m_amount');
+        $eMilk = Milkdata::where('user_id',Auth::user()->id)->sum('e_amount');
+        $totalMilk = $mMilk+$eMilk;
+        $purchase = Sellitem::where('user_id',Auth::user()->id)->sum('total');
+        $due = User::where('id',Auth::user()->id)->where('amounttype',1)->sum('amount');
+        $paid = User::where('id',Auth::user()->id)->where('amounttype',2)->sum('amount');
+        // dd($paid);
+        return view('users.farmer.indenx',compact('totalMilk','purchase','due'));
     }
 
     public function changePassword(Request $request){
@@ -43,8 +50,8 @@ class FarmerDashboardController extends Controller
         return view('users.farmer.transaction');
     }
 
-    public function purchageItemDetail(){
-        return 'hello from purchage';
+    public function changePasswordPage(){
+        return view('users.farmer.password');
     }
 
     public function loadData(Request $r){

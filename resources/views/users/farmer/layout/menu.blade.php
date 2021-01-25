@@ -16,6 +16,7 @@
             </li>
             <li class="active open"><a href="{{ route('farmer.dashboard')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
             <li><a href="{{ route('farmer.milk.detail') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Transation Detail</span></a></li>
+            <li><a href="{{ route('farmer.password.page') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Change Password</span></a></li>
             <li><a href="{{ route('logout') }}" class="waves-effect waves-block" target="_top"><i class="zmdi zmdi-power"></i><span>Sign Out</span></a></li>
         </ul>
     </div>
