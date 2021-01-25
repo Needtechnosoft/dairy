@@ -29,6 +29,8 @@ class FarmerDashboardController extends Controller
         return view('users.farmer.indenx',compact('totalMilk','purchase','due'));
     }
 
+
+
     public function changePassword(Request $request){
         $request->validate([
             'n_pass' =>'required|min:8'

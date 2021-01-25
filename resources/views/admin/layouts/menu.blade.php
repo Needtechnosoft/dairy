@@ -45,6 +45,7 @@
                     <li><a href="{{ route('admin.dis.sell') }}" class="waves-effect waves-block">Distributer Sell</a></li>
                     <li><a href="{{ route('admin.dis.payemnt') }}" class="waves-effect waves-block">payment</a></li>
                     <li><a href="{{ route('distributer.detail.opening') }}" class="waves-effect waves-block">Account Opening</a></li>
+                    <li><a href="{{ route('admin.distri.request') }}" class="waves-effect waves-block">Distributor Request</a></li>
                 </ul>
             </li>
 

@@ -124,4 +124,22 @@ class DistributorDashboardController extends Controller
         $req->save();
         return redirect()->back()->with('message','Your request addedd successfully !');
     }
+
+    public function makeArequestUpdate(Request $re){
+        // dd($re->all());
+        $date = str_replace('-','',$re->date);
+        // dd($date);
+        $req = Distributerreq::where('id',$re->id)->first();
+        $req->date = $date;
+        $req->amount = $re->amount;
+        $req->item_name = $re->item;
+        $req->save();
+        return redirect()->back()->with('message','Your request updated successfully !');
+    }
+
+    public function requestDelete($id){
+        $req = Distributerreq::where('id',$id)->first();
+        $req->delete();
+        return redirect()->back()->with('message','Your request deleted successfully !');
+    }
 }

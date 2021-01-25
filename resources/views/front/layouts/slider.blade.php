@@ -6,11 +6,11 @@
                 <div class="swiper-slide dark">
                     <div class="container">
                         <div class="slider-caption slider-caption-center">
-                            <h2 data-animate="fadeInUp">Welcome to Canvas</h2>
+                            <h2 data-animate="fadeInUp">Welcome to Nawadurga Dairy</h2>
                             <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">Create just what you need for your Perfect Website. Choose from a wide range of Elements &amp; simply put them on our Canvas.</p>
                         </div>
                     </div>
-                    <div class="swiper-slide-bg" style="background-image: url('{{ asset('assets/images/slider/swiper/1.jpg') }}');"></div>
+                    <div class="swiper-slide-bg" style="background-image: url('{{ asset('assets/images/slider/swiper/1.jpeg') }}');"></div>
                 </div>
                 <div class="swiper-slide dark">
                     <div class="container">

@@ -22,7 +22,7 @@ Make a Request
             <tr>
                 <th>Date</th>
                 <th>Item Name</th>
-                <th>Required Qty</th>
+                <th>Required Qty (Kg/Ltr)</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -34,9 +34,12 @@ Make a Request
                     <td>{{ $item->item_name }}</td>
                     <td>{{ $item->amount }}</td>
                     <td><span class="badge badge-{{ $item->status==0?'primary':'success'}}">{{ $item->status==0?'Pending':'Received'}}</span></td>
-                    <td>
-                        <button type="button" class="btn btn-primary btn-sm waves-effect m-r-20" data-edit="{{$item->toJson()}}" onclick="initEdit(this);" data-toggle="modal" data-target="#editModal">Edit</button>
-                    </td>
+                    @if ($item->status==0)
+                        <td>
+                            <button  type="button" data-edit="{{$item->toJson()}}" class="btn btn-primary btn-sm editrequest" onclick="initEdit(this);" >Edit</button>
+                            <a href="{{ route('distributer.request.delete',$item->id)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure ?');">Del</a>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
@@ -108,10 +111,11 @@ Make a Request
             <hr>
             <div class="card">
                 <div class="body">
-                    <form id="form_validation" action="" method="POST">
+                    <form id="form_validation" action="{{ route('distributer.request.update') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-lg-6">
+                                <input type="hidden" id="eid" name="id" >
                                 <label for="name">Date</label>
                                 <div class="form-group">
                                     <input type="text" name="date" id="enepali-datepicker" class="form-control" data-next="title" placeholder="Date" required>
@@ -133,7 +137,7 @@ Make a Request
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="cprice">Required Qty</label>
-                                    <input type="number" min="1" name="amount" placeholder="Enter required amount" value="1" class="form-control" required>
+                                    <input type="number" min="1" id="eqty" name="amount" placeholder="Enter required amount" value="1" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -154,11 +158,17 @@ Make a Request
 <script>
     function initEdit(ele){
         var req = JSON.parse(ele.dataset.edit);
-        $('#date')
+        $('#eid').val(req.id);
+        $('#enepali-datepicker').val(req.date);
+        $('#eitem').val(req.item_name).change();
+        $('#eqty').val(req.amount);
+        $('#editModal').modal('show');
     }
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
+        var editdate = document.getElementById("enepali-datepicker");
+        editdate.nepaliDatePicker();
     };
 </script>
 @endsection

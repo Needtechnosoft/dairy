@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Distributer;
+use App\Models\Distributerreq;
 use App\Models\Distributorsell;
 use App\Models\Ledger;
 use App\Models\User;
@@ -158,6 +159,20 @@ class DistributerController extends Controller
         $oldledger->delete();
         $user->amount=0;
         $user->save();
+    }
+
+
+    // distributer request
+    public function distributerRequest(){
+        $disReqs = Distributerreq::latest()->get();
+        return view('admin.distributer.request',compact('disReqs'));
+    }
+
+    public function distributerRequestChangeStatus($id){
+        $disReqs = Distributerreq::where('id',$id)->first();
+        $disReqs->status = 1;
+        $disReqs->save();
+        return redirect()->back();
     }
 
 

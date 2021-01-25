@@ -17,7 +17,7 @@
 
 				@include('front.sections.video')
 
-				@include('front.sections.testimonials')
+				{{-- @include('front.sections.testimonials') --}}
 
 				@include('front.sections.contact')
 

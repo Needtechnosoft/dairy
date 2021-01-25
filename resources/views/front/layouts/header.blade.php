@@ -6,7 +6,7 @@
     <div id="page-menu-wrap">
         <div class="container">
             <div class="page-menu-row">
-                <div class="page-menu-title">Explore <span>CANVAS</span></div>
+                <div class="page-menu-title">Nawa Durga <span>DAIRY</span></div>
                 <nav class="page-menu-nav one-page-menu">
                     <ul class="page-menu-container">
                         <li class="page-menu-item"><a href="#" data-href="#slider">
@@ -30,12 +30,12 @@
                         <li class="page-menu-item"><a href="#" data-href="#section-video">
                                 <div>Video</div>
                             </a></li>
-                        <li class="page-menu-item"><a href="#" data-href="#section-testimonials" class="no-offset">
-                                <div>Testimonials</div>
-                            </a></li>
                         <li class="page-menu-item"><a href="#" data-href="#section-contact">
                                 <div>Contact</div>
                             </a></li>
+                        <li class="page-menu-item">
+                            <a href="{{ url('login')}}">Login</a>
+                        </li>
                     </ul>
                 </nav>
 

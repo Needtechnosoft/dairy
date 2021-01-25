@@ -131,6 +131,12 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('distributer/ledger','Admin\DistributerController@ledger')->name('distributer.detail.ledger');
     Route::post('distributer/ledger/update','Admin\DistributerController@updateLedger')->name('distributer.detail.ledger.update');
 
+    // distributer request
+    Route::get('distributer/request','Admin\DistributerController@distributerRequest')->name('admin.distri.request');
+    Route::get('distributer/change/status/{id}','Admin\DistributerController@distributerRequestChangeStatus')->name('change.status');
+
+
+
     // XXX distributer sell
 
     Route::get('distributer-sells', 'Admin\DistributersellController@index')->name('admin.dis.sell');
@@ -157,6 +163,9 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('employee/getadvance','Admin\EmployeeController@getAdvance')->name('admin.emp.advance.list');
     Route::post('employee/deladvance','Admin\EmployeeController@delAdvance')->name('admin.emp.advance.del')->middleware('authority');;
     Route::post('employee/updateadvance','Admin\EmployeeController@updateAdvance')->name('admin.emp.advance.update')->middleware('authority');
+
+
+
 
     // XXX products
     Route::group(['prefix' => 'product'], function () {
@@ -253,8 +262,11 @@ Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], funct
         Route::get('transaction/detail', 'Users\DistributorDashboardController@transactionDetail')->name('transaction.detail');
         Route::post('load-data','Users\DistributorDashboardController@loaddata')->name('loaddata');
         Route::get('change-password', 'Users\DistributorDashboardController@changePasswordPage')->name('password.page');
+
         Route::get('make-a-request', 'Users\DistributorDashboardController@makeArequest')->name('request');
         Route::post('make-a-request-add', 'Users\DistributorDashboardController@makeArequestAdd')->name('request.add');
+        Route::post('make-a-request-update', 'Users\DistributorDashboardController@makeArequestUpdate')->name('request.update');
+        Route::get('make-a-request/{id}', 'Users\DistributorDashboardController@requestDelete')->name('request.delete');
 
 
     });

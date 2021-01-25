@@ -10,13 +10,13 @@
             <div class="row col-mb-30">
 
                 <div class="col-md-6 text-center text-md-left">
-                    Copyrights &copy; 2020 All Rights Reserved by Canvas Inc.<br>
-                    <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+                    Copyrights &copy; 2020 All Rights Reserved by Nawadurga Dairy.<br>
+                    {{-- <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div> --}}
                 </div>
 
                 <div class="col-md-6 text-center text-md-right">
-                    <div class="d-flex justify-content-center justify-content-md-end">
-                        <a href="#" class="social-icon si-small si-borderless si-facebook">
+                    {{-- <div class="d-flex justify-content-center justify-content-md-end"> --}}
+                        {{-- <a href="#" class="social-icon si-small si-borderless si-facebook">
                             <i class="icon-facebook"></i>
                             <i class="icon-facebook"></i>
                         </a>
@@ -55,13 +55,12 @@
                             <i class="icon-linkedin"></i>
                             <i class="icon-linkedin"></i>
                         </a>
-                    </div>
+                    </div> --}}
 
                     <div class="clear"></div>
 
-                    <i class="icon-envelope2"></i> info@canvas.com <span class="middot">&middot;</span> <i
-                        class="icon-headphones"></i> +1-11-6541-6369 <span class="middot">&middot;</span> <i
-                        class="icon-skype2"></i> CanvasOnSkype
+                    <i class="icon-envelope2"></i> nawadurga@gmail.com <span class="middot">&middot;</span> <i
+                        class="icon-headphones"></i> +977 9800000 <span class="middot">&middot;</span>
                 </div>
 
             </div>
