@@ -313,7 +313,6 @@
                         {{$balancetotal}}
                     </td>
                     <td></td>
-                    <td></td>
                 </tr>
             @php
                 $_tctotal+=$tctotal;
@@ -414,7 +413,6 @@
                 {{$balancetotal}}
             </td>
             <td></td>
-            <td></td>
         </tr>
         <tr>
             <td colspan="2">Grand Total</td>
@@ -464,7 +462,6 @@
             <td>
                 {{$_balancetotal}}
             </td>
-            <td></td>
             <td></td>
         </tr>
             </tbody>
