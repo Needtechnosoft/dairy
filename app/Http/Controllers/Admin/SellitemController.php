@@ -137,6 +137,7 @@ class SellitemController extends Controller
         // dd($request->ids);
         foreach($request->ids as $id){
 
+
             $sell = Sellitem::find($id);
             $item = Item::where('id',$sell->item_id)->first();
 
@@ -147,14 +148,25 @@ class SellitemController extends Controller
             $title=$item->title.' ( Rs.'.$sell->rate.' x '.$sell->qty. ')';
 
             $item->stock = $item->stock + $sell->qty;
-
             $item->save();
             $sell->delete();
             $manager=new LedgerManage($user_id);
             $ledger=[];
-            $ledger[0] = Ledger::where('identifire','103')->where('foreign_key',$id)->first();
+            echo "id:".$id.", paid:".$paid."<br>";
+            $ledger1=Ledger::where('user_id',$user_id)->where('identifire','103')->where('foreign_key',$id)->first();
+            if($ledger1!=null){
+                array_push($ledger,$ledger1);
+            }
+
+            echo "step1 <br>";
+
             if($paid>0){
-                $ledger[1]=Ledger::where('identifire','106')->where('foreign_key',$id)->first();
+                $ledger2=Ledger::where('user_id',$user_id)->where('identifire','106')->where('foreign_key',$id)->first();
+                if($ledger2!=null){
+                    array_push($ledger,$ledger1);
+                }
+                echo "step2 <br>";
+
             }
             // $ledger[0] = Ledger::where('identifire','106')->where('foreign_key',$request->id);
             LedgerManage::delLedger($ledger);

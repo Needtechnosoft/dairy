@@ -201,9 +201,9 @@ class ReportController extends Controller
             $ledger=new LedgerManage($data->id);
             $grandtotal=$data->grandtotal??0;
 
-            if($data->total>0 ){
+            if($data->grandtotal>0 ){
 
-                $ledger->addLedger("Payment for milk (".($data->milk)."l X ".($data->rate??0).")",2,$data->total??0,$lastdate,'108');
+                $ledger->addLedger("Payment for milk (".($data->milk)."l X ".($data->rate??0).")",2,$data->grandtotal??0,$lastdate,'108');
             }
 
             if($data->nettotal>0 ||$data->balance>0){
