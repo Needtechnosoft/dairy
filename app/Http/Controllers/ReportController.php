@@ -141,12 +141,13 @@ class ReportController extends Controller
         // ]);
 
 
+            // dd($request);
+            if($request->grandtotal>0){
+                $ledger->addLedger("Payment for milk (".($request->milk)."l)",2,$request->grandtotal,$lastdate,'108');
+            }
             if($request->nettotal>0 ||$request->balance>0){
 
-                if($request->milktotal>0){
 
-                    $ledger->addLedger("Payment for milk (".($request->milk)."l X ".($request->rate??0).")",2,$request->total,$lastdate,'108');
-                }
 
                 if($request->nettotal>0){
                     if(env('paywhenupdate',0)==1){

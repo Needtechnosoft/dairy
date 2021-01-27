@@ -17,37 +17,38 @@ class DistributorPaymentController extends Controller
     }
 
     public function due(Request $request){
-        $bills=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
+        // $bills=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
+        $distributor=Distributer::find($request->id);
         $id=$request->id;
-        return view('admin.distributer.payment.data',compact('bills','id'));
+        return view('admin.distributer.payment.data',compact('distributor','id'));
     }
 
     public function pay(Request $request){
-        $bills1=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
+        // $bills1=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
         $distributor=Distributer::find($request->id);
         $date = str_replace('-','',$request->date);
         // dd($request,$bills1);
         $amount =$request->amount;
 
 
-        foreach($bills1 as $bill){
-            if($bill->deu>=$amount){
-                $bill->paid=$amount;
-                $bill->deu-=$amount;
-                $bill->save();
-                $amount=0;
-            }else{
-                $bill->paid=$bill->deu;
+        // foreach($bills1 as $bill){
+        //     if($bill->deu>=$amount){
+        //         $bill->paid=$amount;
+        //         $bill->deu-=$amount;
+        //         $bill->save();
+        //         $amount=0;
+        //     }else{
+        //         $bill->paid=$bill->deu;
 
-                $amount-=$bill->deu;
-                $bill->deu=0;
-                $bill->save();
-            }
+        //         $amount-=$bill->deu;
+        //         $bill->deu=0;
+        //         $bill->save();
+        //     }
 
-            if($amount<=0){
-                break;
-            }
-        }
+        //     if($amount<=0){
+        //         break;
+        //     }
+        // }
 
         $payment=new DistributorPayment();
         // $paymentDatam
@@ -59,11 +60,9 @@ class DistributorPaymentController extends Controller
 
         $ledger=new LedgerManage($distributor->user_id);
         $ledger->addLedger("Payment by distributor",2,$request->amount,$date,'111',$payment->id);
-
-
-        $bills=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
+        // $bills=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
         $id=$request->id;
-        return view('admin.distributer.payment.data',compact('bills','id'));
+        return view('admin.distributer.payment.data',compact('distributor','id'));
 
     }
 }

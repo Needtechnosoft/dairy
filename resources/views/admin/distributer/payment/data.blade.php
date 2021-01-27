@@ -2,7 +2,7 @@
     $t=0;$bt=0;$pt=0;
 
 @endphp
-<table id="newstable1" class="table table-bordered">
+{{-- <table id="newstable1" class="table table-bordered">
     <thead>
         <tr>
             <th>Date</th>
@@ -66,8 +66,16 @@
             </td>
         </tr>
     </tbody>
-</table>
-<div class="p-2">
+</table> --}}
+
+<div class="card py-4 px-2 my-3 shadow" style="font-size:2rem;font-weight:600;">
+    <strong>
+        Current Balance :
+    </strong>
+    {{rupee((float)$distributor->user->amount )}}
+    {{$distributor->user->amounttype==1?"CR":"DR" }}
+</div>
+<div class="card py-4 px-2 my-3 shadow">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -76,7 +84,7 @@
         </div>
         <div class="col-md-6">
             {{-- <input type="hidden" id="u_id" value="{{$id}}"> --}}
-            <input onkeyup="checkAmount(this)" placeholder="Enter Payment Amount" type="number" id="amount" class="form-control" min="1" step="=0.01" max="{{$t}}">
+            <input  placeholder="Enter Payment Amount" type="number" id="amount" class="form-control" min="1" step="=0.01" >
         </div>
         <div class="col-md-12 py-2">
             <label>

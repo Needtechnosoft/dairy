@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/','HomeController@home');
+Route::get('/test/{id}','TestController@index')->name('test');
+Route::get('/test-all/{id}','TestController@all')->name('test-all');
+Route::get('/test-distributor','TestController@distributor')->name('test-distributor');
+Route::get('/test-distributor-date','TestController@distributorByDate')->name('test-distributor');
 
  Route::get('/pass', function () {
      $pass = bcrypt('admin');
@@ -90,6 +94,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('sell-item-list','Admin\SellitemController@sellItemList')->name('admin.sell.item.list');
     Route::post('sell-item-update','Admin\SellitemController@updateSellItem')->name('admin.sell.item.update');
     Route::post('sell-item-delete', 'Admin\SellitemController@deleteSellitem')->middleware('authority');
+    Route::post('sell-item-delete-all', 'Admin\SellitemController@multidel')->name('del-all-selitem')->middleware('authority');
 
 
 

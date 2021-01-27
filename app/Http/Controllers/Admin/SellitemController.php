@@ -109,6 +109,7 @@ class SellitemController extends Controller
         $paid=$sell->paid;
         $total=$sell->total;
         $user_id=$sell->user_id;
+
         $title=$item->title.' ( Rs.'.$sell->rate.' x '.$sell->qty. ')';
 
         $item->stock = $item->stock + $sell->qty;
@@ -116,12 +117,47 @@ class SellitemController extends Controller
         $item->save();
         $sell->delete();
         $manager=new LedgerManage($user_id);
-        $manager->addLedger('Cancel sell: '.$title,2,$total,$date,'116',$request->id);
+        $ledger=[];
+        $ledger[0] = Ledger::where('identifire','103')->where('foreign_key',$request->id)->first();
         if($paid>0){
-            $manager->addLedger('Cancel paid: '.$title,1,$paid,$date,'117',$request->id);
+            $ledger[1]=Ledger::where('identifire','106')->where('foreign_key',$request->id)->first();
         }
+        // $ledger[0] = Ledger::where('identifire','106')->where('foreign_key',$request->id);
+        LedgerManage::delLedger($ledger);
+                // $manager->addLedger('Cancel sell: '.$title,2,$total,$date,'116',$request->id);
+        // if($paid>0){
+        //     $manager->addLedger('Cancel paid: '.$title,1,$paid,$date,'117',$request->id);
+        // }
 
         return response('Sell Deleted Sucessfully');
 
+    }
+
+    public function multidel(Request $request){
+        // dd($request->ids);
+        foreach($request->ids as $id){
+
+            $sell = Sellitem::find($id);
+            $item = Item::where('id',$sell->item_id)->first();
+
+            $paid=$sell->paid;
+            $total=$sell->total;
+            $user_id=$sell->user_id;
+
+            $title=$item->title.' ( Rs.'.$sell->rate.' x '.$sell->qty. ')';
+
+            $item->stock = $item->stock + $sell->qty;
+
+            $item->save();
+            $sell->delete();
+            $manager=new LedgerManage($user_id);
+            $ledger=[];
+            $ledger[0] = Ledger::where('identifire','103')->where('foreign_key',$id)->first();
+            if($paid>0){
+                $ledger[1]=Ledger::where('identifire','106')->where('foreign_key',$id)->first();
+            }
+            // $ledger[0] = Ledger::where('identifire','106')->where('foreign_key',$request->id);
+            LedgerManage::delLedger($ledger);
+        }
     }
 }

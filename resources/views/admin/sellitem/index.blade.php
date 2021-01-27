@@ -99,7 +99,7 @@
                     <table id="newstable1" class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>User No.</th>
+                                <th><input type="checkbox" id="allchecked" onchange="selectAll(this.checked);"> User No.</th>
                                 <th>Item Name</th>
                                 <th>Rate</th>
                                 <th>Quantity</th>
@@ -113,6 +113,10 @@
 
                         </tbody>
                     </table>
+
+                    <div class="pt-2">
+                        <button class="btn btn-danger" onclick="deleteAll()">Delete Selected</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,8 +296,9 @@
         calTotal();
     }
 
-    $('#center_id').change(function(){
+    function loadData(){
         var center_id = $('#center_id').val();
+        $('#sellDataBody').html('');
         axios.post('{{ route("admin.sell.item.list")}}',{'center_id':center_id,'date': $('#nepali-datepicker').val()})
         .then(function(response) {
             // console.log(response.data);
@@ -309,6 +314,14 @@
                 console.log(error.response.headers);
             }
         });
+    }
+
+    $('#center_id').change(function(){
+        loadData();
+    })
+
+    $('#nepali-datepicker').on('changed',function(){
+        loadData();
     })
         // list
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
@@ -357,6 +370,43 @@
     $('#paid').bind('keydown', 'return', function(e){
         saveData();
     });
+
+
+    function selectAll(checked){
+        $('.ids').each(function(){
+            this.checked=checked;
+        });
+    }
+
+    function deleteAll(){
+        if(confirm('Do You Want Delete Selected Datas')){
+            if(prompt("Type 'yes' To delete all Data")=='yes'){
+
+                data=[];
+                $('.ids').each(function(){
+                    if(this.checked){
+                        data.push(this.value);
+                    }
+                });
+
+                axios({
+                    method: 'post',
+                    url: '{{ route("del-all-selitem")}}',
+                    data:{'ids':data}
+                })
+                .then(function(response) {
+                    $('#allchecked').prop("checked", false)
+                    loadData();
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response);
+                });
+            }
+        }
+
+
+    }
 
 
 
