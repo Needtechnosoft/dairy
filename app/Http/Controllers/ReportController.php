@@ -107,7 +107,7 @@ class ReportController extends Controller
                     $farmer->fat=$_data->fat;
                     $farmer->snf=$_data->snf;
                         $farmer->rate=$_data->rate;
-                        $farmer->total=$_data->total;
+                        $farmer->total=$_data->totalamount;
                         $farmer->tc=$_data->tc;
                         $farmer->cc=$_data->cc;
                         $farmer->grandtotal=$_data->grandtotal;
@@ -169,7 +169,7 @@ class ReportController extends Controller
             $farmerreport->snf=$request->snf??0;
             $farmerreport->fat=$request->fat??0;
             $farmerreport->rate=$request->rate??0;
-            $farmerreport->total=$request->totalamount??0;
+            $farmerreport->total=$request->total??0;
             $farmerreport->due=$request->due??0;
             $farmerreport->bonus=$request->bonus??0;
             $farmerreport->prevdue=$request->prevdue??0;

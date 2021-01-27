@@ -433,7 +433,7 @@
                                 <input type="hidden" name="fat" value="{{ $farmer1->fatavg }}">
                                 <input type="hidden" name="rate" value=" {{ $farmer1->milkrate }}">
                                 <input type="hidden" name="milk" value="{{ $farmer1->milkamount }}">
-                                <input type="hidden" name="total" value=" {{ $farmer1->totalamount }}">
+                                <input type="hidden" name="total" value=" {{ $farmer1->total }}">
                                 <input type="hidden" name="grandtotal" value=" {{ $farmer1->grandtotal }}">
                                 <input type="hidden" name="cc" value=" {{ $farmer1->cc }}">
                                 <input type="hidden" name="tc" value=" {{ $farmer1->tc }}">
