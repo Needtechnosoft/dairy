@@ -88,7 +88,11 @@
         axios.post("{{route('report.farmer')}}",d)
         .then(function(response){
             $('#allData').html(response.data);
-
+            var edit = document.getElementById("closedate");
+            if(edit!=undefined){
+                edit.nepaliDatePicker();
+            }
+            // edit.nepaliDatePicker();
         })
         .catch(function(error){
             alert('some error occured');

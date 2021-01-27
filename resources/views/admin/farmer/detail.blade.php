@@ -79,6 +79,11 @@
         })
         .then(function(response) {
             $('#allData').html(response.data);
+
+            var edit = document.getElementById("closedate");
+            if(edit!=undefined){
+                edit.nepaliDatePicker();
+            }
         })
         .catch(function(response) {
             //handle error

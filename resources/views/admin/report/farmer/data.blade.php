@@ -469,7 +469,10 @@
         @endif
 
     @if ($newsession)
-
+        <div class="py-2">
+            <label for=>Session Close Date</label>
+            <input type="text" name="date" id="closedate" readonly required>
+        </div>
         <div class="py-2 d-print-none">
             <input type="submit" value="Update Session Data" class="btn btn-success">
         </div>

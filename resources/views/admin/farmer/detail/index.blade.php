@@ -445,6 +445,8 @@
                                 <input type="hidden" name="balance" value=" {{ $farmer1->balance}}">
                                 <input type="hidden" name="prevbalance" value=" {{ $farmer1->prevbalance}}">
                                 <input type="hidden" name="paidamount" value=" {{ $farmer1->paidamount}}">
+                                <label for=>Session Close Date</label>
+                                <input type="text" name="date" id="closedate" readonly required>
                                 <button class="btn btn-sm btn-success">Close Session</button>
                             </form>
                              @else

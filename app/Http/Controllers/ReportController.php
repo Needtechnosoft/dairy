@@ -132,7 +132,7 @@ class ReportController extends Controller
 
     public function farmerSingleSession(Request $request){
         $nextdate=NepaliDate::getNextDate($request->year,$request->month,$request->session);
-        $lastdate=NepaliDate::getDate($request->year,$request->month,$request->session)[2];
+        $lastdate= $lastdate= str_replace('-','',$request->date);;
         $ledger=new LedgerManage($request->id);
 
         // Sellitem::where('user_id',$request->id)->update([
@@ -193,7 +193,7 @@ class ReportController extends Controller
     public function farmerSession(Request $request){
         // dd($request->all());
         $nextdate=NepaliDate::getNextDate($request->year,$request->month,$request->session);
-        $lastdate=NepaliDate::getDate($request->year,$request->month,$request->session)[2];
+        $lastdate= str_replace('-','',$request->date);
 
         foreach($request->farmers as $farmer){
             $data=json_decode($farmer);
