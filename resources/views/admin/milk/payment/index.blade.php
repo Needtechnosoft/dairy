@@ -78,7 +78,7 @@
                 <input type="number" id="amount" placeholder="Payment Amount" class="form-control" min="1">
             </div>
             <div class="col-md-4 ">
-                <button class="btn btn-success">Save</button>
+                <button class="btn btn-success" onclick="saveDate();">Save</button>
             </div>
             <div class="col-md-12 pt-4">
                 <div class="shadow py-4 px-2">
@@ -183,7 +183,7 @@
                 // Toogle();
                 $('#no').val('');
                 $('#amount').val('');
-                $('#amount').focus();
+                $('#no').focus();
 
             })
             .catch(function(error){

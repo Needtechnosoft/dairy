@@ -180,6 +180,7 @@
                     $('#total').val(0);
                     $('#paid').val(0);
                     $('#due').val(0);
+                    $('#u_id').focus();
                 })
                 .catch(function(error) {
                     showNotification('bg-danger', error.response.data);
