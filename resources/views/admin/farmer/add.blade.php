@@ -184,8 +184,7 @@
                                     <input type="checkbox" id="eusecc" name="usecc" class="mx-2" value="1">Has Cooling Cost <br>
                                     <input type="checkbox" id="eusetc" name="usetc" class="mx-2" value="1">Has TS <br>
                                     <input type="checkbox" id="euserate" name="userate" class="mx-2" value="1">Fixed Rate
-                                    <input type="number" min="0" value="0" name="rate" id="erate">
-
+                                    <input type="number" min="0" step="0.01" value="0" name="rate" id="erate">
                                 </div>
                             </div>
 
