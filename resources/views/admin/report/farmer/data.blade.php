@@ -350,8 +350,9 @@
         @endif
 
 
-            @endforeach
-        @if ($i<31)
+    @endforeach
+
+        @if ($i<env('secondpage',32))
         @php
              $_tctotal+=$tctotal;
                 $_cctotal+=$cctotal;
@@ -476,8 +477,8 @@
         <div class="py-2 d-print-none">
             <input type="submit" value="Update Session Data" class="btn btn-success">
         </div>
-    </form>
-    @endif
+        @endif
+</form>
 
 
 
