@@ -293,7 +293,7 @@ class FarmerController extends Controller
             }
         }
         $ledger = new LedgerManage($user->id);
-        $ledger->addLedger('Farmer due amount paid',2,$paidmaount,$date,'107',$farmerPay->id);
+        $ledger->addLedger('Paid by farmer amount',2,$request->pay,$date,'107',$farmerPay->id);
     }
 
     public function addDueList(Request $request){

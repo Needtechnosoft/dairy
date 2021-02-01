@@ -96,7 +96,7 @@
 
 // due payment
     function duePayment(){
-        if($('#p_amt').val() == 0 || $('#p_detail').val() == ''){
+        if($('#totaldue').val() == 0 || $('#p_amt').val() == 0 || $('#p_detail').val() == ''){
             alert('please enter valid data!');
             return false;
         }else{
@@ -120,6 +120,7 @@
             })
             .then(function(response) {
                 showNotification('bg-success', 'Payment has been successed!');
+                $('#p_amt').val(0);
             })
             .catch(function(response) {
                 //handle error

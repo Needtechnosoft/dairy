@@ -40,7 +40,7 @@
     </div>
     <div class="col-md-4">
         <label for="total"> Total Due </label>
-        <input type="text" class="form-control" value="{{ $total }}" readonly>
+        <input type="text" id="totaldue" class="form-control" value="{{ $total }}" readonly>
     </div>
     <div class="col-md-4">
         <label for="pay">Pay Amount </label>
