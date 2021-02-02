@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\LedgerManage;
 use App\Models\Advance;
 use App\Models\Center;
+use App\Models\DistributorPayment;
+use App\Models\Distributer;
 use App\Models\Distributorsell;
 use App\Models\Employee;
 use App\Models\Farmer;
@@ -12,6 +14,7 @@ use App\Models\FarmerReport;
 use App\Models\Ledger;
 use App\Models\Milkdata;
 use App\Models\Sellitem;
+use App\Models\Product;
 use App\Models\Snffat;
 use App\Models\SessionWatch;
 use App\Models\FarmerSession;
@@ -422,8 +425,28 @@ class ReportController extends Controller
 
             $data['sellitem']=$sellitem->select('sellitems.date','sellitems.rate','sellitems.qty','sellitems.total','sellitems.due','users.name','items.title','users.no')->orderBy('sellitems.date','asc')->get();
             $data['sellmilk']=$sellmilk->select('distributorsells.*','users.name')->get();
+            $data['sellmilk1']=$sellmilk->select('distributorsells.*','users.name')->get()->groupBy('distributer_id');
 
-            return view('admin.report.sales.data',compact('data'));
+            $maxdatas=[];
+            foreach($data['sellmilk1'] as $key=>$d){
+                $dd=[];
+                $dd['distributor']=Distributer::find($key);
+                $dt=$d->groupBy('product_id');
+                $products=[];
+                foreach($dt as $key1=>$ddd){
+                    $product=[];
+                    $product['product']=Product::find($key1);
+                    $product['qty']=$ddd->sum('qty');
+                    $product['rate']=$ddd->avg('rate');
+                    $product['total']=$ddd->sum('total');
+                    array_push($products,(object)$product);
+                }
+                $dd['products']=$products;
+                array_push($maxdatas,(object)$dd);
+            }
+
+            // dd($maxdatas);
+            return view('admin.report.sales.data',compact('data','maxdatas'));
         }else{
             return view('admin.report.sales.index');
 
@@ -440,9 +463,10 @@ class ReportController extends Controller
             $type=$request->type;
             $range=[];
             $data=[];
-
+            $date=-1;
             $data=Distributorsell::join('distributers','distributorsells.distributer_id','=',"distributers.id")
             ->join('users','users.id','=','distributers.user_id');
+
             if($type==0){
                 $range = NepaliDate::getDate($request->year,$request->month,$request->session);
                 $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
@@ -467,12 +491,19 @@ class ReportController extends Controller
             }elseif($type==5){
                 $range[1]=str_replace('-','',$request->date1);;
                 $range[2]=str_replace('-','',$request->date2);;
-               $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
+                $data=$data->where('distributorsells.date','>=',$range[1])->where('distributorsells.date','<=',$range[2]);
             }
 
             $datas=$data->select( DB::raw('distributers.id, sum(distributorsells.qty) as qty,users.id as users_id, users.name,sum(distributorsells.total) total,sum(distributorsells.paid) paid'))->groupBy('id','name','users_id')->get();
             foreach($datas as $d){
                 $element=$d->toArray();
+                if($date!=-1){
+                    $element['paid']=$element['paid']+ DistributorPayment::where('date','>=',$range[1])->where('date','<=',$range[2])->where('user_id', $element['users_id'])->sum('amount');
+
+                }else{
+
+                    $element['paid']=$element['paid']+ DistributorPayment::where('date','>=',$date)->where('user_id', $element['users_id'])->sum('amount');
+                }
                 $element['due']=0;
                 $element['advance']=0;
 

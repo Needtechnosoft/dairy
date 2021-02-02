@@ -2,12 +2,19 @@
     td,th{
         border:1px solid black;
     }
+    @media print {
+        td{
+            font-weight:700;
+        }
+    }
     table{
         width:100%;
         border-collapse: collapse;
     }
     thead {display: table-header-group;}
     tfoot {display: table-header-group;}
+
+    @print
 </style>
 <h2 style="text-align: center;margin-bottom:0px;font-weight:800;font-size:2rem;">
     {{env('APP_NAME','Dairy')}}
@@ -470,7 +477,7 @@
         @endif
 
     @if ($newsession)
-        <div class="py-2">
+        <div class="py-2 d-print-none">
             <label for=>Session Close Date</label>
             <input type="text" name="date" id="closedate" readonly required>
         </div>
