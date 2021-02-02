@@ -3,7 +3,7 @@
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#data-1" role="tab" aria-controls="home" aria-selected="true">Farmer Sales</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#data-2" role="tab" aria-controls="profile" aria-selected="false">Normal Sales</a>
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#data-2" role="tab" aria-controls="profile" aria-selected="false">Farmer Sales Product Wise</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#data-3" role="tab" aria-controls="contact" aria-selected="false">Distributor Sales Single</a>
@@ -59,12 +59,15 @@
                     <th>
                         Total
                     </th>
-                    <th>
+                    {{-- <th>
                         Due
-                    </th>
+                    </th> --}}
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $ftot=0;
+                @endphp
                 @foreach ($data['sellitem'] as $sellitem)
                     <tr>
                         <td>
@@ -88,18 +91,54 @@
                         </td>
                         <td>
                             {{$sellitem->total}}
+                            @php
+                                $ftot+=$sellitem->total;
+                            @endphp
                         </td>
-                        <td>
+                        {{-- <td>
                             {{$sellitem->due}}
-                        </td>
+                        </td> --}}
                     </tr>
                 @endforeach
+                <tr>
+                    <th colspan="6">Total</th>
+                    <th>{{$ftot}}</th>
+                </tr>
             </tbody>
         </table>
     </div>
 
   </div>
-  <div class="tab-pane fade" id="data-2" role="data-2" aria-labelledby="profile-tab">...</div>
+  <div class="tab-pane fade" id="data-2" role="data-2" aria-labelledby="profile-tab">
+      <table class="table">
+          <tr>
+
+              <th>Item Name</th>
+              <th>Qty</th>
+              <th>
+                  Total
+              </th>
+          </tr>
+          @php
+              $itot=0;
+          @endphp
+          @foreach ($data['sellitem1'] as $key=>$gitem)
+              <tr>
+                  <th>{{$key}}</th>
+                  <th>{{$gitem->sum('qty')}}</th>
+                  <th>
+                      {{$gitem->sum('total')}}
+                      @php
+                          $itot+=$gitem->sum('total');
+                      @endphp
+                    </th>
+              </tr>
+          @endforeach
+          <tr>
+              <th colspan="2">Total</th><th>{{$itot}}</th>
+          </tr>
+      </table>
+  </div>
   <div class="tab-pane fade" id="data-3" role="data-3" aria-labelledby="contact-tab">
     <div class="py-3">
         <span class="btn btn-success" onclick="printDiv('table-3');"> Print Report</span>

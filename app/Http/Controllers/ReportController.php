@@ -424,6 +424,8 @@ class ReportController extends Controller
             }
 
             $data['sellitem']=$sellitem->select('sellitems.date','sellitems.rate','sellitems.qty','sellitems.total','sellitems.due','users.name','items.title','users.no')->orderBy('sellitems.date','asc')->get();
+            $data['sellitem1']=$sellitem->select('sellitems.date','sellitems.rate','sellitems.qty','sellitems.total','sellitems.due','users.name','items.title','users.no')->orderBy('sellitems.date','asc')->get()->groupBy('title');
+            // dd( $data['sellitem1']);
             $data['sellmilk']=$sellmilk->select('distributorsells.*','users.name')->get();
             $data['sellmilk1']=$sellmilk->select('distributorsells.*','users.name')->get()->groupBy('distributer_id');
 
