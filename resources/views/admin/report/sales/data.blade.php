@@ -110,6 +110,11 @@
 
   </div>
   <div class="tab-pane fade" id="data-2" role="data-2" aria-labelledby="profile-tab">
+    <div class="py-3">
+        <span class="btn btn-success" onclick="printDiv('table-2');"> Print Report</span>
+
+      </div>
+      <div id="table-2">
       <table class="table">
           <tr>
 
@@ -138,6 +143,7 @@
               <th colspan="2">Total</th><th>{{$itot}}</th>
           </tr>
       </table>
+    </div>
   </div>
   <div class="tab-pane fade" id="data-3" role="data-3" aria-labelledby="contact-tab">
     <div class="py-3">
