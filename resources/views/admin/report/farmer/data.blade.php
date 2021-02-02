@@ -14,7 +14,7 @@
     thead {display: table-header-group;}
     tfoot {display: table-header-group;}
 
-    @print
+
 </style>
 <h2 style="text-align: center;margin-bottom:0px;font-weight:800;font-size:2rem;">
     {{env('APP_NAME','Dairy')}}

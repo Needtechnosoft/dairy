@@ -56,6 +56,16 @@
             Employee <br> Report
         </span>
     </div>
+    <div class="col-md-2 section href" data-target="{{route('report.credit')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-money-off"></i>
+
+        </span>
+        <span class="divider"></span>
+        <span class="text">
+            Credit <br> Report
+        </span>
+    </div>
 </div>
 @endsection
 @section('js')

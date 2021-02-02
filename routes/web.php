@@ -229,6 +229,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');
             Route::match(['GET','POST'],'distributor','ReportController@distributor')->name('dis');
             Route::match(['GET','POST'],'employee','ReportController@employee')->name('emp');
+            Route::match(['GET','POST'],'credit','ReportController@credit')->name('credit');
             Route::post('employee/changeSession','ReportController@employeeSession')->name('emp.session');
 
         });

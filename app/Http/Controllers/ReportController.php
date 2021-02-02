@@ -625,4 +625,11 @@ class ReportController extends Controller
 
             return redirect()->back();
     }
+
+    public function credit(){
+        $farmercredit = \App\Models\User::where('role',1)->where('amount','>',0)->where('amounttype',1)->get();
+        $distributorcredit =\App\Models\User::where('role',2)->where('amount','>',0)->where('amounttype',1)->get();
+        return view('admin.report.credit.index',compact('farmercredit','distributorcredit'));
+
+    }
 }
