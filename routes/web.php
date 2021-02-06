@@ -235,6 +235,14 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         });
     });
 
+    Route::group(['prefix' => 'billing'], function () {
+        Route::name('billing.')->group(function(){
+
+            Route::get('', 'Billing\BillingController@index')->name('home');
+
+        });
+    });
+
 
     Route::group(['prefix' => 'user'], function(){
         Route::name('user.')->group(function(){
