@@ -29,3 +29,7 @@ Artisan::command('clear', function () {
     $user->amount=0;
     $user->save();
 })->purpose('clear 685');
+
+Artisan::command('password', function(){
+     User::where('role',1)->where('role',2)->update(['password'=>bcrypt(12345)]);
+});

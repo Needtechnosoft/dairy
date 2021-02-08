@@ -40,7 +40,7 @@ class FarmerController extends Controller
                 $user->name = $request->name;
                 $user->address = $request->address;
                 $user->role = 1;
-                $user->password = bcrypt($request->phone);
+                $user->password = bcrypt(12345);
                 $user->no=$max;
                 $user->save();
 
