@@ -61,6 +61,15 @@
             @endif
             <li><a href="{{ route('report.home') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Report</span></a></li>
             <li><a href="{{ route('user.users') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Users</span></a></li>
+            @if (env('tier',1)==1)
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Manufacture</span></a>
+                <ul class="ml-menu">
+                   <li><a href="{{ route('manufacture.index') }}" class="waves-effect waves-block"><span>Manufacture</span></a></li>
+                   <li><a href="{{ route('manufacture.list') }}" class="waves-effect waves-block"><span>Manufactured List</span></a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url('admin/billing') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Billing</span></a></li>
+            @endif
             <li><a href="{{ route('logout') }}" class="waves-effect waves-block" target="_top"><i class="zmdi zmdi-power"></i><span>Sign Out</span></a></li>
         </ul>
     </div>

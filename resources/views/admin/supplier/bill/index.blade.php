@@ -282,7 +282,7 @@
         html += "<td>" + $('#rate').val() + "<input type='hidden' name='rate_" + i + "' value='" + $('#rate').val() + "'/></td>";
         html += "<td>" + $('#qty').val() + "<input type='hidden' name='qty_" + i + "' value='" + $('#qty').val() + "'/></td>";
         html += "<td>" + $('#total').val() + "<input type='hidden' name='total_" + i + "' id='total_" + i + "' value='" + $('#total').val() + "'/></td>";
-        html += "<td> <span class='btn btn-danger btn-sm' onclick='RemoveItem(" + i + ")'>Remove</span></td>";
+        html += "<td> <span class='btn btn-danger btn-sm' onclick='RemoveItem(" + i + ");'>Remove</span></td>";
         html += "</tr>";
         $("#item_table").append(html);
         $('#ptr').val('');

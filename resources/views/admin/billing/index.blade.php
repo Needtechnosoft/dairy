@@ -1,4 +1,7 @@
 @extends('admin.billing.layout.app')
+
+<link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
+
 @section('content')
     <style>
         .prodtable,.prodtable td,.prodtable th {
@@ -11,7 +14,8 @@
             text-align: center;
             outline: transparent;
             width:100%;
-            padding-top:10px;
+            padding-top:8px;
+            font-weight:600;
             height:100%;
         }
 
@@ -19,17 +23,27 @@
         width: 100%;
         border-collapse: collapse;
         }
-        .prodviwer{
+        .distviwer,.prodviwer{
+            overflow-y: scroll;
             position:fixed;top:0;bottom:0;right:0px;
             width:40vw;
             display:none;
             background:white;
             padding:15px;
             box-shadow:0px 0px 5px 1px black;
+            z-index:99;
+            cursor: pointer;
+
         }
-        .prodviwer.active{
+
+        .hovertr:hover{
+            background: #d3d3d3;
+        }
+
+        .distviwer.active,.prodviwer.active{
             display:block !important;
         }
+
         .form-control1{
             background:transparent;
             outline:none !important;
@@ -63,6 +77,7 @@ input[type=number] {
 }
     </style>
     @include('admin.billing.products')
+    @include('admin.billing.distributors')
     <div style="display:flex;flex-direction: column;height:100vh;">
         <div style="background: #355F79;">
             <div class="container py-2">
@@ -81,6 +96,12 @@ input[type=number] {
             </div>
         </div>
         <div  style="flex-grow: 1;border:1px #505050 solid;overflow:scroll;">
+            <div class="row p-1">
+                <div class="col-2 offset-10">
+                    Date :
+                    <input type="text" name="date" id="nepali-datepicker" placeholder="Date" required>
+                </div>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -126,9 +147,14 @@ input[type=number] {
                     <label for="item">Total</label>
                     <input type="number" min="0" step="0.01" id="total" class="form-control"  >
                 </div>
+                <div class="col-md-4">
+                    <label for="item" id="customerName">__________________________</label> <br>
+                    <button class="btn btn-primary" onclick="showCustomer()">Select Customer</button>
+                    <button class="btn btn-danger" onclick="resetCustomer()">Reset Customer</button>
+                </div>
             </div>
         </div>
-        <div style="background:#365F78;display:flex;padding:0px 25px;font-size: 1.2rem;font-weight:600;">
+        <div style="background:#365F78;display:flex;padding-left:25px;font-size: 1.2rem;font-weight:600;">
             <div style="flex:4;border-right:1px white solid;display:flex;">
                 <div style="flex:3; padding:15px 0px;">
                     <table class="w-100" >
@@ -198,19 +224,19 @@ input[type=number] {
             <div style="flex:1;display:flex;flex-direction: column;">
                 <div style="flex:1;display:flex;">
                         <div style="flex:1;">
-                            <button class="btn-max" onclick="saveBill()">a</button>
+                            <button class="btn-max" onclick="saveBill()">Save (ctrl+s)</button>
                         </div>
                         <div style="flex:1;">
-                            <button class="btn-max">a</button>
+                            <button class="btn-max" onclick="resetBill()">Reset (esc)</button>
                         </div>
 
                 </div>
                 <div style="flex:1;display:flex">
                     <div style="flex:1;">
-                        <button class="btn-max">a</button>
+                        <button class="btn-max"></button>
                     </div>
                     <div style="flex:1;">
-                        <button class="btn-max">a</button>
+                        <button class="btn-max"></button>
                     </div>
                 </div>
             </div>
@@ -221,6 +247,7 @@ input[type=number] {
     </style>
 @endsection
 @section('scripts')
+    <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
     <script>
         toastr.options.progressBar = true;
         var i=0;
@@ -317,7 +344,7 @@ input[type=number] {
             }
 
             datastr=JSON.stringify(billitem)
-            str="<tr id='row-"+i+"'> <td><input class='billitems' type='hidden' name='billitems[]' value='"+datastr+"'/> "+billitem.id+"</td><td>"+billitem.name+"</td><td>"+billitem.rate+"</td><td>"+billitem.qty+"</td><td>"+billitem.total+"</td></tr>"
+            str="<tr id='row-"+i+"'> <td><input class='billitems' type='hidden' name='billitems[]' value='"+datastr+"'/> "+billitem.id+"</td><td>"+billitem.name+"</td><td>"+billitem.rate+"</td><td>"+billitem.qty+"</td><td>"+billitem.total+"</td><td><span class='btn btn-danger btn-sm' onclick='removeProductItem("+i+")'>Remove</span></td></tr>"
             console.log(billitem);
             $('#billitemholder').append(str);
             $('#item').val('');
@@ -350,8 +377,55 @@ input[type=number] {
             $('#paid').focus();
             $('#paid').select();
         });
+        $('body,.form-control1, .form-control').bind('keydown', 'ctrl+s', function(e){
+            e.preventDefault();
+            saveBill();
+        });
+        $('body,.form-control1, .form-control').bind('keydown', 'esc', function(e){
+            e.preventDefault();
+            resetBill();
+        });
+
+        function resetBill(){
+            if(confirm("Do You want to cancel Bill")){
+                $('#paid').val(0);
+                $('#grosstotal').val(0);
+                $('#discount').val(0);
+                $('#nettotal').val(0);
+                $('#return').val(0);
+                $('#due').val(0);
+                $('#billitemholder').html('');
+                var savelock=false;
+                var customerid=-1;
+                var customername='';
+                var state=1;
+                calculateAll();
+            }
+        }
+
+        function clearBill(){
+
+                $('#paid').val(0);
+                $('#grosstotal').val(0);
+                $('#discount').val(0);
+                $('#nettotal').val(0);
+                $('#return').val(0);
+                $('#due').val(0);
+                $('#billitemholder').html('');
+                var savelock=false;
+                var customerid=-1;
+                var customername='';
+                var state=1;
+                calculateAll();
+        }
 
         var savelock=false;
+        var customerid=-1;
+        var customername='';
+        var state=1;
+        function getData(){
+
+        }
         function saveBill(){
             var arr=[];
             $('.billitems').each(function(){
@@ -360,20 +434,77 @@ input[type=number] {
             });
             if(arr.length==0){
                 toastr.error('Please add Products in bill','{{env('APP_NAME')}}', {timeOut: 1000});
+                return false;
             }
             var fd={
                 billitems:arr,
                 gross:$('#grosstotal').val(),
+                date:$('#nepali-datepicker').val(),
                 dis:$('#discount').val(),
                 net:$('#nettotal').val(),
                 paid:$('#paid').val(),
                 return:$('#return').val(),
                 due:$('#due').val(),
-
+                id:customerid
             };
+            if(fd.due>0 && customerid<=0){
+                $('.distviwer').addClass('active');
+                state=2;
+            }else{
 
-            console.log(fd);
+                axios.post('{{route("billing.save")}}',fd)
+                .then((response)=>{
+                    console.log(response.data);
+                    if(response.data == "ok"){
+                        alert('Bill Save successfully')
+                        clearBill();
+                        resetCustomer();
+                    }
+                })
+                .catch((err)=>{
+
+                })
+                console.log(fd);
+            }
         }
+
+        function selectCustomer(id,name){
+            customerid=id;
+            $('.distviwer').removeClass('active');
+            $('#customerName').html(name);
+            if(state==2){
+                saveBill();
+                state=1;
+            }
+
+        }
+
+        function resetCustomer(){
+            customerid=-1;
+            customername="";
+            $('#customerName').html("__________________________");
+        }
+
+        function showCustomer(){
+            $('.distviwer').addClass('active');
+
+        }
+        function hideCustomer(){
+            $('.distviwer').removeClass('active');
+        }
+
+        function removeProductItem(i){
+            $('#row-'+i).remove();
+            calculateAll();
+        }
+
+        window.onload = function() {
+        var mainInput = document.getElementById("nepali-datepicker");
+        mainInput.nepaliDatePicker();
+    };
+    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
     </script>
 @endsection
 

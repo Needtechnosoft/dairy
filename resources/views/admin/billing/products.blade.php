@@ -6,7 +6,7 @@
             <th>Rate</th>
         </tr>
         @foreach (\App\Models\Product::all() as $product)
-        <tr id="prod_{{$product->id}}" data-product="{{$product->toJson()}}">
+        <tr  class="hovertr" id="prod_{{$product->id}}" data-product="{{$product->toJson()}}">
             <td>{{$product->id}}</td>
             <td>{{$product->name}}</td>
             <td>{{$product->price}}</td>

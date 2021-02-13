@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\LedgerManage;
 use App\Models\Milkdata;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+
+use function PHPSTORM_META\type;
 
 class MilkController extends Controller
 {
@@ -31,7 +34,6 @@ class MilkController extends Controller
         }
 
         $milkData=Milkdata::where('user_id',$user->id)->where('date',$date)->first();
-
         if($milkData==null){
             $milkData = new Milkdata();
             $milkData->date = $date;
@@ -41,20 +43,31 @@ class MilkController extends Controller
         }
 
         //request->type 1=save/replace type=2 add
-
+        $product = Product::where('id',env('milk_id'))->first();
+        $oldmilk = 0;
         if($request->session == 0){
             if($type==0){
-
+                $oldmilk=$milkData->m_amount;
                 $milkData->m_amount = $request->milk_amount;
+
             }else{
                 $milkData->m_amount += $request->milk_amount;
+
             }
         }else{
             if($type==0){
+                $oldmilk=$milkData->e_amount;
                 $milkData->e_amount = $request->milk_amount;
             }else{
                 $milkData->e_amount += $request->milk_amount;
             }
+        }
+        if($product != null){
+            if($type==0){
+                $product->stock -= $oldmilk;
+            }
+            $product->stock += $request->milk_amount;
+            $product->save();
         }
         $milkData->save();
         $milkData->no=$user->no;

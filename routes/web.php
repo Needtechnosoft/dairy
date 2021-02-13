@@ -182,6 +182,15 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         });
     });
 
+    // manufacture
+    Route::group(['prefix' => 'manufacture'], function () {
+        Route::name('manufacture.')->group(function(){
+            Route::get('','Admin\ManufactureController@index')->name('index');
+            Route::post('/store','Admin\ManufactureController@store')->name('store');
+            Route::get('/list','Admin\ManufactureController@list')->name('list');
+        });
+    });
+
 
     // XXX Milk payment
     Route::group(['prefix' => 'milk-payment'], function () {
@@ -239,6 +248,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         Route::name('billing.')->group(function(){
 
             Route::get('', 'Billing\BillingController@index')->name('home');
+            Route::post('save', 'Billing\BillingController@save')->name('save');
 
         });
     });

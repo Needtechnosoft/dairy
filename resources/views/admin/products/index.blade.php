@@ -16,7 +16,7 @@
                 <th>Name</th>
                 <th>Rate</th>
                 <th>unit</th>
-
+                <th>Stock</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -61,7 +61,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Unit (EG. KG)</label>
                                 <div class="form-group">
-                                    <input type="text" id="unit" name="unit" class="form-control next" data-next="address" placeholder="Product Name" required>
+                                    <input type="text" id="unit" name="unit" class="form-control next" data-next="stock" placeholder="Product Name" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="name">Stock (EG. KG)</label>
+                                <div class="form-group">
+                                    <input type="text" id="stock" name="stock" class="form-control next" data-next="address" placeholder="Enter Stock" required>
                                 </div>
                             </div>
 

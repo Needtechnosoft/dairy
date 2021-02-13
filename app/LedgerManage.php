@@ -42,6 +42,8 @@ class LedgerManage{
     * "111" = "Distributor Payment"
     * "112" = "Employee Advaance payment"
     * "113" = "Employee Advaance payment cancel"
+    * "122" = "paid amount while billing"
+    * "123" = "purchase in billing items"
 
     */
     public function addLedger($particular, $type,$amount,$date,$identifier,$foreign_id=null){

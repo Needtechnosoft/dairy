@@ -21,7 +21,7 @@ class ProductController extends Controller
         $product->image='';
         $product->minqty=0;
         $product->desc='';
-        $product->stock=0;
+        $product->stock= $request->stock;
         $product->save();
         return view('admin.products.single',compact('product'));
     }
@@ -34,7 +34,7 @@ class ProductController extends Controller
         $product->image='';
         $product->minqty=0;
         $product->desc='';
-        $product->stock=0;
+        $product->stock=$request->stock;
         $product->save();
         return response('ok');
     }
