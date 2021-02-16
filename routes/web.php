@@ -39,7 +39,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::match(['get', 'post'], 'farmers', 'Admin\FarmerController@addFarmer')->name('admin.farmer');
     Route::get('farmer-list','Admin\FarmerController@listFarmer')->name('list.farmer');
     Route::post('farmer-list-by-center','Admin\FarmerController@listFarmerByCenter')->name('list.farmer.bycenter');
-    Route::match(['get', 'post'],'farmer/update','Admin\FarmerController@updateFarmer')->name('update.farmer');
+    Route::match(['get', 'post'],'farmer/update','Admin\FarmerController@updateFarmer')->name('update.farmer')->middleware('authority');
     Route::get('farmer/delete/{id}','Admin\FarmerController@deleteFarmer')->name('delete.farmer')->middleware('authority');
     Route::get('farmer/detail/{id}','Admin\FarmerController@farmerDetail')->name('farmer.detail');
     Route::post('load-date','Admin\FarmerController@loadDate')->name('farmer.loaddetail');
@@ -48,7 +48,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('farmer-advances', 'Admin\AdvanceController@index')->name('admin.farmer.advance');
     Route::post('farmer-advance-add', 'Admin\AdvanceController@addFormerAdvance')->name('admin.farmer.advance.add');
     Route::post('farmer-advance-list', 'Admin\AdvanceController@listFarmerAdvance')->name('admin.farmer.advance.list');
-    Route::post('farmer-advance-update', 'Admin\AdvanceController@updateFormerAdvance')->name('admin.farmer.advance.update');
+    Route::post('farmer-advance-update', 'Admin\AdvanceController@updateFormerAdvance')->name('admin.farmer.advance.update')->middleware('authority');
     Route::get('farmer-advance-delete/{id}', 'Admin\AdvanceController@deleteFarmerAdvance')->middleware('authority');
     Route::post('farmer-advance-list-by-date', 'Admin\AdvanceController@advanceListByDate')->name('admin.advance.list.by.date');
 
@@ -70,8 +70,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX milk data
     Route::get('milk-data','Admin\MilkController@index')->name('admin.milk');
     Route::post('milk-data-save/{type}','Admin\MilkController@saveMilkData')->name('store.milk');
-    Route::post('milk-data-update','Admin\MilkController@update')->name('store.milk.update');
-    Route::post('milk-data-delete','Admin\MilkController@delete')->name('store.milk.delete');
+    Route::post('milk-data-update','Admin\MilkController@update')->name('store.milk.update')->middleware('authority');
+    Route::post('milk-data-delete','Admin\MilkController@delete')->name('store.milk.delete')->middleware('authority');
     Route::post('milk-data-load','Admin\MilkController@milkDataLoad')->name('load.milk.data');
     Route::post('farmer-data-load','Admin\MilkController@loadFarmerData')->name('load.farmer.data');
 
@@ -79,14 +79,14 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('snf-fats','Admin\SnffatController@index')->name('admin.snf.fat');
     Route::post('snf-fats-data','Admin\SnffatController@snffatDataLoad')->name('load.snffat.data');
     Route::post('snf-fats-save','Admin\SnffatController@saveSnffatData')->name('store.snffat');
-    Route::post('snf-fats-update','Admin\SnffatController@update')->name('store.snffat.update');
-    Route::post('snf-fats-delete','Admin\SnffatController@delete')->name('store.snffat.delete');
+    Route::post('snf-fats-update','Admin\SnffatController@update')->name('store.snffat.update')->middleware('authority');
+    Route::post('snf-fats-delete','Admin\SnffatController@delete')->name('store.snffat.delete')->middleware('authority');
 
     // XXX items
     Route::get('items','Admin\ItemController@index')->name('admin.item');
     Route::post('item-add','Admin\ItemController@saveItems')->name('admin.item.save');
     Route::get('item-delete/{id}','Admin\ItemController@deleteItem')->name('admin.item.delete')->middleware('authority');
-    Route::post('item-update','Admin\ItemController@updateItem');
+    Route::post('item-update','Admin\ItemController@updateItem')->middleware('authority');
 
     // XXX sell items
     Route::get('sell-items','Admin\SellitemController@index')->name('admin.sell.item');
@@ -134,7 +134,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('distributer/opening','Admin\DistributerController@opening')->name('distributer.detail.opening');
     Route::post('distributer/opening/list','Admin\DistributerController@loadLedger')->name('distributer.detail.opening.list');
     Route::post('distributer/ledger','Admin\DistributerController@ledger')->name('distributer.detail.ledger');
-    Route::post('distributer/ledger/update','Admin\DistributerController@updateLedger')->name('distributer.detail.ledger.update');
+    Route::post('distributer/ledger/update','Admin\DistributerController@updateLedger')->name('distributer.detail.ledger.update')->middleware('authority');
 
     // distributer request
     Route::get('distributer/request','Admin\DistributerController@distributerRequest')->name('admin.distri.request');
@@ -161,7 +161,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('employee/update', 'Admin\EmployeeController@updateEmployee');
     Route::get('employee-list', 'Admin\EmployeeController@employeeList')->name('admin.emp.list');
     Route::get('employee/delete/{id}', 'Admin\EmployeeController@employeeDelete')->middleware('authority');
-    Route::get('employee/detail/{id}', 'Admin\EmployeeController@employeeDetail')->middleware('Detail');
+    Route::get('employee/detail/{id}', 'Admin\EmployeeController@employeeDetail')->name('emp.detail');
+    Route::post('load/emp/data', 'Admin\EmployeeController@loadEmployeeData')->name('admin.emp.load.data');
 
     Route::get('employee/advance','Admin\EmployeeController@advance')->name('admin.emp.advance');
     Route::post('employee/addadvance','Admin\EmployeeController@addAdvance')->name('admin.emp.advance.add');
@@ -169,7 +170,14 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('employee/deladvance','Admin\EmployeeController@delAdvance')->name('admin.emp.advance.del')->middleware('authority');;
     Route::post('employee/updateadvance','Admin\EmployeeController@updateAdvance')->name('admin.emp.advance.update')->middleware('authority');
 
+    // XXX salary payment
 
+    Route::prefix('employee/salary')->name('salary.')->group(function(){
+        Route::get('/','Admin\EmployeeController@salaryIndex')->name('pay');
+        Route::post('load','Admin\EmployeeController@loadEmpData')->name('load.emp.data');
+        Route::post('pay/salary','Admin\EmployeeController@storeSalary')->name('save');
+        Route::post('list','Admin\EmployeeController@paidList')->name('list');
+    });
 
 
     // XXX products
@@ -207,18 +215,18 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     // XXX Ledgers
     Route::group(['prefix' => 'ledger'], function () {
         Route::name('ledger.')->group(function(){
-            Route::match(['GET','POST'],'update','LedgerController@update')->name('update');
-            Route::match(['GET','POST'],'sellupdate','LedgerController@sellUpdate')->name('sellupdate');
-            Route::match(['GET','POST'],'payupdate','LedgerController@payUpdate')->name('payupdate');
+            Route::match(['GET','POST'],'update','LedgerController@update')->name('update')->middleware('authority');
+            Route::match(['GET','POST'],'sellupdate','LedgerController@sellUpdate')->name('sellupdate')->middleware('authority');
+            Route::match(['GET','POST'],'payupdate','LedgerController@payUpdate')->name('payupdate')->middleware('authority');
 
             Route::match(['GET','POST'],'del','LedgerController@del')->name('del');
             Route::group(['prefix' => 'farmer'], function () {
                 Route::name('farmer.')->group(function(){
-                    Route::match(['GET','POST'],'update','FarmerLedgerController@update')->name('update');
-                    Route::match(['GET','POST'],'sellupdate','FarmerLedgerController@sellUpdate')->name('sellupdate');
-                    Route::match(['GET','POST'],'selldel','FarmerLedgerController@sellDel')->name('selldel');
-                    Route::match(['GET','POST'],'payupdate','FarmerLedgerController@payUpdate')->name('payupdate');
-                    Route::match(['GET','POST'],'del','FarmerLedgerController@del')->name('del');
+                    Route::match(['GET','POST'],'update','FarmerLedgerController@update')->name('update')->middleware('authority');
+                    Route::match(['GET','POST'],'sellupdate','FarmerLedgerController@sellUpdate')->name('sellupdate')->middleware('authority');
+                    Route::match(['GET','POST'],'selldel','FarmerLedgerController@sellDel')->name('selldel')->middleware('authority');
+                    Route::match(['GET','POST'],'payupdate','FarmerLedgerController@payUpdate')->name('payupdate')->middleware('authority');
+                    Route::match(['GET','POST'],'del','FarmerLedgerController@del')->name('del')->middleware('authority');
                 });
             });
         });
@@ -236,6 +244,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
             Route::match(['GET','POST'],'milk','ReportController@milk')->name('milk');
             Route::match(['GET','POST'],'sales','ReportController@sales')->name('sales');
+            Route::match(['GET','POST'],'pos','ReportController@posSales')->name('pos.sales');
             Route::match(['GET','POST'],'distributor','ReportController@distributor')->name('dis');
             Route::match(['GET','POST'],'employee','ReportController@employee')->name('emp');
             Route::match(['GET','POST'],'credit','ReportController@credit')->name('credit');
@@ -259,7 +268,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'','Admin\UserController@index')->name('users');
             Route::match(['GET','POST'],'add','Admin\UserController@userAdd')->name('add');
             Route::match(['GET','POST'],'delete/{id}','Admin\UserController@delete')->name('delete');
-            Route::match(['GET','POST'],'update/{update}','Admin\UserController@update')->name('update');
+            Route::match(['GET','POST'],'update/{update}','Admin\UserController@update')->name('update')->middleware('authority');
             Route::match(['GET','POST'],'change/password','Admin\UserController@changePassword')->name('change.password');
             Route::match(['GET','POST'],'non-super-admin/change/password/{id}','Admin\UserController@nonSuperadminChangePassword')->name('non.super.admin.change.password');
         });

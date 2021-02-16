@@ -163,8 +163,8 @@
     });
 
     function checkStock(){
-        var req = $('#reqQty').val();
-        var stock = $('#available').val();
+        var req = parseFloat($('#reqQty').val());
+        var stock =parseFloat($('#available').val());
         if(req>stock){
             alert('Stock is not sufficient !');
             $('#reqQty').val(0);

@@ -41,6 +41,7 @@ class BillingController extends Controller
             $bill->dis = $request->dis;
             $bill->net_total = $request->net;
             $bill->return = $request->return;
+            $bill->date = $date;
 
             $bill->save();
 

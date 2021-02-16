@@ -307,7 +307,7 @@
                 <table class="table">
                     <tr>
                         <th>
-                            Milk Amount
+                            Total Milk
                         </th>
                         <th>
                             Fat

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
-@section('head-title','Farmer Advance')
+@section('head-title','Employee Advance')
 @section('toobar')
 @endsection
 @section('content')
@@ -27,9 +27,11 @@
                    <select name="employee_id" id="employee_id" class="form-control show-tick ms select2">
                         <option ></option>
                         @foreach (\App\Models\Employee::all() as $employee)
-                                <option value="{{$employee->id}}">
-                                    {{$employee->user->name}}
-                                </option>
+                                @if (isset($employee->user))
+                                   <option value="{{$employee->id}}">
+                                       {{ $employee->user->name }}
+                                    </option>
+                                @endif
                         @endforeach
                    </select>
                 </div>
@@ -148,7 +150,7 @@
                 }
             })
             .then(function(response) {
-
+                showNotification('bg-success', 'Updated successfully!');
             })
             .catch(function(response) {
                 //handle error
@@ -158,7 +160,7 @@
 
     function del(id){
         var date = $('#nepali-datepicker').val();
-
+        if (confirm('Are you sure?')) {
         axios({
                 method: 'post',
                 url: '{{ route("admin.emp.advance.del")}}',
@@ -168,18 +170,25 @@
                 }
             })
             .then(function(response) {
-
+                showNotification('bg-success', 'Deleted successfully!');
+                $('#advancerow-'+id).remove();
             })
             .catch(function(response) {
                 //handle error
                 console.log(response);
             });
+        }
     }
 
 
 
     function saveData(e) {
         e.preventDefault();
+        if($('#amount').val()==0){
+            alert('Please enter advance amount!');
+            $('#amount').focus();
+            return false;
+        }else{
         var bodyFormData = new FormData(document.getElementById('form_validation'));
         axios({
                 method: 'post',
@@ -191,7 +200,7 @@
             })
             .then(function(response) {
                 console.log(response);
-                showNotification('bg-success', 'Farmer advance added successfully!');
+                showNotification('bg-success', 'Employee advance added successfully!');
                 $('#largeModal').modal('toggle');
                 $('#advanceData').prepend(response.data);
                 $('#u_id').val('');
@@ -203,6 +212,8 @@
                 console.log(response);
                 showNotification('bg-danger','operation Faild!');
             });
+
+        }
     }
 
 

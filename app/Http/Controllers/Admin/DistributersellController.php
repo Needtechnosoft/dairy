@@ -56,8 +56,12 @@ class DistributersellController extends Controller
         // $distributor = Distributer::where('id',$sell->distributer_id)->first();
         // $ledger = new LedgerManage($distributor->user_id);
         // $ledger->addLedger('Sell Canceled: '.$title,2,$tempamount,$date,'115',$tempid);
-
-        $data=Ledger::where('foreign_key',$request->id)->get();
+        $data=[];
+        $data[0]=Ledger::where('foreign_key',$request->id)->where('identifire',105)->first();
+        $ddd=Ledger::where('foreign_key',$request->id)->where('identifire',114)->first();
+        if($ddd!=null){
+            $data[1]=$ddd;
+        }
         LedgerManage::delLedger($data);
         return response('ok');
     }

@@ -36,6 +36,18 @@
             Sales Report
         </span>
     </div>
+    @if (env('tierlevel',1)==1)
+    <div class="col-md-2 section href" data-target="{{route('report.pos.sales')}}">
+        <span class="icon">
+            <i class="zmdi zmdi-money-box"></i>
+        </span>
+        <span class="divider"></span>
+        <span class="text">
+           POS Sales Report
+        </span>
+    </div>
+    @endif
+
     <div class="col-md-2 section href" data-target="{{route('report.dis')}}">
         <span class="icon">
             <i class="zmdi zmdi-truck"></i>

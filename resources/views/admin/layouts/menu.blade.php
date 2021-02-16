@@ -55,13 +55,22 @@
                     <li><a href="{{ route('admin.sup.bill') }}" class="waves-effect waves-block">Supplier Bill</a></li>
                 </ul>
             </li>
+
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Staff Manage</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('admin.emp') }}" class="waves-effect waves-block">Employees </a></li>
+                    <li><a href="{{ route('admin.emp.advance') }}" class="waves-effect waves-block">Advance</a></li>
+                    <li><a href="{{ route('salary.pay') }}" class="waves-effect waves-block">Salary Pay</a></li>
+                </ul>
+            </li>
+
+
             <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Expenses</span></a></li>
-            <li><a href="{{ route('admin.emp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Employees</span></a></li>
             <li><a href="{{route('product.home')}}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a></li>
             @endif
             <li><a href="{{ route('report.home') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Report</span></a></li>
             <li><a href="{{ route('user.users') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Users</span></a></li>
-            @if (env('tier',1)==1)
+            @if (env('tierlevel',1)==1)
             <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Manufacture</span></a>
                 <ul class="ml-menu">
                    <li><a href="{{ route('manufacture.index') }}" class="waves-effect waves-block"><span>Manufacture</span></a></li>

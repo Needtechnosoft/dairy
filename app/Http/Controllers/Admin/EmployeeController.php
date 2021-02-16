@@ -7,7 +7,9 @@ use App\LedgerManage;
 use App\Models\Employee;
 use App\Models\EmployeeAdvance;
 use App\Models\Ledger;
+use App\Models\SalaryPayment;
 use App\Models\User;
+use App\NepaliDate;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -84,10 +86,9 @@ class EmployeeController extends Controller
         $date = str_replace('-', '', $request->date);
 
         $advance=EmployeeAdvance::find($request->id);
-        $tempamount=$advance->ammount;
+        $tempamount=$advance->amount;
         $advance->amount=$request->amount;
         $advance->save();
-
         $ledger=new LedgerManage($advance->employee->user_id);
         $ledger->addLedger('Advance Canceled',2,$tempamount,$date,'113',$advance->id);
         $ledger->addLedger('Advance Updated',1,$request->amount,$date,'112',$advance->id);
@@ -95,20 +96,95 @@ class EmployeeController extends Controller
     }
 
     public function delAdvance(Request $request){
-        $date = str_replace('-', '', $request->date);
+        $date = str_replace('-','', $request->date);
 
         $advance=EmployeeAdvance::find($request->id);
-        $tempamount=$advance->ammount;
-
-        $advance->save();
-
+        $tempamount=$advance->amount;
+        $advance->delete();
         $ledger=new LedgerManage($advance->employee->user_id);
         $ledger->addLedger('Advance Canceled',2,$tempamount,$date,'113',$advance->id);
-
         return response()->json(['status'=>'success']);
     }
 
     public function employeeDetail($id){
+        $user = User::where('id',$id)->where('role',4)->first();
+        return view('admin.emp.detail',compact('user'));
+    }
 
+    public function loadEmployeeData(Request $request){
+        $range=[];
+        // dd($request->all());
+        $salary = SalaryPayment::where('user_id',$request->user_id);
+        $employee = EmployeeAdvance::join('employees','employees.id','=','employee_advances.employee_id')->where('employees.user_id',$request->user_id);
+        if($request->type == 1){
+            $range=NepaliDate::getDateYear($request->year);
+            $employee = $employee->where('employee_advances.date','>=',$range[1])->where('employee_advances.date','<=',$range[2])->get();
+            $salary = $salary->where('year',$request->year)->get();
+        }
+        if($request->type == 2){
+            $range=NepaliDate::getDateMonth($request->year,$request->month);
+            $employee = $employee->where('employee_advances.date','>=',$range[1])->where('employee_advances.date','<=',$range[2])->get();
+            $salary = $salary->where('year',$request->year)->where('month',$request->month)->get();
+        }
+        return view('admin.emp.data',compact('salary','employee'));
+
+    }
+
+    // employee salary pay
+
+    public function salaryIndex(){
+        return view('admin.emp.salarypay.index');
+    }
+
+    public function loadEmpData(Request $request){
+        // dd($request->all());
+        $range=[];
+        $employee = EmployeeAdvance::join('employees','employees.id','=','employee_advances.employee_id')->where('employees.id',$request->emp_id);
+        // dd($employee->count());
+        $salary = Employee::where('id',$request->emp_id)->select('salary')->first();
+        if($employee->count()>0){
+            $range=NepaliDate::getDateMonth($request->year,$request->month);
+            $employee = $employee->where('employee_advances.date','>=',$range[1])->where('employee_advances.date','<=',$range[2])->get();
+            // dd($employee);
+            return view('admin.emp.salarypay.data',compact('employee','salary'));
+        }else{
+            $salary = Employee::where('id',$request->emp_id)->select('salary')->first();
+            $employee=[];
+            return view('admin.emp.salarypay.data',compact('employee','salary'));
+        }
+
+    }
+
+    public function storeSalary(Request $request){
+        // dd($request->all());
+        $date = str_replace('-','',$request->date);
+        $employee = Employee::where('id',$request->emp_id)->first();
+        $checkUser = SalaryPayment::where('year',$request->year)->where('month',$request->month)->where('user_id',$employee->user_id)->count();
+        if($checkUser>0){
+            echo 'notok';
+        }else{
+            $salaryPay = new SalaryPayment();
+            $salaryPay->date = $date;
+            $salaryPay->year = $request->year;
+            $salaryPay->month = $request->month;
+            $salaryPay->amount = $request->pay;
+            $salaryPay->payment_detail = $request->desc;
+            $salaryPay->user_id = $employee->user_id;
+            $salaryPay->save();
+            $ledger=new LedgerManage($employee->user_id);
+            $ledger->addLedger('Salary Paid',1,$request->pay,$date,'124',$salaryPay->id);
+            echo 'ok';
+        }
+    }
+
+    public function paidList(Request $request){
+        // dd($request->all());
+        if($request->emp_id != -1 ){
+            $employee = Employee::where('id',$request->emp_id)->first();
+            $salary = SalaryPayment::where('year',$request->year)->where('month',$request->month)->where('user_id',$employee->user_id)->get();
+        }else{
+            $salary = SalaryPayment::where('year',$request->year)->where('month',$request->month)->get();
+        }
+        return view('admin.emp.salarypay.list',compact('salary'));
     }
 }

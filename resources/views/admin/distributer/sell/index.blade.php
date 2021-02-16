@@ -178,6 +178,7 @@
                     $('#paid').val(0);
                     $('#due').val(0);
                     $('#id').focus();
+                    showNotification('bg-success', 'Sell item added successfully !');
                 })
                 .catch(function(response) {
                     showNotification('bg-danger', 'You have entered invalid data !');

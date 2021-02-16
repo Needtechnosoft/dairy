@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\LedgerManage;
 use App\Models\Advance;
+use App\Models\Bill;
+use App\Models\BillItem;
 use App\Models\Center;
 use App\Models\DistributorPayment;
 use App\Models\Distributer;
@@ -454,6 +456,58 @@ class ReportController extends Controller
 
         }
     }
+
+
+    // billing sale
+
+    public function posSales(Request $request){
+        if($request->isMethod('post')){
+            $year=$request->year;
+            $month=$request->month;
+            $week=$request->week;
+            $type=$request->type;
+            $range=[];
+            $bill=Bill::orderBy('id','desc');
+
+            if($type==0){
+
+            }elseif($type==1){
+                $date=$date = str_replace('-','',$request->date1);
+                $bill = $bill->where('date',$date);
+            }elseif($type==2){
+                $range=NepaliDate::getDateWeek($request->year,$request->month,$request->week);
+                $bill=$bill->where('date','>=',$range[1])->where('date','<=',$range[2]);
+
+            }elseif($type==3){
+                $range=NepaliDate::getDateMonth($request->year,$request->month);
+                $bill=$bill->where('date','>=',$range[1])->where('date','<=',$range[2]);
+
+            }elseif($type==4){
+                $range=NepaliDate::getDateYear($request->year);
+                $bill=$bill->where('date','>=',$range[1])->where('date','<=',$range[2]);
+            }elseif($type==5){
+                $range[1]=str_replace('-','',$request->date1);
+                $range[2]=str_replace('-','',$request->date2);
+                $bill=$bill->where('date','>=',$range[1])->where('date','<=',$range[2]);
+            }
+
+            $bill=$bill->select('id','date','name','grandtotal','net_total','dis')->orderBy('date','asc')->get();
+            $billitems=[];
+            foreach($bill as $b){
+                $item = BillItem::where('bill_id',$b->id)->get();
+                array_push($billitems,$item);
+            }
+            // dd($billitems);
+
+            return view('admin.report.billingsale.data',compact('bill','billitems'));
+
+        }else{
+            return view('admin.report.billingsale.index');
+        }
+    }
+
+
+    // distributer
 
     public function distributor(Request $request){
         if($request->getMethod()=="POST"){

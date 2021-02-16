@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bill extends Model
+class SalaryPayment extends Model
 {
     use HasFactory;
-
-    public function billitems(){
-        return $this->hasMany(BillItem::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

@@ -23,6 +23,9 @@ class ManufactureController extends Controller
         $manu->product_id = $request->item_id;
         $manu->qty = $request->m_qty;
         $manu->save();
+        $s = Product::where('id',$request->item_id)->first();
+        $s->stock += $request->m_qty;
+        $s->save();
         $traker = explode(',',$request->counter);
 
         foreach ($traker as  $value) {
