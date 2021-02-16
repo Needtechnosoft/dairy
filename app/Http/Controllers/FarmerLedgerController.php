@@ -17,6 +17,7 @@ class FarmerLedgerController extends Controller
         $sell->rate=$request->rate;
         $sell->qty=$request->qty;
         $sell->total=$request->amount;
+        $sell->due = $sell->total - $sell->paid;
         $sell->save();
 
         $user=User::find($ledger->user_id);

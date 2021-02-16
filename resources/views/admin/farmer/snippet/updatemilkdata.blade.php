@@ -82,11 +82,9 @@
 
         })
         .catch(function(err){
-            if(err.response){
-                alert(err.reponse.data);
 
-            }
             milklock=false;
+            alert('you have no authority!');
         })
         }
     }
