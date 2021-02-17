@@ -56,10 +56,7 @@
 
             })
             .catch(function(err){
-                if(err.response){
-                    alert(err.reponse.data);
-                }
-
+                showNotification('bg-danger', 'You hove no authority!');
             });
         }
 
@@ -84,7 +81,8 @@
         .catch(function(err){
 
             milklock=false;
-            alert('you have no authority!');
+            showNotification('bg-danger', 'You hove no authority!');
+
         })
         }
     }

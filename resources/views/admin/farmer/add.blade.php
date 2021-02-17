@@ -299,6 +299,8 @@
             .catch(function(response) {
                 //handle error
                 console.log(response);
+                showNotification('bg-danger', 'You hove no authority!');
+
             });
     }
 

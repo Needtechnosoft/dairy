@@ -150,13 +150,22 @@
     initTableSearch('s_dis', 'distributors', ['name']);
     initTableSearch('productsearch', 'products', ['name']);
 
-
+    sellock=false;
     function saveData() {
+        if(!sellock){
+
         if ($('#nepali-datepicker').val() == '' || $('#id').val() == ''||$('#product_id').val() == '' || $('#total').val() == 0) {
             alert('Please enter data in empty field !');
             $('#id').focus();
             return false;
         } else {
+            console.log("sell_"+$('#id').val());
+            if(exists(".sell_"+$('#id').val())){
+                if(!confirm("Sell Data Already added, Do You Want Add Another?")){
+                    return;
+                }
+            }
+            sellock=true;
             var bodyFormData = new FormData(document.getElementById('sellitemData'));
             axios({
                     method: 'post',
@@ -179,12 +188,16 @@
                     $('#due').val(0);
                     $('#id').focus();
                     showNotification('bg-success', 'Sell item added successfully !');
+                    sellock=false;
                 })
                 .catch(function(response) {
+                    sellock=false;
+
                     showNotification('bg-danger', 'You have entered invalid data !');
                     //handle error
                     console.log(response);
                 });
+        }
         }
     }
 
@@ -192,21 +205,26 @@
 
     function removeData(id) {
         if (confirm('Are you sure?')) {
-            axios({
-                    method: 'post',
-                    url: '{{route("admin.dis.sell.del")}}',
-                    data:{
-                        'id':id,
-                        'date':$('#currentdate').val()
-                    }
-                })
-                .then(function(response) {
-                    showNotification('bg-danger', 'Sellitem deleted successfully!');
-                    $('#sell-' + id).remove();
-                })
-                .catch(function(response) {
-                    console.log(response)
-                })
+            if(prompt("Enter Yes To Delete","no").toLocaleLowerCase()==="yes"){
+
+                axios({
+                        method: 'post',
+                        url: '{{route("admin.dis.sell.del")}}',
+                        data:{
+                            'id':id,
+                            'date':$('#currentdate').val()
+                        }
+                    })
+                    .then(function(response) {
+                        showNotification('bg-danger', 'Sellitem deleted successfully!');
+                        $('#sell-' + id).remove();
+                    })
+                    .catch(function(response) {
+                        console.log(response)
+                        showNotification('bg-danger', 'You hove no authority!');
+
+                    })
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 @if ($sell->distributer->user!=null)
 
-    <tr id="sell-{{$sell->id}}" data-name="{{ $sell->distributer->user->name }}" class="searchable">
+    <tr id="sell-{{$sell->id}}"   data-name="{{ $sell->distributer->user->name }}" class="searchable sell_{{$sell->distributer->id}}">
         <td>{{ $sell->distributer->user->name }}</td>
         <td>{{ $sell->product->name }}</td>
         <td>{{ $sell->rate }}</td>

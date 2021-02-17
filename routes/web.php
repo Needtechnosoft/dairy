@@ -219,7 +219,7 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'sellupdate','LedgerController@sellUpdate')->name('sellupdate')->middleware('authority');
             Route::match(['GET','POST'],'payupdate','LedgerController@payUpdate')->name('payupdate')->middleware('authority');
 
-            Route::match(['GET','POST'],'del','LedgerController@del')->name('del');
+            Route::match(['GET','POST'],'del','LedgerController@del')->name('del')->middleware('authority');
             Route::group(['prefix' => 'farmer'], function () {
                 Route::name('farmer.')->group(function(){
                     Route::match(['GET','POST'],'update','FarmerLedgerController@update')->name('update')->middleware('authority');

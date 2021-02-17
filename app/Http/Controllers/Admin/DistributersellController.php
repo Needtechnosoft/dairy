@@ -49,10 +49,10 @@ class DistributersellController extends Controller
     public function deleteDistributersell(Request $request){
         // $date = str_replace('-','',$request->date);
         $sell = Distributorsell::find($request->id);
+        $sell->delete();
         // $tempamount=$sell->total;
         // $tempid=$sell->id;
         // $title=$sell->product->name.' ('.$sell->rate .' X '.$sell->qty.''.$sell->product->unit. ')';
-        $sell->delete();
         // $distributor = Distributer::where('id',$sell->distributer_id)->first();
         // $ledger = new LedgerManage($distributor->user_id);
         // $ledger->addLedger('Sell Canceled: '.$title,2,$tempamount,$date,'115',$tempid);

@@ -56,10 +56,7 @@
 
             })
             .catch(function(err){
-                if(err.response){
-                    alert(err.reponse.data);
-                }
-
+                showNotification('bg-danger', 'You hove no authority!');
             });
         }
 
@@ -82,11 +79,10 @@
 
         })
         .catch(function(err){
-            if(err.response){
-                alert(err.reponse.data);
 
-            }
             snflock=false;
+            showNotification('bg-danger', 'You hove no authority!');
+
         })
         }
     }

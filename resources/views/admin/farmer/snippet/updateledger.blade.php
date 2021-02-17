@@ -98,7 +98,8 @@
                 })
                 .catch(function(err){
                     initlock=false;
-                    alert('Ledger Cannot be Deleted');
+                    showNotification('bg-danger', 'You hove no authority!');
+
                 })
             }
         }

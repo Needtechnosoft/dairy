@@ -102,7 +102,7 @@
                 })
                 .catch(function(err){
                     selllock=false;
-                    alert('Ledger Cannot be Updated');
+                    showNotification('bg-danger', 'You hove no authority!');
                 })
         }
     }
