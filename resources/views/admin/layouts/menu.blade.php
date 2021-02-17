@@ -9,18 +9,17 @@
                 <div class="user-info">
                     <a class="image" href="profile.html"><img src="{{ asset('backend/images/user.png') }}" alt="User"></a>
                     <div class="detail">
-                        @if(env('authphone','9852059717')==9852059717)
                         <h4>{{ Auth::user()->name }}</h4>
-                        <small>Super Admin</small>
+                        @if(env('authphone','9852059717')==9852059717)
+                            <small>Super Admin</small>
                         @else
-                            <h4>{{ Auth::user()->name }}</h4>
                             <small>Admin</small>
                         @endif
                     </div>
                 </div>
             </li>
             {{-- helloooo --}}
-            
+
             <li class="active open"><a href="{{ route('admin.dashboard')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
             <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-apps"></i><span>Farmer</span></a>
                 <ul class="ml-menu">
