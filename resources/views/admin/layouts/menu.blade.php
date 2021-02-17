@@ -9,8 +9,13 @@
                 <div class="user-info">
                     <a class="image" href="profile.html"><img src="{{ asset('backend/images/user.png') }}" alt="User"></a>
                     <div class="detail">
-                        <h4>Admin</h4>
+                        @if(env('authphone','9852059717')==9852059717)
+                        <h4>{{ Auth::user()->name }}</h4>
                         <small>Super Admin</small>
+                        @else
+                            <h4>{{ Auth::user()->name }}</h4>
+                            <small>Admin</small>
+                        @endif
                     </div>
                 </div>
             </li>
