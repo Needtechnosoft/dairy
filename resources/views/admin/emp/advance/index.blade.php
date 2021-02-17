@@ -155,6 +155,8 @@
             .catch(function(response) {
                 //handle error
                 console.log(response);
+                showNotification('bg-danger', 'You have no authority!');
+
             });
     }
 
@@ -176,6 +178,7 @@
             .catch(function(response) {
                 //handle error
                 console.log(response);
+                showNotification('bg-danger', 'You have no authority!');
             });
         }
     }

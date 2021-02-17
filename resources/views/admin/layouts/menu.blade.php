@@ -7,7 +7,7 @@
         <ul class="list">
             <li>
                 <div class="user-info">
-                    <a class="image" href="profile.html"><img src="{{ asset('backend/images/user.png') }}" alt="User"></a>
+                    <a class="image" href="#"><img src="{{ asset('backend/images/user.png') }}" alt="User"></a>
                     <div class="detail">
                         <h4>{{ Auth::user()->name }}</h4>
                         @if(env('authphone','9852059717')==Auth::user()->phone)

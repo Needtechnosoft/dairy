@@ -109,6 +109,7 @@ class ReportController extends Controller
                         // $farmer->old=false;
                     }
                     $farmer->milk=$_data->milk;
+                    $farmer->fpaid=$_data->fpaid;
                     $farmer->fat=$_data->fat;
                     $farmer->snf=$_data->snf;
                         $farmer->rate=$_data->rate;
@@ -189,6 +190,7 @@ class ReportController extends Controller
             $farmerreport->year=$request->year;
             $farmerreport->month=$request->month;
             $farmerreport->session=$request->session;
+            $farmerreport->fpaid=$request->fpaid;
             $farmer=Farmer::where('user_id',$request->id)->first();
             $farmerreport->center_id=$farmer->center_id;
             $farmerreport->save();
@@ -242,6 +244,7 @@ class ReportController extends Controller
             $farmerreport->nettotal=$data->nettotal??0;
             $farmerreport->balance=$data->balance??0;
             $farmerreport->tc=$data->tc??0;
+            $farmerreport->fpaid=$data->fpaid??0;
             $farmerreport->cc=$data->cc??0;
             $farmerreport->grandtotal=$data->grandtotal??($data->total??0);
             $farmerreport->paidamount=$data->paidamount??0;

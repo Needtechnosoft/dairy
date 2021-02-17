@@ -343,7 +343,8 @@
                         @if (env('hasextra',0)==1)
                             <th>Bonus</th>
                         @endif
-                        <th>Due</th>
+                        <th>Purchase</th>
+                        <th>Payment</th>
                         <th>Avance</th>
                         <th>
                             Prev Balance
@@ -404,6 +405,9 @@
                             {{$farmer1->due}}
                         </td>
                         <td>
+                            {{$farmer1->fpaid}}
+                        </td>
+                        <td>
                             {{$farmer1->advance}}
                         </td>
                         <td>
@@ -445,6 +449,7 @@
                                 <input type="hidden" name="balance" value=" {{ $farmer1->balance}}">
                                 <input type="hidden" name="prevbalance" value=" {{ $farmer1->prevbalance}}">
                                 <input type="hidden" name="paidamount" value=" {{ $farmer1->paidamount}}">
+                                <input type="hidden" name="fpaid" value=" {{ $farmer1->fpaid}}">
                                 <label for=>Session Close Date</label>
                                 <input type="text" name="date" id="closedate" readonly required>
                                 <button class="btn btn-sm btn-success">Close Session</button>

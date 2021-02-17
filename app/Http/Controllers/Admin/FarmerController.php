@@ -178,7 +178,7 @@ class FarmerController extends Controller
         }
 
 
-
+        $farmer1->fpaid=(Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','106')->sum('amount')+Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','107')->sum('amount'));
 
         $farmer1->grandtotal=(int)( $farmer1->total+$farmer1->tc+$farmer1->cc);
 
@@ -188,7 +188,8 @@ class FarmerController extends Controller
         }
 
 
-        $farmer1->due=(float)(Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due'));
+        // $farmer1->due=(float)(Sellitem::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('due'));
+        $farmer1->due=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','103')->sum('amount');;
 
         $previousMonth=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','101')->sum('amount');
         $previousMonth1=Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','120')->where('type',1)->sum('amount');
@@ -198,7 +199,7 @@ class FarmerController extends Controller
         $farmer1->prevdue=(float)$previousMonth+(float)$previousMonth1;
         $farmer1->prevbalance=(float)$previousBalance;
         $farmer1->paidamount=(float)Ledger::where('user_id',$r->user_id)->where('date','>=',$range[1])->where('date','<=',$range[2])->where('identifire','121')->where('type',1)->sum('amount');
-        $balance=$farmer1->grandtotal+$farmer1->balance - $farmer1->prevdue -$farmer1->advance-$farmer1->due-$farmer1->paidamount+$farmer1->prevbalance-$farmer1->bonus;
+        $balance=$farmer1->grandtotal+$farmer1->balance - $farmer1->prevdue -$farmer1->advance-$farmer1->due-$farmer1->paidamount+$farmer1->prevbalance-$farmer1->bonus+$farmer1->fpaid;
 
         $farmer1->balance=0;
         $farmer1->nettotal=0;
@@ -275,23 +276,23 @@ class FarmerController extends Controller
         $farmerPay->payment_detail = $request->detail;
         $farmerPay->user_id = $user->id;
         $farmerPay->save();
-        $due = Sellitem::where('user_id',$user->id)->where('due','>',0)->get();
-        $paidmaount = $farmerPay->amount;
+        // $due = Sellitem::where('user_id',$user->id)->where('due','>',0)->get();
+        // $paidmaount = $farmerPay->amount;
 
-        foreach ($due as $key => $value) {
-            if($paidmaount<=0){
-                break;
-            }
-            if($paidmaount>=$value->due){
-                $paidmaount -= $value->due;
-                $value->due =0;
-                $value->save();
-            }else{
-                $value->due-=$paidmaount;
-                $paidmaount=0;
-                $value->save();
-            }
-        }
+        // foreach ($due as $key => $value) {
+        //     if($paidmaount<=0){
+        //         break;
+        //     }
+        //     if($paidmaount>=$value->due){
+        //         $paidmaount -= $value->due;
+        //         $value->due =0;
+        //         $value->save();
+        //     }else{
+        //         $value->due-=$paidmaount;
+        //         $paidmaount=0;
+        //         $value->save();
+        //     }
+        // }
         $ledger = new LedgerManage($user->id);
         $ledger->addLedger('Paid by farmer amount',2,$request->pay,$date,'107',$farmerPay->id);
     }

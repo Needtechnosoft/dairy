@@ -191,6 +191,7 @@
             })
             .catch(function(response) {
                 //handle error
+                showNotification('bg-danger', 'You have no authority!');
                 console.log(response);
             });
     }

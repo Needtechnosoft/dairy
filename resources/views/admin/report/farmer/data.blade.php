@@ -61,6 +61,7 @@
         $balancetotal=0;
         $prevbalancetotal=0;
         $paidamounttotal=0;
+        $fpaidtotal = 0;
 
                 $_tctotal=0;
                 $_cctotal=0;
@@ -75,6 +76,8 @@
                 $_balancetotal=0;
                 $_prevbalancetotal=0;
                 $_paidamounttotal=0;
+                $_fpaidtotal = 0;
+
     @endphp
 
 
@@ -100,8 +103,9 @@
                 @if (env('hasextra',0)==1)
                     <th>Bonus({{ round($center->bonus,2) }}%)</th>
                 @endif
-                <th>Due</th>
-                <th>Avance</th>
+                <th>Purchase</th>
+                <th>Purchase Paid</th>
+                <th>Advance</th>
                 <th>Prev Due</th>
                 @if(env('tier',0)==1)
                     <th>Prev Balance</th>
@@ -204,6 +208,13 @@
                         @endphp
                     </td>
                     <td>
+                        {{$farmer->fpaid}}
+                        @php
+                          $fpaidtotal += $farmer->fpaid;
+                        @endphp
+                    </td>
+
+                    <td>
                         {{$farmer->advance}}
                         {{-- <input type="hidden" name="advance[{{$t}}]" value="{{($farmer->advance)}}" > --}}
                         @php
@@ -300,6 +311,9 @@
                         {{$duetotal}}
                     </td>
                     <td>
+                        {{$fpaidtotal}}
+                    </td>
+                    <td>
                         {{$advancetotal}}
                     </td>
                     <td>
@@ -335,6 +349,7 @@
                 $_balancetotal+=$balancetotal;
                 $_prevbalancetotal+=$prevbalancetotal;
                 $_paidamounttotal+=$paidamounttotal;
+                $_fpaidtotal += $fpaidtotal;
 
                 $point=false;
                 $tctotal=0;
@@ -350,6 +365,7 @@
                 $balancetotal=0;
                 $prevbalancetotal=0;
                 $paidamounttotal=0;
+                $fpaidtotal =0;
             @endphp
             </tbody>
         </table>
@@ -360,68 +376,109 @@
     @endforeach
 
         @if ($i<env('secondpage',32))
-        @php
-             $_tctotal+=$tctotal;
-                $_cctotal+=$cctotal;
-                $_grandtotal+=$grandtotal;
-                $_milktotal+=$milktotal;
-                $_bonustotal+=$bonustotal;
-                $_totaltotal+=$totaltotal;
-                $_duetotal+=$duetotal;
-                $_advancetotal+=$advancetotal;
-                $_prevduetotal+=$prevduetotal;
-                $_nettotaltotal+=$nettotaltotal;
-                $_balancetotal+=$balancetotal;
-                $_prevbalancetotal+=$prevbalancetotal;
-                $_paidamounttotal+=$paidamounttotal;
-        @endphp
-        <tr>
-            <td colspan="2">Total</td>
-            <td>{{$milktotal}}</td>
-            <td>--</td>
-            <td>--</td>
-            <td>--</td>
-            @if ($usecc || $usetc)
-                        <td>
-                            {{$totaltotal}}
+        @if( $start)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Milk (l)</th>
+                    <th>Snf%</th>
+                    <th>Fat%</th>
+                    <th>Price/l</th>
+                    @if ($usecc || $usetc)
+                        <th>MilK Total</th>
+                        <th>TS</th>
+                        <th>Cooling Cost</th>
+                    @endif
+                    <th>Total</th>
+                    @if (env('hasextra',0)==1)
+                        <th>Bonus({{ round($center->bonus,2) }}%)</th>
+                    @endif
+                    <th>Purchase</th>
+                    <th>Purchase Paid</th>
+                    <th>Advance</th>
+                    <th>Prev Due</th>
+                    @if(env('tier',0)==1)
+                        <th>Prev Balance</th>
+                        <th>Paid Amount</th>
+                    @endif
+                    <th>Net Total</th>
+                    <th>Due Balance</th>
+                    <th>Signature</th>
 
-                        </td>
-                        <td>
-                            {{$tctotal}}
+                </tr>
+            </thead>
+            <tbody>
+        @else
+            @php
+                $_tctotal+=$tctotal;
+                    $_cctotal+=$cctotal;
+                    $_grandtotal+=$grandtotal;
+                    $_milktotal+=$milktotal;
+                    $_bonustotal+=$bonustotal;
+                    $_totaltotal+=$totaltotal;
+                    $_duetotal+=$duetotal;
+                    $_advancetotal+=$advancetotal;
+                    $_prevduetotal+=$prevduetotal;
+                    $_nettotaltotal+=$nettotaltotal;
+                    $_balancetotal+=$balancetotal;
+                    $_prevbalancetotal+=$prevbalancetotal;
+                    $_paidamounttotal+=$paidamounttotal;
+                    $_fpaidtotal += $fpaidtotal;
 
-                        </td>
-                        <td>
-                            {{$cctotal}}
+            @endphp
+            <tr>
+                <td colspan="2">Total</td>
+                <td>{{$milktotal}}</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                @if ($usecc || $usetc)
+                            <td>
+                                {{$totaltotal}}
 
-                        </td>
-            @endif
-            <td>{{$grandtotal}}</td>
-            @if(env('hasextra',0)==1)
-                <td>{{$bonustotal}}</td>
-            @endif
-            <td>
-                {{$duetotal}}
-            </td>
-            <td>
-                {{$advancetotal}}
-            </td>
-            <td>
-                {{$prevduetotal}}
-            </td>
-            <td>
-                {{$prevbalancetotal}}
-            </td>
-            <td>
-                {{$paidamounttotal}}
-            </td>
-            <td>
-                {{$nettotaltotal}}
-            </td>
-            <td>
-                {{$balancetotal}}
-            </td>
-            <td></td>
-        </tr>
+                            </td>
+                            <td>
+                                {{$tctotal}}
+
+                            </td>
+                            <td>
+                                {{$cctotal}}
+
+                            </td>
+                @endif
+                <td>{{$grandtotal}}</td>
+                @if(env('hasextra',0)==1)
+                    <td>{{$bonustotal}}</td>
+                @endif
+                <td>
+                    {{$duetotal}}
+                </td>
+                <td>
+                    {{$fpaidtotal}}
+                </td>
+                <td>
+                    {{$advancetotal}}
+                </td>
+                <td>
+                    {{$prevduetotal}}
+                </td>
+                <td>
+                    {{$prevbalancetotal}}
+                </td>
+                <td>
+                    {{$paidamounttotal}}
+                </td>
+                <td>
+                    {{$nettotaltotal}}
+                </td>
+                <td>
+                    {{$balancetotal}}
+                </td>
+                <td></td>
+            </tr>
+        @endif
         <tr>
             <td colspan="2">Grand Total</td>
             <td>{{$_milktotal}}</td>
@@ -448,6 +505,9 @@
             @endif
             <td>
                 {{$_duetotal}}
+            </td>
+            <td>
+                {{ $_fpaidtotal }}
             </td>
             <td>
                 {{$_advancetotal}}
