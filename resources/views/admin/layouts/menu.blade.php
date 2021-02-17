@@ -10,7 +10,7 @@
                     <a class="image" href="profile.html"><img src="{{ asset('backend/images/user.png') }}" alt="User"></a>
                     <div class="detail">
                         <h4>{{ Auth::user()->name }}</h4>
-                        @if(env('authphone','9852059717')==9852059717)
+                        @if(env('authphone','9852059717')==Auth::user->()->phone)
                             <small>Super Admin</small>
                         @else
                             <small>Admin</small>
