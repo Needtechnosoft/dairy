@@ -45,6 +45,13 @@ class HomepageController extends Controller
             return view('admin.homepage.slider.index',compact('slider'));
         }
     }
+
+    public function sliderDel($id){
+        $d = Slider::find($id);
+        $d->delete();
+        return redirect()->back()->with('message','Deleted successfully !');
+    }
+
     public function gallery(Request $request){
         if($request->isMethod('post')){
 

@@ -16,7 +16,7 @@
              <div class="grid-inner">
                  <div class="portfolio-image">
                      <a href="portfolio-single.html">
-                         <img src="{{ $g->image }}" alt="Locked Steel Gate">
+                         <img src="{{asset($g->image)}}" alt="Locked Steel Gate">
                      </a>
                      <div class="bg-overlay">
                          <div class="bg-overlay-content dark" data-hover-animate="fadeIn">

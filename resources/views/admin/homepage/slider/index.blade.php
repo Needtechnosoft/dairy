@@ -39,10 +39,12 @@
 
         <tbody>
             @foreach ($slider as $s)
+            <tr>
                 <td>{{ $s->heading }}</td>
                 <td>{{ $s->title }}</td>
                 <td><img src="{{asset($s->image)}}" alt="" style="height: 100px;"></td>
-                <td><a href="" class="btn btn-primary">Delete</a></td>
+                <td><a href="{{ route('setting.slider.del',$s->id)}}" class="btn btn-primary">Delete</a></td>
+            </tr>
             @endforeach
         </tbody>
     </table>
