@@ -74,6 +74,10 @@
             <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Expenses</span></a></li>
             <li><a href="{{route('product.home')}}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a></li>
             @endif
+
+            @if(env('tierlevel',1)==1)
+               <li><a href="{{route('purchase.home')}}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Purchase Product</span></a></li>
+            @endif
             <li><a href="{{ route('report.home') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Report</span></a></li>
             <li><a href="{{ route('user.users') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Users</span></a></li>
             @if (env('tierlevel',1)==1)
@@ -84,6 +88,15 @@
                 </ul>
             </li>
             <li><a href="{{ url('admin/billing') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Billing</span></a></li>
+            @endif
+            @if(env('tier',1) == 1)
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Home Page Setting</span></a>
+                <ul class="ml-menu">
+                   <li><a href="{{ route('setting.about') }}" class="waves-effect waves-block"><span>AboutUs</span></a></li>
+                   <li><a href="{{ route('setting.sliders') }}" class="waves-effect waves-block"><span>Sliders</span></a></li>
+                   <li><a href="{{ route('setting.gallery') }}" class="waves-effect waves-block"><span>Sliders</span></a></li>
+                </ul>
+            </li>
             @endif
             <li><a href="{{ route('logout') }}" class="waves-effect waves-block" target="_top"><i class="zmdi zmdi-power"></i><span>Sign Out</span></a></li>
         </ul>

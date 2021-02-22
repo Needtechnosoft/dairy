@@ -191,7 +191,8 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     });
 
     Route::prefix('product/purchase')->name('purchase.')->group(function(){
-
+        Route::get('','Admin\ProductController@productPurchase')->name('home');
+        Route::post('','Admin\ProductController@productPurchaseStore')->name('store');
     });
 
     // manufacture
@@ -266,6 +267,16 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::post('save', 'Billing\BillingController@save')->name('save');
 
         });
+    });
+
+
+    Route::prefix('home-setting')->name('setting.')->group(function(){
+        Route::match(['GET','POST'],'about','Admin\HomepageController@abountus')->name('about');
+        Route::match(['GET','POST'],'sliders','Admin\HomepageController@sliders')->name('sliders');
+        Route::match(['GET','POST'],'gallery','Admin\HomepageController@gallery')->name('gallery');
+        Route::match(['GET','POST'],'gallery/del/{gallery}','Admin\HomepageController@galleryDel')->name('gallery-del');
+
+
     });
 
 

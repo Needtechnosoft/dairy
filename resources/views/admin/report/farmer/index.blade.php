@@ -47,7 +47,7 @@
         <span class="btn btn-success" onclick="printDiv('allData');"> Print</span>
     </div>
 </div>
-<div id="allData">
+<div id="allData" style="overflow-x: scroll;">
 
 </div>
 @endsection

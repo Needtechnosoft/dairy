@@ -15,7 +15,7 @@
 @endif
 <div class="row">
     <div class="col-md-12 bg-light">
-        <form action="" method="POST" id="milkData">
+        <form action="{{ route('purchase.store') }}" method="POST" id="milkData">
             @csrf
             <div class="row">
                 <div class="col-md-3">
@@ -25,34 +25,20 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="item">Manufacture Items</label>
-                        <select name="item_id" class="form-control show-tick ms next" data-next="session" required>
-                            <option></option>
-                            @foreach(\App\Models\Product::all() as $p)
-                            <option value="{{$p->id}}">{{ $p->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
                 <input type="hidden" name="counter" id="counter" val=""/>
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="reqireqty">Manufactured Qty(Kg./Ltr.)</label>
-                        <input type="number" value="1" min="0.01" step="0.01" name="m_qty" class="form-control">
+                        <label for="reqireqty">Bill No.</label>
+                        <input type="number"  step="0.01" name="billno" placeholder="Bill No." class="form-control" required>
                     </div>
                 </div>
 
-                <div class="col-12" style="border: 1px #ccc solid; margin:2rem 0;"></div>
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="product">Required Items</label>
-                        <select id="product" class="form-control show-tick ms next" data-next="session">
-                            <option></option>
+                        <label for="product">Purchase Items</label>
+                        <select id="product" class="form-control show-tick ms select2" data-placeholder="Select">
+                            <option value="-1"></option>
                             @foreach(\App\Models\Product::all() as $p)
                               <option  value='{{$p->toJson()}}'>{{ $p->name }}</option>
                             @endforeach
@@ -61,18 +47,27 @@
                 </div>
 
                 <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="date">Available Stock(Kg./Ltr.)</label>
-                        <input type="number" id="available" class="form-control next" readonly>
+                    <div class="from-group">
+                        <label for="qty"> Quantity (Ltr./Kg.) </label>
+                        <input type="number" onkeyup="singleItemTotal();" class="form-control" id="qty" value="1" min="0" step="0.001">
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="date">Required Unit(Kg./Ltr.)</label>
-                        <input type="number" min="0.01" step="0.01" id="reqQty" oninput="checkStock();" class="form-control next" value="0.01" placeholder="qty">
+                    <div class="from-group">
+                        <label for="rate"> Rate </label>
+                        <input type="number" onkeyup="singleItemTotal();" class="form-control" id="rate" value="0" min="0" step="0.001">
                     </div>
                 </div>
+
+
+                <div class="col-md-3">
+                    <div class="from-group">
+                        <label for="rate"> Total </label>
+                        <input type="number" class="form-control" id="total" value="0" min="0" step="0.001">
+                    </div>
+                </div>
+
                 <div class="col-md-2">
                     <div class="form-group">
                         <span class="btn btn-primary btn-block" style="margin-top:2rem;" onclick="addItems();">Add</span>
@@ -88,6 +83,8 @@
                                 <tr>
                                     <th>Required Item</th>
                                     <th>Qty</th>
+                                    <th>Rate</th>
+                                    <th>Total</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -95,6 +92,10 @@
 
                             </tbody>
                         </table>
+                        <div class="text-right">
+                            Grand Total : <input type="number" name="gtotal" readonly id="itotal" value="0"></td>
+
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -111,19 +112,23 @@
     <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
     <script>
         var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
-    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
-    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+        var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+        $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
     window.onload = function() {
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
     };
 
+    function singleItemTotal() {
+        $('#total').val($('#rate').val() * $('#qty').val());
+    }
+
     var i = 0;
     var itemKeys = [];
 
     function addItems() {
-        if ($('#product').val() == "" || $('#reqQty').val() == 0) {
+        if ($('#product').val() == -1 || $('#qty').val() == 0 || $('#rate').val() == 0) {
             alert('Please fill the above related field');
             $("#product").focus();
             return false;
@@ -131,13 +136,18 @@
         product=JSON.parse($('#product').val());
         // console.log(product);
         html = "<tr id='row-" + i + "'>";
-        html += "<td>" + product.name + "<input type='hidden' name='productid_" + i + "' value='" + product.id + "' /></td>";
-        html += "<td>" + $('#reqQty').val() + "<input type='hidden' name='reqQty_" + i + "' value='" + $('#reqQty').val() + "'/></td>";
+        html += "<td>" + product.name + "<input type='hidden' name='productid_" + i + "' value='" + product.id + "' /><input type='hidden' name='productname_" + i + "' value='" + product.name + "' /></td>";
+        html += "<td>" + $('#qty').val() + "<input type='hidden' name='qty_" + i + "' value='" + $('#qty').val() + "'/></td>";
+        html += "<td>" + $('#rate').val() + "<input type='hidden' name='rate_" + i + "' value='" + $('#rate').val() + "'/></td>";
+        html += "<td>" + $('#total').val() + "<input type='hidden' name='total_" + i + "' id='total_" + i + "'  value='" + $('#total').val() + "'/></td>";
         html += "<td> <span class='btn btn-danger btn-sm' onclick='RemoveItem(" + i + ");'>Remove</span></td>";
         html += "</tr>";
         $("#itemBody").append(html);
-        $('#product').val('');
-        $('#reqQty').val('0.01');
+        $('#product').val(-1).change();
+        $('#rate').val('0');
+        $('#qty').val('0');
+        $('#product').focus();
+        $('#total').val(0);
         itemKeys.push(i);
         i+= 1;
         suffle();
@@ -145,6 +155,7 @@
 
     function suffle(){
         $("#counter").val(itemKeys.join(","));
+        calculateTotal();
     }
 
     function RemoveItem(e){
@@ -156,21 +167,19 @@
             suffle();
     }
 
-
-    $('#product').on('change', function() {
-        product=JSON.parse($('#product').val());
-        $('#available').val(product.stock);
-    });
-
-    function checkStock(){
-        var req = parseFloat($('#reqQty').val());
-        var stock =parseFloat($('#available').val());
-        if(req>stock){
-            alert('Stock is not sufficient !');
-            $('#reqQty').val(0);
-            $('#reqQty').select();
+    function calculateTotal() {
+        var itotal = 0;
+        for (let index = 0; index < itemKeys.length; index++) {
+            const element = itemKeys[index];
+            itotal += parseInt($("#total_" + element).val());;
         }
+        $('#itotal').val(itotal);
     }
+
+
+
+
+
 
     </script>
 @endsection

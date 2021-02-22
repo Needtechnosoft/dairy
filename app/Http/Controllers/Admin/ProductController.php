@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductPurchase;
+use App\Models\ProductPurchaseItem;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\FuncCall;
 
 class ProductController extends Controller
 {
@@ -43,6 +46,40 @@ class ProductController extends Controller
         $product=Product::find($request->id);
         $product->delete();
         return response('ok');
+
+    }
+
+
+    // product purchase
+    public function productPurchase(){
+        return view('admin.products.purchase.index');
+    }
+
+    public function productPurchaseStore(Request $request){
+        // dd($request->all());
+        $date = str_replace('-','',$request->date);
+        $purchase = new ProductPurchase();
+        $purchase->billno = $request->billno;
+        $purchase->total = $request->gtotal;
+        $purchase->date = $date;
+        $purchase->save();
+        $traker = explode(',',$request->counter);
+
+        foreach ($traker as  $value) {
+            $item = new ProductPurchaseItem();
+            $item->product_purchase_id = $purchase->id;
+            // dd($request->input("productid_".$value));
+            $item->title = $request->input('productname_'.$value);
+            $item->rate = $request->input('rate_'.$value);
+            $item->product_id = $request->input("productid_".$value);
+            $item->qty = $request->input('qty_'.$value);
+            $item->save();
+                $stock = Product::where('id',$request->input("productid_".$value))->first();
+                $stock->stock += $request->input('qty_'.$value);
+                $stock->save();
+        }
+        return redirect()->back()->with('message','Purchase item added successfully !');
+
 
     }
 
