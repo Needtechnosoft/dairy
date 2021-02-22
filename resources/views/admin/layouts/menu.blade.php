@@ -94,7 +94,7 @@
                 <ul class="ml-menu">
                    <li><a href="{{ route('setting.about') }}" class="waves-effect waves-block"><span>AboutUs</span></a></li>
                    <li><a href="{{ route('setting.sliders') }}" class="waves-effect waves-block"><span>Sliders</span></a></li>
-                   <li><a href="{{ route('setting.gallery') }}" class="waves-effect waves-block"><span>Sliders</span></a></li>
+                   <li><a href="{{ route('setting.gallery') }}" class="waves-effect waves-block"><span>Gallery</span></a></li>
                 </ul>
             </li>
             @endif
