@@ -41,7 +41,7 @@
             @foreach ($slider as $s)
                 <td>{{ $s->heading }}</td>
                 <td>{{ $s->title }}</td>
-                <td><img src="/{{$s->image}}" alt="" style="height: 100px;"></td>
+                <td><img src="{{asset($s->image)}}" alt="" style="height: 100px;"></td>
                 <td><a href="" class="btn btn-primary">Delete</a></td>
             @endforeach
         </tbody>

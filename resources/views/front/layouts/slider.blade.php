@@ -11,7 +11,7 @@
                             <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">{{ $slid->title }}</p>
                         </div>
                     </div>
-                    <div class="swiper-slide-bg" style="background-image: url('{{ $slid->image }}');"></div>
+                    <div class="swiper-slide-bg" style="background-image: url('{{asset($slid->image)}}');"></div>
                 </div>
                 @endforeach
             </div>
