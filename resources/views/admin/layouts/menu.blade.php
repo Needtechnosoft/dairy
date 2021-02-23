@@ -70,8 +70,13 @@
                 </ul>
             </li>
 
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Expense Manage</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('admin.exp.category') }}" class="waves-effect waves-block"><span>Expense Categories</span></a></li>
+                    <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><span>Expenses</span></a></li>
+                </ul>
+            </li>
 
-            <li><a href="{{ route('admin.exp') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Expenses</span></a></li>
             <li><a href="{{route('product.home')}}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a></li>
             @endif
 

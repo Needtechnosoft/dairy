@@ -96,13 +96,21 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::post('sell-item-delete', 'Admin\SellitemController@deleteSellitem')->middleware('authority');
     Route::post('sell-item-delete-all', 'Admin\SellitemController@multidel')->name('del-all-selitem')->middleware('authority');
 
+    // expe categories
+     Route::get('expense-categories', 'Admin\ExpenseController@categoryIndex')->name('admin.exp.category');
+     Route::post('expense-category-add', 'Admin\ExpenseController@categoryAdd')->name('admin.exp.category.add');
+     Route::post('expense-category-update', 'Admin\ExpenseController@categoryUpdate')->name('admin.exp.category.update');
+     Route::post('category/expenses', 'Admin\ExpenseController@categoryExpenses')->name('admin.category.expenses');
 
 
     // XXX  expensess
     Route::get('expenses', 'Admin\ExpenseController@index')->name('admin.exp');
     Route::post('expense-add', 'Admin\ExpenseController@addExpense')->name('admin.exp.add');
-    Route::post('expense-list', 'Admin\ExpenseController@listExpense')->name('admin.exp.list');
+    Route::post('expense/edit/', 'Admin\ExpenseController@editExpenses')->name('admin.exp.edit')->middleware('authority');
+    Route::get('expense-list', 'Admin\ExpenseController@listExpense')->name('admin.exp.list');
     Route::get('expense-delete/{id}', 'Admin\ExpenseController@deleteExpense')->middleware('authority');
+    Route::post('expense-load', 'Admin\ExpenseController@loadExpense')->name('admin.exp.load');
+
 
     // XXX suppliers
     Route::get('suppliers', 'Admin\SupplierController@index')->name('admin.sup');
@@ -302,9 +310,9 @@ Route::group(['middleware' => 'role:farmer','prefix'=>'farmer'], function (){
         Route::get('transaction/detail', 'Users\FarmerDashboardController@transactionDetail')->name('milk.detail');
         Route::post('load-data','Users\FarmerDashboardController@loadData')->name('loaddata');
         Route::get('change-password', 'Users\FarmerDashboardController@changePasswordPage')->name('password.page');
-
     });
 });
+
 
 Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], function (){
     Route::name('distributer.')->group( function(){
@@ -318,8 +326,6 @@ Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], funct
         Route::post('make-a-request-add', 'Users\DistributorDashboardController@makeArequestAdd')->name('request.add');
         Route::post('make-a-request-update', 'Users\DistributorDashboardController@makeArequestUpdate')->name('request.update');
         Route::get('make-a-request/{id}', 'Users\DistributorDashboardController@requestDelete')->name('request.delete');
-
-
     });
 
 });

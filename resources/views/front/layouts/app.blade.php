@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Document</title>
+    <title>{{ env('APP_NAME') }}</title>
 </head>
 
 <body>

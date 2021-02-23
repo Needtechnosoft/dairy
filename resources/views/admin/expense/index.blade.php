@@ -8,25 +8,40 @@
 @endsection
 @section('toobar')
 <button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Add Expense</button>
+<div class="col lg-2">
+    <div class="pt-2 pb-2">
+        <input type="text" id="sid" placeholder="Search">
+    </div>
+</div>
 @endsection
 @section('content')
+
 <div class="row mb-3">
-    <div class="col lg-2">
-        <div class="pt-2 pb-2">
-            <input type="text" id="sid" placeholder="Search">
-        </div>
+    <div class="col lg-3">
+        <select name="cat_id" id="cat" class="form-control show-tick ms select2">
+            <option></option>
+            @foreach (\App\Models\Expcategory::all() as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+        <small>Select category to display category wise expense</small>
     </div>
-    <div class="col-lg-3">
+
+    <div class="col-lg-2">
+
+    </div>
+
+    <div class="col-lg-2">
         <select name="year" id="yr" class="form-control show-tick ms select2">
 
         </select>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <select name="month" id="mth" class="form-control show-tick ms select2">
         </select>
     </div>
-    <div class="col-lg-3">
-        <span class="btn btn-primary">Load Expense</span>
+    <div class="col-lg-2">
+        <span class="btn btn-primary" onclick="loadExp();">Load Expense</span>
     </div>
 </div>
 <div class="table-responsive">
@@ -65,11 +80,23 @@
                             <div class="col-lg-6">
                                 <label for="name">Date</label>
                                 <div class="form-group">
-                                    <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="title" placeholder="Date" required>
+                                    <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="cat_id" placeholder="Date" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
+                                <label for="name">Expense Category</label>
+                                <div class="form-group">
+                                    <select name="cat_id" id="cat_id" class="form-control show-tick ms select2 next" data-next="title" data-placeholder="Select">
+                                        <option ></option>
+                                        @foreach (\App\Models\Expcategory::get() as $item)
+                                            <option value="{{ $item->id }}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
                                 <label for="name">Title</label>
                                 <div class="form-group">
                                     <input type="text" id="title" name="title" class="form-control next" data-next="amount" placeholder="Enter expense title" required>
@@ -134,11 +161,23 @@
                             <div class="col-lg-6">
                                 <label for="name">Date</label>
                                 <div class="form-group">
-                                    <input type="text" name="date" id="enepali-datepicker" class="form-control next" data-next="title" placeholder="Date" required>
+                                    <input type="text" name="date" id="enepali-datepicker" class="form-control next" data-next="ecat_id" placeholder="Date" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
+                                <label for="name">Expense Category</label>
+                                <div class="form-group">
+                                    <select name="cat_id" id="ecat_id" class="form-control show-tick ms select2 next" data-next="etitle" data-placeholder="Select">
+                                        <option ></option>
+                                        @foreach (\App\Models\Expcategory::get() as $item)
+                                            <option value="{{ $item->id }}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
                                 <label for="name">Title</label>
                                 <div class="form-group">
                                     <input type="text" id="etitle" name="title" class="form-control next" data-next="amount" placeholder="Enter expense title" required>
@@ -214,6 +253,7 @@
         $('#epaid_by').val(exp.payment_by);
         $('#epayd').val(exp.payment_detail);
         $('#eremark').val(exp.remark);
+        $('#ecat_id').val(exp.expcategory_id).change();
         $('#editModal').modal('show');
     }
 
@@ -248,7 +288,7 @@
         var bodyFormData = new FormData(document.getElementById('editform'));
         axios({
                 method: 'post',
-                url: '/admin/employee/update',
+                url: '/admin/expense/edit/',
                 data: bodyFormData,
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -258,7 +298,7 @@
                 console.log(response);
                 showNotification('bg-success', 'Updated successfully!');
                 $('#editModal').modal('toggle');
-                $('#employee-' + rowid).replaceWith(response.data);
+                $('#expense-' + rowid).replaceWith(response.data);
             })
             .catch(function(response) {
                 //handle error
@@ -267,11 +307,12 @@
     }
 
 
-     function loadData(){
 
+     function loadData(){
          axios({
                  method: 'get',
                  url: '{{ route("admin.exp.list")}}',
+                 data : {'year':$}
              })
              .then(function(response) {
                  // console.log(response.data);
@@ -294,7 +335,7 @@
                 })
                 .then(function(response) {
                     // console.log(response.data);
-                    $('#expenseData-' + dataid).remove();
+                    $('#expense-' + dataid).remove();
                     showNotification('bg-danger', 'Deleted Successfully !');
                 })
                 .catch(function(response) {
@@ -309,17 +350,56 @@
     window.onload = function() {
         var month = NepaliFunctions.GetCurrentBsDate().month;
         var year = NepaliFunctions.GetCurrentBsDate().year;
-
-
         $('#yr').val(year).change();
         $('#mth').val(month).change();
         var mainInput = document.getElementById("nepali-datepicker");
         mainInput.nepaliDatePicker();
+
+        var mainInput = document.getElementById("enepali-datepicker");
+        mainInput.nepaliDatePicker();
+        loadData();
     };
     var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
     var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
     $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
 
+    function loadExp(){
+            var year = $('#yr').val();
+            var month = $('#mth').val();
+        axios({
+                 method: 'post',
+                 url: '{{ route("admin.exp.load")}}',
+                 data:{ 'year':year,'month':month}
+             })
+             .then(function(response) {
+                 // console.log(response.data);
+                 $('#expenseData').html(response.data);
+                 initTableSearch('sid', 'expenseData', ['name']);
+             })
+             .catch(function(response) {
+                 //handle error
+                 console.log(response);
+             });
+    }
+
+
+    $('#cat').change(function(){
+           var cat_id = $('#cat').val();
+        axios({
+                 method: 'post',
+                 url: '{{ route("admin.category.expenses")}}',
+                 data:{ 'id':cat_id}
+             })
+             .then(function(response) {
+                 // console.log(response.data);
+                 $('#expenseData').html(response.data);
+                 initTableSearch('sid', 'expenseData', ['name']);
+             })
+             .catch(function(response) {
+                 //handle error
+                 console.log(response);
+             });
+    });
 
 </script>
 @endsection
