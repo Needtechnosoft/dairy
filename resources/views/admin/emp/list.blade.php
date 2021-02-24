@@ -1,7 +1,7 @@
 
-@foreach($emp as $user)
+@foreach($emp as $k => $user)
 <tr id="employee-{{$user->id}}" data-name="{{ $user->name }}" class="searchable">
-    <td>{{ $user->id }}</td>
+    <td>{{ $k+1 }}</td>
     <td>{{ $user->name }}</td>
     <td>{{ $user->phone }}</td>
     <td>{{ $user->address }}</td>

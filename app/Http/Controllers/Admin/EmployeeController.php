@@ -57,6 +57,9 @@ class EmployeeController extends Controller
         $user->delete();
     }
 
+
+    // employee advance controller
+
     public function advance(){
         return view('admin.emp.advance.index');
     }
@@ -73,12 +76,13 @@ class EmployeeController extends Controller
 
         $advance=new EmployeeAdvance();
         $advance->employee_id=$request->employee_id;
+        $advance->title = $request->title;
         $advance->amount=$request->amount;
         $advance->date=$date;
         $advance->save();
 
         $ledger=new LedgerManage($advance->employee->user_id);
-        $ledger->addLedger('Advance Given',1,$request->amount,$date,'112',$advance->id);
+        $ledger->addLedger('Advance Given-('.$request->title.')',1,$request->amount,$date,'112',$advance->id);
         return view('admin.emp.advance.single',compact('advance'));
     }
 
@@ -87,11 +91,12 @@ class EmployeeController extends Controller
 
         $advance=EmployeeAdvance::find($request->id);
         $tempamount=$advance->amount;
+        $advance->title = $request->title;
         $advance->amount=$request->amount;
         $advance->save();
         $ledger=new LedgerManage($advance->employee->user_id);
         $ledger->addLedger('Advance Canceled',2,$tempamount,$date,'113',$advance->id);
-        $ledger->addLedger('Advance Updated',1,$request->amount,$date,'112',$advance->id);
+        $ledger->addLedger('Advance Updated-('.$request->title.')',1,$request->amount,$date,'112',$advance->id);
         return response()->json(['status'=>'success']);
     }
 

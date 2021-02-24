@@ -6,6 +6,7 @@
             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                 <tr>
                     <th>Date</th>
+                    <th>Title</th>
                     <th>Advance Amount (Rs.)</th>
                 </tr>
                 @php
@@ -15,6 +16,7 @@
                    @foreach ($employee as $emp)
                     <tr>
                         <td>{{ _nepalidate($emp->date) }}</td>
+                        <td>{{ $emp->title }}</td>
                         <td>{{ $emp->amount }}</td>
                     </tr>
 
@@ -23,12 +25,12 @@
                     @endphp
                     @endforeach
                     <tr>
-                        <td class="text-right"><strong>Total</strong> </td>
+                        <td colspan="2" class="text-right"><strong>Total</strong> </td>
                         <td>{{$totAdv}}</td>
                     </tr>
                 @else
                     <tr>
-                        <td colspan="2" class="text-center"> No any advance paid on this month!</td>
+                        <td colspan="3" class="text-center"> No any advance paid on this month!</td>
                     </tr>
                 @endif
             </table>

@@ -12,7 +12,7 @@
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
         <thead>
             <tr>
-                <th>#Id</th>
+                <th>S.n</th>
                 <th>Employee Name</th>
                 <th>Employee phone</th>
                 <th>Employee Address</th>

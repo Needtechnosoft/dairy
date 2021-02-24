@@ -37,6 +37,11 @@
                 </div>
             </div>
 
+            <div class="col-lg-5">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control next" data-next="amount" placeholder="Enter title" required>
+            </div>
+
             <div class="col-lg-3">
                 <label for="amount">Advance Amount</label>
                 <input type="number" id="amount" min="0" name="amount" class="form-control next" data-next="save" placeholder="Enter advance amount" value="0" required>
@@ -49,6 +54,7 @@
     </form>
 </div>
 </div>
+<hr>
 <div class="pt-2 pb-2">
     <input type="text" id="sid" placeholder="Search">
 </div>
@@ -56,6 +62,7 @@
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
         <thead>
             <tr>
+                <th>Title</th>
                 <th>Employee</th>
                 <th>Amount (Rs.)</th>
                 <th></th>
@@ -146,7 +153,8 @@
                 data : {
                     'date' : date,
                     'id':id,
-                    'amount':$('#amount-'+id).val()
+                    'amount':$('#amount-'+id).val(),
+                    'title':$('#title-'+id).val()
                 }
             })
             .then(function(response) {
@@ -187,9 +195,9 @@
 
     function saveData(e) {
         e.preventDefault();
-        if($('#amount').val()==0){
-            alert('Please enter advance amount!');
-            $('#amount').focus();
+        if($('#title').val()=="" || $('#amount').val()==0){
+            alert('Please enter empty field!');
+            $('#title').focus();
             return false;
         }else{
         var bodyFormData = new FormData(document.getElementById('form_validation'));

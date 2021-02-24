@@ -1,4 +1,5 @@
 <tr id="advancerow-{{$advance->id}}">
+    <td><input type="text" name="title" class="form-control" id="title-{{$advance->id}}" value="{{$advance->title}}"></td>
     <td>
         {{$advance->employee->user->name}}
 
