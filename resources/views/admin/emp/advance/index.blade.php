@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Farmer Advance')
+@section('title','Employee Advance')
 @section('css')
 <link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
