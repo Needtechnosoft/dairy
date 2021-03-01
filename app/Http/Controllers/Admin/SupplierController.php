@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\LedgerManage;
+use App\Models\Ledger;
 use App\Models\Supplierbill;
+use App\Models\Supplierbillitem;
+use App\Models\Supplierpayment;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -55,6 +59,7 @@ class SupplierController extends Controller
     }
 
     public function addBill(Request $request){
+        // dd($request->all());
         $date = str_replace('-','',$request->date);
         $bill = new Supplierbill();
         $bill->billno = $request->billno;
@@ -63,13 +68,45 @@ class SupplierController extends Controller
         $bill->paid = $request->paid;
         $bill->due = $request->total - $request->paid;
         $bill->user_id = $request->user_id;
+        $bill->transport_charge = $request->t_charge;
         $bill->save();
+        $traker = explode(',',$request->counter);
+        foreach ($traker as $key => $value) {
+            $billItem = new Supplierbillitem();
+            $billItem->title = $request->input('ptr_'.$value);
+            $billItem->rate = $request->input('rate_'.$value);
+            $billItem->qty = $request->input('qty_'.$value);
+            $billItem->item_id = $request->input('item_id_'.$value);
+            $billItem->supplierbill_id = $bill->id;
+            $billItem->save();
+        }
+        $ledger = new LedgerManage($request->user_id);
+        $ledger->addLedger('Item puchase from supplier',1,$request->total,$date,'125',$bill->id);
+        if($request->paid >0){
+            $ledger->addLedger('Paid to supplier',2,$request->paid,$date,'126',$bill->id);
+        }
         return view('admin.supplier.bill.single',compact('bill'));
     }
+
+
 
     public function listBill(){
         $bills = Supplierbill::latest()->get();
         return view('admin.supplier.bill.list',compact('bills'));
+    }
+
+
+
+    public function supplierDetail($id){
+        $user = User::where('id',$id)->where('role',3)->first();
+        return view('admin.supplier.detail',compact('user'));
+    }
+
+    public function billItems(Request $request){
+        // dd($request->all());
+        $billItem = Supplierbillitem::where('supplierbill_id',$request->bill_id)->get();
+        // dd($billItem);
+        return view('admin.supplier.bill.item',compact('billItem'));
     }
 
     public function updateBill(Request $request){
@@ -88,6 +125,48 @@ class SupplierController extends Controller
     public function deleteBill($id){
         $bill=Supplierbill::where('id',$id)->first();
         $bill->delete();
+
+
+        $data=[];
+        $data[0]=Ledger::where('foreign_key',$id)->where('identifire',125)->first();
+        $ddd=Ledger::where('foreign_key',$id)->where('identifire',126)->first();
+        if($ddd!=null){
+            $data[1]=$ddd;
+        }
+        LedgerManage::delLedger($data);
+        return response('ok');
+    }
+
+    // supplier payment
+    public function supplierPayment(){
+        return view('admin.supplier.pay.index');
+    }
+
+    public function supplierDue(Request $request){
+        $supplier=User::find($request->id);
+        $id=$request->id;
+        return view('admin.supplier.pay.data',compact('supplier','id'));
+    }
+
+    public function supplierDuePay(Request $request){
+        // $bills1=Distributorsell::where('distributer_id',$request->id)->where('deu','>',0)->get();
+        $supplier=User::find($request->id);
+        $date = str_replace('-','',$request->date);
+        $amount =$request->amount;
+
+        $payment=new Supplierpayment();
+        // $paymentDatam
+        $payment->amount=$request->amount;
+        $payment->date=$date;
+        $payment->payment_detail=$request->method??"";
+        $payment->user_id=$supplier->id;
+        $payment->save();
+
+        $ledger=new LedgerManage($supplier->id);
+        $ledger->addLedger("Payment to supplier",2,$request->amount,$date,'127',$payment->id);
+        $id=$request->id;
+        return view('admin.supplier.pay.data',compact('supplier','id'));
+
     }
 
 }

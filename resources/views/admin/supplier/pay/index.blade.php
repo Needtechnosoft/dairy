@@ -1,10 +1,10 @@
 @extends('admin.layouts.app')
-@section('title','Distributer Payment')
+@section('title','Supplier Payment')
 @section('css')
 <link rel="stylesheet" href="{{ asset('backend/plugins/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('calender/nepali.datepicker.v3.2.min.css') }}" />
 @endsection
-@section('head-title','Distributer Payment')
+@section('head-title','Supplier Payment')
 @section('toobar')
 
 @endsection
@@ -16,11 +16,11 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="form-group">
-                        <label for="unumber">Distributor</label>
+                        <label for="unumber">Suppliers</label>
                         <select name="user_id" id="u_id" class="form-control show-tick ms " data-placeholder="Select" required>
                             <option value="-1"></option>
-                            @foreach(\App\Models\Distributer::get() as $d)
-                                <option value="{{ $d->id }}" id="opt-{{ $d->id }}" data-rate="{{ $d->rate }}" data-qty="{{ $d->amount }}">{{ $d->user->name }}</option>
+                            @foreach(\App\Models\User::where('role',3)->get() as $d)
+                                <option value="{{ $d->id }}" id="opt-{{ $d->id }}" >{{ $d->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -49,7 +49,6 @@
 
 <!-- edit modal -->
 
-@include('admin.distributer.sell.editmodal')
 @endsection
 @section('js')
 <script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
@@ -62,23 +61,7 @@
 
 
 
-    // delete
 
-    function removeData(id) {
-        if (confirm('Are you sure?')) {
-            axios({
-                    method: 'get',
-                    url: '/admin/distributer-sell-del/' + id,
-                })
-                .then(function(response) {
-                    showNotification('bg-danger', 'Sellitem deleted successfully!');
-                    $('#sell-' + id).remove();
-                })
-                .catch(function(response) {
-                    console.log(response)
-                })
-        }
-    }
 
 
     function calTotal() {
@@ -105,7 +88,11 @@
    });
 
    function pay(){
-        axios.post('{{ route("admin.dis.pay")}}',{
+       if($('#amount').val() == ""){
+        alert('Please enter paid amount');
+        return false;
+       }else{
+        axios.post('{{ route("supplier.due.pay")}}',{
             'id': $('#u_id').val(),
             'amount':$('#amount').val(),
             'method':$('#method').val(),
@@ -114,18 +101,20 @@
         .then(function(response) {
             // console.log(response.data);
             $('#data').html(response.data);
+            showNotification('bg-success', 'Payment successfully!');
             setDate();
         })
         .catch(function(response) {
             //handle error
             console.log(response);
         });
+       }
    }
 
     function loaddata(){
         // $('#data').html();
         // list
-        axios.post('{{ route("admin.dis.due")}}',{
+        axios.post('{{ route("supplier.due")}}',{
             'id': $('#u_id').val()
 
             })

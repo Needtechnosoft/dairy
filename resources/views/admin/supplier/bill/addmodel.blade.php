@@ -44,7 +44,7 @@
                                             <select name="" id="ptr" class="form-control show-tick ms select2" data-placeholder="Select">
                                                 <option></option>
                                                 @foreach(\App\Models\Item::all() as $i)
-                                                    <option value="{{ $i->id}}"> {{ $i->title }}</option>
+                                                    <option value="{{ $i->toJson() }}"> {{ $i->title }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -125,7 +125,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="total">Paid Amount</label>
-                                            <input type="number" name="paid" class="form-control" step="0.001" min="0" placeholder="Enter paid amount" required>
+                                            <input type="number" name="paid" class="form-control" value="0" step="0.001" min="0" placeholder="Enter paid amount" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

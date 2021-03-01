@@ -50,12 +50,7 @@ class DistributersellController extends Controller
         // $date = str_replace('-','',$request->date);
         $sell = Distributorsell::find($request->id);
         $sell->delete();
-        // $tempamount=$sell->total;
-        // $tempid=$sell->id;
-        // $title=$sell->product->name.' ('.$sell->rate .' X '.$sell->qty.''.$sell->product->unit. ')';
-        // $distributor = Distributer::where('id',$sell->distributer_id)->first();
-        // $ledger = new LedgerManage($distributor->user_id);
-        // $ledger->addLedger('Sell Canceled: '.$title,2,$tempamount,$date,'115',$tempid);
+
         $data=[];
         $data[0]=Ledger::where('foreign_key',$request->id)->where('identifire',105)->first();
         $ddd=Ledger::where('foreign_key',$request->id)->where('identifire',114)->first();

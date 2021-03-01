@@ -118,6 +118,11 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('supplier-list', 'Admin\SupplierController@supplierList')->name('admin.sup.list');
     Route::get('supplier-delete/{id}', 'Admin\SupplierController@deleteSupplier')->middleware('authority');
     Route::post('supplier/update','Admin\SupplierController@updateSupplier');
+    Route::get('supplier/{id}', 'Admin\SupplierController@supplierDetail')->name('supplier.detail');
+    Route::get('supplier-payment', 'Admin\SupplierController@supplierPayment')->name('supplier.pay');
+    Route::post('supplier-due', 'Admin\SupplierController@supplierDue')->name('supplier.due');
+    Route::post('supplier-due-pay', 'Admin\SupplierController@supplierDuePay')->name('supplier.due.pay');
+
 
     // XXX supplier bills
 
@@ -126,6 +131,9 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('supplier-bill-list', 'Admin\SupplierController@listBill')->name('admin.sup.bill.list');
     Route::post('supplier-bill-update', 'Admin\SupplierController@updateBill')->name('admin.sup.bill.update');
     Route::get('supplier-bill-delete/{id}', 'Admin\SupplierController@deleteBill')->middleware('authority');
+    Route::post('supplier-bill-item', 'Admin\SupplierController@billItems')->name('admin.sup.bill.item.list');
+
+
 
 
     // XXX distributer

@@ -16,9 +16,10 @@
     <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
         <thead>
             <tr>
-                <th>#Id</th>
+                <th>Date</th>
                 <th>Supplier Name</th>
                 <th>Bill No.</th>
+                <th>Transport Charge (Rs.)</th>
                 <th>Total (Rs.)</th>
                 <th>Paid (Rs.)</th>
                 <th>Due (Rs.)</th>
@@ -38,59 +39,32 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="title" id="largeModalLabel">Edit Supplier</h4>
+                <h4 class="title" id="largeModalLabel">Bill Items</h4>
             </div>
             <hr>
             <div class="card">
                 <div class="body">
-                    <form id="editform" onsubmit="return editData(event);">
-                        @csrf
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="name">Choose Supplier</label>
-                                <select name="user_id" id="esupplier" class="form-control show-tick ms select2" data-placeholder="Select" required>
-                                    <option></option>
-                                    @foreach(\App\Models\User::where('role',3)->get() as $s)
-                                    <option value="{{ $s->id }}">{{ $s->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <input type="hidden" name="id" id="eid">
-                            <div class="col-lg-6">
-                                <label for="name">Bill No.</label>
-                                <div class="form-group">
-                                    <input type="text" id="ebillno" name="billno" class="form-control" placeholder="Enter supplier bill no." required>
-                                </div>
-                            </div>
+                    <div class="table-responsive">
+                        <table id="newstable1" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Rate</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="billitems">
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="date">Date</label>
-                                    <input type="text" name="date" id="enepali-datepicker" class="form-control" placeholder="Date" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="total">Total Amount</label>
-                                    <input type="number" name="total" id="etotal" class="form-control" step="0.001" min="0" placeholder="Enter total bill amount" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="total">Paid Amount</label>
-                                    <input type="number" name="paid" id="epaid" class="form-control" step="0.001" min="0" placeholder="Enter paid amount" required>
-                                </div>
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-raised btn-primary waves-effect" type="submit">Submit Data</button>
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
             </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -109,10 +83,17 @@
                     <form id="createItem" onsubmit="return createNewItem(event);">
                         @csrf
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <label for="name">Item Name</label>
                                 <div class="form-group">
                                     <input type="text" id="iname" name="name" class="form-control" placeholder="Enter item name" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="name">Item Number</label>
+                                <div class="form-group">
+                                    <input type="number" id="inumber" name="number" class="form-control" min="0" placeholder="Enter item number" required>
                                 </div>
                             </div>
 
@@ -130,17 +111,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="stock">Stock</label>
                                 <div class="form-group">
                                     <input type="number" id="stock" name="stock" min="0" class="form-control" placeholder="Enter stock" required>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="unit">Unit Type</label>
                                 <div class="form-group">
                                     <input type="text" id="unit" name="unit" class="form-control" placeholder="Enter unit type" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="unit">Reward (%)</label>
+                                <div class="form-group">
+                                    <input type="number" id="reward" name="reward" class="form-control" value="0" placeholder="Enter reward" required>
                                 </div>
                             </div>
                         </div>
@@ -160,14 +148,23 @@
 <script src="{{ asset('backend/js/pages/forms/advanced-form-elements.js') }}"></script>
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
 <script>
-    function initEdit(ele) {
-        var sbill = JSON.parse(ele.dataset.bill);
-        $("#esupplier").val(sbill.user.id).change();
-        $('#ebillno').val(sbill.billno);
-        $('#enepali-datepicker').val(sbill.date);
-        $('#etotal').val(sbill.total);
-        $('#epaid').val(sbill.paid);
-        $('#eid').val(sbill.id);
+
+    function showItems(ele) {
+        axios({
+            method: 'post',
+            url: '{{ route("admin.sup.bill.item.list")}}',
+            data: {
+                bill_id : ele
+            }
+        })
+        .then(function(response) {
+            // console.log(response.data);
+            $('#billitems').html(response.data);
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response);
+        });
         $('#editModal').modal('show');
     }
 
@@ -193,6 +190,7 @@
                     $('#largeModal').modal('toggle');
                     $('#form_validation').trigger("reset")
                     $('#supplierBillData').prepend(response.data);
+                    $('#item_table').empty();
                 })
                 .catch(function(response) {
                     //handle error
@@ -277,15 +275,17 @@
             $("#ptr").focus();
             return false;
         }
+        var item = JSON.parse($('#ptr').val()) ;
+        // console.log(item);
         html = "<tr id='row-" + i + "'>";
-        html += "<td>" + $('#ptr').val() + "<input type='hidden' name='ptr_" + i + "' value='" + $('#ptr').val() + "' /></td>";
+        html += "<td>" + item.title + "<input type='hidden' name='ptr_" + i + "' value='" + item.title + "' /> <input type='hidden' name='item_id_" + i + "' value='" + item.id + "' /></td>";
         html += "<td>" + $('#rate').val() + "<input type='hidden' name='rate_" + i + "' value='" + $('#rate').val() + "'/></td>";
         html += "<td>" + $('#qty').val() + "<input type='hidden' name='qty_" + i + "' value='" + $('#qty').val() + "'/></td>";
         html += "<td>" + $('#total').val() + "<input type='hidden' name='total_" + i + "' id='total_" + i + "' value='" + $('#total').val() + "'/></td>";
         html += "<td> <span class='btn btn-danger btn-sm' onclick='RemoveItem(" + i + ");'>Remove</span></td>";
         html += "</tr>";
         $("#item_table").append(html);
-        $('#ptr').val('');
+        $('#ptr').val('').change();
         $('#rate').val('0');
         $('#qty').val('1');
         $('#total').val('0');
@@ -308,6 +308,15 @@
         $('#itotal').val(itotal);
     }
 
+    function RemoveItem(i){
+            $('#row-'+i).remove();
+             var index=$.inArray(i,itemKeys);
+            if(index>-1){
+                itemKeys.splice(index,1);
+            }
+            suffle();
+        }
+
 // create new Items
 
 function createNewItem(e) {
@@ -326,7 +335,7 @@ function createNewItem(e) {
                 showNotification('bg-success', 'Item added successfully!');
                 $('#createItems').modal('toggle');
                 $('#createNewItem').trigger("reset")
-                $('#ptr').prepend(response.data);
+                window.location.reload();
             })
             .catch(function(response) {
                 //handle error
