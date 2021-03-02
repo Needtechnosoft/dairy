@@ -234,6 +234,7 @@
 
     function removeData(id) {
         if (confirm('Are you sure?')) {
+            if(prompt("Type 'yes' To delete Data")=='yes'){
             data={
                 'id':id,
                 'date':$('#curdate').val()
@@ -252,6 +253,7 @@
 
                     console.log(response)
                 })
+            }
         }
     }
 
