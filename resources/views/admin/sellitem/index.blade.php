@@ -265,8 +265,8 @@
         $('#edue').val($('#erate').val() * $('#eqty').val());
     }
 
-    function paidTotal() {
 
+    function paidTotal() {
         var total = parseFloat($('#total').val());
         var paid = parseFloat($('#paid').val());
         var due=total - paid;

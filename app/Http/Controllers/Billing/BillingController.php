@@ -53,6 +53,7 @@ class BillingController extends Controller
                 }
             }
             // dd($request->billitems);
+            $billitem=[];
             foreach ($request->billitems as $t) {
                 // dd($bill->id);
                $item = new BillItem();
@@ -65,9 +66,11 @@ class BillingController extends Controller
                $item->bill_id = $bill->id;
                $item->amount = 0;
                $item->save();
+               array_push($billitem,$item);
             }
+            $bill->items=$billitem;
+            return response()->json(['bill'=>$bill]);
 
-            echo 'ok';
 
     }
 

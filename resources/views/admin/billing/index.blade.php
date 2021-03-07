@@ -455,11 +455,14 @@ input[type=number] {
                 axios.post('{{route("billing.save")}}',fd)
                 .then((response)=>{
                     console.log(response.data);
-                    if(response.data == "ok"){
                         alert('Bill Save successfully')
                         clearBill();
                         resetCustomer();
-                    }
+                    console.log(response.data);
+
+                    axios.post('http://localhost:8000/api/default/set/',{'id':JSON.stringify(response.data)}).then((res)=>{
+                        console.log(res.data);
+                    })
                 })
                 .catch((err)=>{
 
