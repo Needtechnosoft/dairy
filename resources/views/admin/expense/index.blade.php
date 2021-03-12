@@ -135,9 +135,12 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-raised btn-primary waves-effect" type="submit">Submit Data</button>
-                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button><br>
             </div>
-            </form>
+        </form>
+        <div class="text-right m-3" >
+            <input type="checkbox" id="for_multiple" value="0"> <strong>For Multiple</strong>
+        </div>
         </div>
     </div>
 </div>
@@ -271,7 +274,9 @@
             .then(function(response) {
                 console.log(response);
                 showNotification('bg-success', 'Expense added successfully!');
-                $('#largeModal').modal('toggle');
+                if($('#for_multiple').val() == 0){
+                    $('#largeModal').modal('toggle');
+                }
                 $('#form_validation').trigger("reset");
                 $('#expenseData').prepend(response.data);
             })
@@ -400,6 +405,13 @@
                  console.log(response);
              });
     });
+
+    $('#for_multiple').change(function(){
+    if(this.checked)
+        $('#for_multiple').val(1);
+   else
+        $('#for_multiple').val(0);
+   });
 
 </script>
 @endsection

@@ -6,9 +6,9 @@
         @csrf
         <div class="row">
             <div class="col-lg-9">
-                <label for="name">Product Name</label>
+                <label for="name">Expense Category Name</label>
                 <div class="form-group">
-                    <input type="text" id="name" name="name" class="form-control next" data-next="price" placeholder="Product Name" required>
+                    <input type="text" id="name" name="name" class="form-control next" data-next="price" placeholder="Expense Category Name" required>
                 </div>
             </div>
             <div class="col-md-3 mt-4">
