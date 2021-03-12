@@ -203,7 +203,7 @@
         var bodyFormData = new FormData(document.getElementById('editform'));
         axios({
                 method: 'post',
-                url: '/admin/expense/edit/',
+                url: '{{route('admin.exp.edit')}}',
                 data: bodyFormData,
                 headers: {
                     'Content-Type': 'multipart/form-data'
