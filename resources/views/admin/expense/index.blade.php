@@ -7,7 +7,72 @@
 
 @endsection
 @section('toobar')
-<button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Add Expense</button>
+<div class="p-4 mb-2" style="background-color: white; border-radius: 10px">
+    <form id="form_validation" method="POST" onsubmit="return saveData(event);">
+        @csrf
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="name">Date</label>
+                <div class="form-group">
+                    <input type="text" name="date" id="nepali" class="form-control next" data-next="cat_id" placeholder="Date" required>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <label for="name">Expense Category</label>
+                <div class="form-group">
+                    <select name="cat_id" id="cat_id" class="form-control show-tick ms select2 next" data-next="title" data-placeholder="Select" required>
+                        <option ></option>
+                        @foreach (\App\Models\Expcategory::get() as $item)
+                            <option value="{{ $item->id }}">{{$item->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <label for="name">Title</label>
+                <div class="form-group">
+                    <input type="text" id="title" name="title" class="form-control next" data-next="amount" placeholder="Enter expense title" required>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <label for="name">Amount</label>
+                <div class="form-group">
+                    <input type="number" id="amount" name="amount" min="0" class="form-control next" data-next="paid_by" placeholder="Enter expense amount" required>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <label for="name">Paid By</label>
+                <div class="form-group">
+                    <input type="text" id="paid_by" name="payment_by" class="form-control next" data-next="payd" placeholder="Enter name of paiyer" required>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <label for="name">Payment Detail</label>
+                <div class="form-group">
+                    <input type="text" id="payd" name="payment_detail" class="form-control next" data-next="remark" placeholder="Enter payment detail" required>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <label for="remark">Remarks</label>
+                <div class="form-group">
+                    <input type="text" id="remark" name="remark" class="form-control" placeholder="Enter remark" required>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group" style="margin-top:30px;">
+                    <button class="btn btn-primary btn-block">Submit Data</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="col lg-2">
     <div class="pt-2 pb-2">
         <input type="text" id="sid" placeholder="Search">
@@ -63,87 +128,6 @@
     </table>
 </div>
 
-<!-- modal -->
-
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-ff="title">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="title" id="largeModalLabel">Add New Expense</h4>
-            </div>
-            <hr>
-            <div class="card">
-                <div class="body">
-                    <form id="form_validation" method="POST" onsubmit="return saveData(event);">
-                        @csrf
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="name">Date</label>
-                                <div class="form-group">
-                                    <input type="text" name="date" id="nepali-datepicker" class="form-control next" data-next="cat_id" placeholder="Date" required>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <label for="name">Expense Category</label>
-                                <div class="form-group">
-                                    <select name="cat_id" id="cat_id" class="form-control show-tick ms select2 next" data-next="title" data-placeholder="Select">
-                                        <option ></option>
-                                        @foreach (\App\Models\Expcategory::get() as $item)
-                                            <option value="{{ $item->id }}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <label for="name">Title</label>
-                                <div class="form-group">
-                                    <input type="text" id="title" name="title" class="form-control next" data-next="amount" placeholder="Enter expense title" required>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <label for="name">Amount</label>
-                                <div class="form-group">
-                                    <input type="number" id="amount" name="amount" min="0" class="form-control next" data-next="paid_by" placeholder="Enter expense amount" required>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <label for="name">Paid By</label>
-                                <div class="form-group">
-                                    <input type="text" id="paid_by" name="payment_by" class="form-control next" data-next="payd" placeholder="Enter name of paiyer" required>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <label for="name">Payment Detail</label>
-                                <div class="form-group">
-                                    <input type="text" id="payd" name="payment_detail" class="form-control next" data-next="remark" placeholder="Enter payment detail" required>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <label for="remark">Remarks</label>
-                                <div class="form-group">
-                                    <input type="text" id="remark" name="remark" class="form-control" placeholder="Enter remark" required>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-raised btn-primary waves-effect" type="submit">Submit Data</button>
-                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button><br>
-            </div>
-        </form>
-        <div class="text-right m-3" >
-            <input type="checkbox" id="for_multiple" value="0"> <strong>For Multiple</strong>
-        </div>
-        </div>
-    </div>
-</div>
 
 <!-- edit modal -->
 
@@ -227,8 +211,8 @@
 </div>
 @endsection
 @section('js')
-<script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
 <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
+<script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
 
 <script>
     var month = Array.from(NepaliFunctions.GetBsMonths());
@@ -353,20 +337,24 @@
     }
 
     window.onload = function() {
+
+        var mainInput = document.getElementById("nepali");
+        mainInput.nepaliDatePicker();
+
+        var editdate = document.getElementById("enepali-datepicker");
+        editdate.nepaliDatePicker();
+
         var month = NepaliFunctions.GetCurrentBsDate().month;
         var year = NepaliFunctions.GetCurrentBsDate().year;
         $('#yr').val(year).change();
         $('#mth').val(month).change();
-        var mainInput = document.getElementById("nepali-datepicker");
-        mainInput.nepaliDatePicker();
-
-        var mainInput = document.getElementById("enepali-datepicker");
-        mainInput.nepaliDatePicker();
         loadData();
+        var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
+        var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
+        $('#nepali').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+
     };
-    var month = ('0'+ NepaliFunctions.GetCurrentBsDate().month).slice(-2);
-    var day = ('0' + NepaliFunctions.GetCurrentBsDate().day).slice(-2);
-    $('#nepali-datepicker').val(NepaliFunctions.GetCurrentBsYear() + '-' + month + '-' + day);
+
 
     function loadExp(){
             var year = $('#yr').val();
