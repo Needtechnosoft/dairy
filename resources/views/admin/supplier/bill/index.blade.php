@@ -6,7 +6,139 @@
 @endsection
 @section('head-title','Supplier Bill')
 @section('toobar')
-<button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Create Supplier Bill</button>
+
+<div class="p-2">
+    <div class="card">
+        <div class="body">
+            <form id="form_validation" method="POST" onsubmit="return saveData(event);">
+                @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-lg-12 mb-4">
+                                <label for="name">Choose Supplier</label>
+                                <select name="user_id" id="supplier" class="form-control show-tick ms select2" data-placeholder="Select" required>
+                                    <option></option>
+                                    @foreach(\App\Models\User::where('role',3)->get() as $s)
+                                    <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="name">Bill No.</label>
+                                <div class="form-group">
+                                    <input type="text" id="billno" name="billno" class="form-control next" data-next="nepali-datepicker" placeholder="Enter supplier bill no." required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="text" name="date" id="nepali-datepicker" class="form-control" placeholder="Date" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="ptr"> Particular Items </label>
+                                    <select name="" id="ptr" class="form-control show-tick ms select2" data-placeholder="Select">
+                                        <option></option>
+                                        @foreach(\App\Models\Item::all() as $i)
+                                            <option value="{{ $i->toJson() }}"> {{ $i->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="margin-top: 26px;">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary waves-effect m-r-20" data-toggle="modal" data-target="#createItems">New Item</button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="from-group">
+                                    <label for="rate"> Rate </label>
+                                    <input type="number" onkeyup="singleItemTotal();" class="form-control next" data-next="qty" id="rate" value="0" min="0.001" step="0.001">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="from-group">
+                                    <label for="qty"> Quantity </label>
+                                    <input type="number" onkeyup="singleItemTotal();" class="form-control next" data-next="total" id="qty" value="1" min="0.001" step="0.001">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="from-group">
+                                    <label for="rate"> Total </label>
+                                    <input type="number" class="form-control" id="total" value="0" min="0.001" step="0.001">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="margin-top: 26px;">
+                                <div class="from-group">
+                                    <span class="btn btn-primary btn-block" id="additem" onclick="addItems();">Add</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <input type="hidden" name="counter" id="counter" val=""/>
+                            <div class="col-md-12 mt-4 mb-3">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Particular</th>
+                                            <th>Rate</th>
+                                            <th>Qty</th>
+                                            <Th>Total</Th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="item_table">
+
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-end">
+                                    <div style="margin-top: 4px; margin-right: 5px;"><strong> Item Total :</strong></div>
+                                    <input type="text" value="0" id="itotal">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="trp">Transportation Charge</label>
+                                    <input type="number" name="t_charge" class="form-control next" data-next="_totamt" step="0.001" min="0" placeholder="Enter transportation charge" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="total">Total Amount</label>
+                                    <input type="number" name="total" id="_totamt" class="form-control next" data-next="paidamt" step="0.001" min="0" placeholder="Enter total bill amount" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="total">Paid Amount</label>
+                                    <input type="number" name="paid" id="paidamt" class="form-control" value="0" step="0.001" min="0" placeholder="Enter paid amount" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="btn btn-raised btn-primary waves-effect btn-block" type="submit">Submit Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @section('content')
 <div class="pt-2 pb-2">
@@ -31,7 +163,6 @@
         </tbody>
     </table>
 </div>
-@include('admin.supplier.bill.addmodel')
 
 
 <!-- edit modal -->
@@ -349,5 +480,9 @@ function createNewItem(e) {
         var edate = document.getElementById("enepali-datepicker");
         edate.nepaliDatePicker();
     };
+
+    $('#total').bind('keydown',function(){
+        addItems();
+    });
 </script>
 @endsection
