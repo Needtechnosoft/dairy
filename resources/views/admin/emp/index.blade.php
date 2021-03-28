@@ -64,7 +64,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Employee Salary</label>
                                 <div class="form-group">
-                                    <input type="number" id="salary" name="salary" class="form-control" placeholder="Enter employee salary" required>
+                                    <input type="number" id="salary" name="salary" class="form-control next" data-next="acc" placeholder="Enter employee salary" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <label for="name">Bank/Account Number</label>
+                                <div class="form-group">
+                                    <input type="text" id="acc" name="acc" class="form-control" placeholder="Enter Bank Detail" required>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +126,14 @@
                             <div class="col-lg-6">
                                 <label for="name">Employee Salary</label>
                                 <div class="form-group">
-                                    <input type="number" id="esalary" name="salary" class="form-control" placeholder="Enter employee salary" required>
+                                    <input type="number" id="esalary" name="salary" class="form-control next" data-next="eacc" placeholder="Enter employee salary" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <label for="name">Bank/Account Number</label>
+                                <div class="form-group">
+                                    <input type="text" id="eacc" name="acc" class="form-control" placeholder="Enter Bank Detail" required>
                                 </div>
                             </div>
                         </div>
@@ -138,11 +152,13 @@
 <script>
     function initEdit(ele) {
         var employee = JSON.parse(ele.dataset.employee);
+        console.log(employee);
         $('#ename').val(employee.name);
         $('#ephone').val(employee.phone);
         $('#eaddress').val(employee.address);
         $('#esalary').val(ele.dataset.salary);
         $('#eid').val(employee.id);
+        $('#eacc').val(ele.dataset.acc);
         $('#editModal').modal('show');
     }
 

@@ -49,6 +49,9 @@
             <th>
                 Remaning Balance
             </th>
+            <th>
+                Bank Detail
+            </th>
         </tr>
     </thead>
     @php
@@ -61,52 +64,62 @@
     @endphp
     <tbody>
         @foreach ($data as $employee)
-            <tr>
-                <td>
-                    {{++$i}}
-                    @if (!$employee->old)
-                        <input type="hidden" name="employees[]" value="{{$employee->toJson()}}">
-                    @endif
-                </td>
-                <td>
-                    {{$employee->user->name}}
-                </td>
-                <td>
-                    {{$employee->prevbalance}}
-                    @php
-                        $_prevbalance+=$employee->prevbalance;
-                    @endphp
-                </td>
-                <td>
-                    {{$employee->advance}}
-                    @php
-                        $_advance+=$employee->advance;
-                    @endphp
-                </td>
-                <td>
-                    {{$employee->salary}}
-                    @php
-                        $_salary+=$employee->salary;
-                    @endphp
-                </td>
+        @php
+            $user = \App\Models\User::where('id',$employee->user_id)->first();
+        @endphp
+        @if ($user!=null)
+
+        <tr>
+            <td>
+                {{++$i}}
+                @if (!$employee->old)
+                    <input type="hidden" name="employees[]" value="{{$employee->toJson()}}">
+                @endif
+            </td>
+            <td>
+                {{$user->name}}
+            </td>
+            <td>
+                {{$employee->prevbalance}}
                 @php
-
-                    $t=$employee->salary-$employee->prevbalance-$employee->advance;
+                    $_prevbalance+=$employee->prevbalance;
                 @endphp
-                <td>
-                    {{$t>0?$t:0}}
-                    @php
-                        $_totalsalary+=$t>0?$t:0;
-                    @endphp
-                </td>
-                <td>
-                    {{$t<0?(-1*$t):0}}
-                    @php
-                        $_totalbalance+$t<0?(-1*$t):0;
-                    @endphp
-                </td>
+            </td>
+            <td>
+                {{$employee->advance}}
+                @php
+                    $_advance+=$employee->advance;
+                @endphp
+            </td>
+            <td>
+                {{$employee->salary}}
+                @php
+                    $_salary+=$employee->salary;
+                @endphp
+            </td>
+            @php
 
-            </tr>
+                $t=$employee->salary-$employee->prevbalance-$employee->advance;
+            @endphp
+            <td>
+                {{$t>0?$t:0}}
+                @php
+                    $_totalsalary+=$t>0?$t:0;
+                @endphp
+            </td>
+            <td>
+                {{$t<0?(-1*$t):0}}
+                @php
+                    $_totalbalance+$t<0?(-1*$t):0;
+                @endphp
+            </td>
+
+            <td>
+                {{$employee->acc}}
+            </td>
+
+        </tr>
+        @endif
         @endforeach
         <tr class="font-weight-bold">
             <td colspan="2">
@@ -128,11 +141,12 @@
             <td>
                 {{$_totalbalance}}
             </td>
+            <td>------</td>
         </tr>
     </tbody>
 </table>
-<div class="p-4 d-print-none">
+{{-- <div class="p-4 d-print-none">
     <input type="submit" value="Update Records" class="btn btn-success btn-sm" >
-</div>
+</div> --}}
 
 </form>

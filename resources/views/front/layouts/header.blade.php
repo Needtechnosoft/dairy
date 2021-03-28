@@ -6,7 +6,9 @@
     <div id="page-menu-wrap">
         <div class="container">
             <div class="page-menu-row">
-                <div class="page-menu-title">Nawa Durga <span>DAIRY</span></div>
+                    <img src="{{ asset('assets/logo.svg') }}" alt="" style="height: 70px;">
+                <div class="page-menu-title"></div>
+                {{-- <div class="page-menu-title">Nawa Durga <span>DAIRY</span></div> --}}
                 <nav class="page-menu-nav one-page-menu">
                     <ul class="page-menu-container">
                         <li class="page-menu-item"><a href="#" data-href="#slider">

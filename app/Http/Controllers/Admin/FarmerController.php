@@ -315,6 +315,7 @@ class FarmerController extends Controller
         }
     }
 
+
     public function addDue(Request $request){
         $date = str_replace('-','',$request->date);
         $user = User::join('farmers','users.id','=','farmers.user_id')->where('users.no',$request->id)->where('farmers.center_id',$request->center_id)->select('users.*','farmers.center_id')->first();
@@ -324,6 +325,8 @@ class FarmerController extends Controller
         $l->no=$user->no;
         return view('admin.farmer.due.list.single',['ledger'=>$l]);
     }
+
+
 
 
 

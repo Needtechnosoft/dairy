@@ -60,6 +60,7 @@
                     <li><a href="{{ route('admin.sup') }}" class="waves-effect waves-block">Supplier List</a></li>
                     <li><a href="{{ route('admin.sup.bill') }}" class="waves-effect waves-block">Supplier Bill</a></li>
                     <li><a href="{{ route('supplier.pay') }}" class="waves-effect waves-block">Supplier Payment</a></li>
+                    <li><a href="{{ route('supplier.previous.balance') }}" class="waves-effect waves-block">Previous Blance</a></li>
                 </ul>
             </li>
 

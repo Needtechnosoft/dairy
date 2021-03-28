@@ -11,6 +11,17 @@
 
 @endsection
 @section('content')
+<div id="number_search_checkbox" class="mb-5">
+    <input type="checkbox" onclick="
+    if(this.checked){
+       $('.numsearch').removeClass( 'd-none' ).addClass( 'd-block' );
+    }else{
+        $('.numsearch').removeClass( 'd-block' ).addClass( 'd-none' );
+        $('#s_n').val('');
+        $('#e_n').val('');
+    }
+    "> Search By Custome Farmer Number
+</div>
 <div class="row">
     <div class="col-md-3">
         <label for="date">Year</label>
@@ -40,6 +51,21 @@
             </select>
         </div>
     </div>
+
+        <div class="col-md-3 numsearch d-none">
+            <div class="form-group">
+                <label> Starting Farmer Number </label>
+                <input type="number" id="s_n" class="form-control" name="s_number">
+            </div>
+        </div>
+
+        <div class="col-md-3 numsearch d-none">
+            <div class="form-group">
+                <label> Ending Farmer Number </label>
+                <input type="number" id="e_n" class="form-control" name="e_number">
+            </div>
+        </div>
+
 
     <div class="col-md-6">
         <span class="btn btn-primary" onclick="loadData()"> Load Report</span>
@@ -84,6 +110,8 @@
             'month':$('#month').val(),
             'session':$('#session').val(),
             'center_id':$('#center_id').val(),
+            's_number' :$('#s_n').val(),
+            'e_number' :$('#e_n').val()
         };
         axios.post("{{route('report.farmer')}}",d)
         .then(function(response){
@@ -114,6 +142,8 @@
         }
 
     };
+
+
 
     function printDiv(id)
     {

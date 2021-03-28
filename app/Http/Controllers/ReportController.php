@@ -35,9 +35,13 @@ class ReportController extends Controller
     }
 
     public function farmer(Request $request){
-
         if($request->getMethod()=="POST"){
-            $farmers=Farmer::join('users','users.id','=','farmers.user_id')->where('farmers.center_id',$request->center_id)->select('users.id','users.name','users.no','farmers.center_id')->orderBy('users.no','asc')->get();
+            // dd($request->all());
+            if($request->s_number != null && $request->e_number != null){
+                $farmers=Farmer::join('users','users.id','=','farmers.user_id')->where('users.no','>=',$request->s_number)->where('users.no','<=',$request->e_number)->where('farmers.center_id',$request->center_id)->select('users.id','users.name','users.no','farmers.center_id')->orderBy('users.no','asc')->get();
+            }else{
+                $farmers=Farmer::join('users','users.id','=','farmers.user_id')->where('farmers.center_id',$request->center_id)->select('users.id','users.name','users.no','farmers.center_id')->orderBy('users.no','asc')->get();
+            }
             $center=Center::find($request->center_id);
             $year=$request->year;
             $month=$request->month;
@@ -510,6 +514,8 @@ class ReportController extends Controller
     }
 
 
+
+
     // distributer
 
     public function distributor(Request $request){
@@ -640,6 +646,7 @@ class ReportController extends Controller
 
     public function employee(Request $request){
         if($request->getMethod()=="POST"){
+            // dd($request->all());
             $range=NepaliDate::getDateMonth($request->year,$request->month);
             $year=$request->year;
             $month=$request->month;
@@ -657,8 +664,9 @@ class ReportController extends Controller
                     $employee->advance=EmployeeAdvance::where('employee_id',$employee->id)->where('date','>=',$range[1])->where('date','<=',$range[2])->sum('amount');
                     $employee->old=false;
                 }
-
                 array_push($data,$employee);
+
+                // dd($data);
             }
             // $advance=EmployeeAdvance::where
             return view('admin.report.employee.data',compact('data','year','month'));
@@ -679,9 +687,10 @@ class ReportController extends Controller
                 $report->salary=$employee->salary;
                 $report->save();
             }
-
             return redirect()->back();
     }
+
+
 
     public function credit(){
         $farmercredit = \App\Models\User::where('role',1)->where('amount','>',0)->where('amounttype',1)->get();

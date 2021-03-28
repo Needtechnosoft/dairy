@@ -169,4 +169,32 @@ class SupplierController extends Controller
 
     }
 
+
+
+    // supplier previous balance
+
+    public function previousBalance(){
+        return view('admin.supplier.previous_balance.index');
+    }
+
+    public function previousBalanceAdd(Request $request){
+        // dd($request->all());
+        $date = str_replace('-','',$request->date);
+        $user = User::where('id',$request->supplier_id)->first();
+        $ledger = new LedgerManage($user->id);
+        $l=$ledger->addLedger('previous Balance',$request->type,$request->amount,$date,'128');
+        $l->name=$user->name;
+        return view('admin.supplier.previous_balance.single',['ledger'=>$l]);
+    }
+
+
+    public function previousBalanceLoad(Request $request){
+        $date = str_replace('-','',$request->date);
+        $ledgers = User::join('ledgers','ledgers.user_id','=','users.id')
+        ->where('ledgers.date',$date)
+        ->where('ledgers.identifire',128)
+        ->select('ledgers.id','ledgers.amount','ledgers.type','users.name')->get();
+        return view('admin.supplier.previous_balance.list',compact('ledgers'));
+    }
+
 }

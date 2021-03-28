@@ -21,6 +21,7 @@ Route::get('/test-all/{id}','TestController@all')->name('test-all');
 Route::get('/test-distributor','TestController@distributor')->name('test-distributor');
 Route::get('/test-distributor-date','TestController@distributorByDate')->name('test-distributor');
 
+
  Route::get('/pass', function () {
      $pass = bcrypt('admin');
      dd($pass);
@@ -133,6 +134,12 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
     Route::get('supplier-bill-delete/{id}', 'Admin\SupplierController@deleteBill')->middleware('authority');
     Route::post('supplier-bill-item', 'Admin\SupplierController@billItems')->name('admin.sup.bill.item.list');
 
+
+     // XXX supplier previous
+
+      Route::get('supplier-previous-balance', 'Admin\SupplierController@previousBalance')->name('supplier.previous.balance');
+      Route::post('supplier-previous-balance-add', 'Admin\SupplierController@previousBalanceAdd')->name('supplier.previous.balance.add');
+      Route::post('supplier-previous-balance-load', 'Admin\SupplierController@previousBalanceLoad')->name('supplier.previous.balance.load');
 
 
 
@@ -278,12 +285,11 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
 
     Route::group(['prefix' => 'billing'], function () {
         Route::name('billing.')->group(function(){
-
             Route::get('', 'Billing\BillingController@index')->name('home');
             Route::post('save', 'Billing\BillingController@save')->name('save');
-
         });
     });
+
 
 
     Route::prefix('home-setting')->name('setting.')->group(function(){
@@ -292,8 +298,6 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         Route::match(['GET','POST'],'slider/{id}','Admin\HomepageController@sliderDel')->name('slider.del');
         Route::match(['GET','POST'],'gallery','Admin\HomepageController@gallery')->name('gallery');
         Route::match(['GET','POST'],'gallery/del/{gallery}','Admin\HomepageController@galleryDel')->name('gallery-del');
-
-
     });
 
 
@@ -322,6 +326,7 @@ Route::group(['middleware' => 'role:farmer','prefix'=>'farmer'], function (){
 });
 
 
+
 Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], function (){
     Route::name('distributer.')->group( function(){
         Route::get('home', 'Users\DistributorDashboardController@index')->name('dashboard');
@@ -329,11 +334,9 @@ Route::group(['middleware' => 'role:distributer','prefix'=>'distributor'], funct
         Route::get('transaction/detail', 'Users\DistributorDashboardController@transactionDetail')->name('transaction.detail');
         Route::post('load-data','Users\DistributorDashboardController@loaddata')->name('loaddata');
         Route::get('change-password', 'Users\DistributorDashboardController@changePasswordPage')->name('password.page');
-
         Route::get('make-a-request', 'Users\DistributorDashboardController@makeArequest')->name('request');
         Route::post('make-a-request-add', 'Users\DistributorDashboardController@makeArequestAdd')->name('request.add');
         Route::post('make-a-request-update', 'Users\DistributorDashboardController@makeArequestUpdate')->name('request.update');
         Route::get('make-a-request/{id}', 'Users\DistributorDashboardController@requestDelete')->name('request.delete');
     });
-
 });

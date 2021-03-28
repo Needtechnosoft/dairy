@@ -29,6 +29,7 @@ class EmployeeController extends Controller
         $emp = new Employee();
         $emp->user_id = $user->id;
         $emp->salary = $request->salary;
+        $emp->acc = $request->acc;
         $emp->save();
         return view('admin.emp.single',compact('user'));
     }
@@ -43,6 +44,7 @@ class EmployeeController extends Controller
         $user->save();
         $emp = Employee::where('user_id',$user->id)->first();
         $emp->salary = $request->salary;
+        $emp->acc = $request->acc;
         $emp->save();
         return view('admin.emp.single',compact('user'));
     }
