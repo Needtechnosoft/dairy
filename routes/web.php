@@ -208,14 +208,32 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
         Route::name('product.')->group(function(){
             Route::get('','Admin\ProductController@index')->name('home');
             Route::post('add','Admin\ProductController@add')->name('add');
-            Route::post('update','Admin\ProductController@update')->name('update')->middleware('authority');
+            Route::get('edit/{id}','Admin\ProductController@edit')->name('edit');
+            Route::post('update/{id}','Admin\ProductController@update')->name('update');
             Route::post('del','Admin\ProductController@del')->name('del')->middleware('authority');
+            Route::get('manage-batch/{id}','Admin\ProductController@manageBatch')->name('manage.batch');
+        });
+
+
+        Route::name('cat.')->group(function () {
+            Route::get('/category','Admin\ProductController@categoryIndex')->name('index');
+            Route::post('/category-save','Admin\ProductController@categorySave')->name('save');
+            Route::get('/category-list','Admin\ProductController@categoryList')->name('list');
+            Route::post('/category-update','Admin\ProductController@categoryUpdate')->name('update');
+            Route::get('/category/delete/{id}','Admin\ProductController@categoryDelete')->name('delete');
         });
     });
 
-    Route::prefix('product/purchase')->name('purchase.')->group(function(){
-        Route::get('','Admin\ProductController@productPurchase')->name('home');
-        Route::post('','Admin\ProductController@productPurchaseStore')->name('store');
+    // XXX product purchase invoice
+
+    Route::prefix('purchase-invoice')->name('purchase.')->group(function(){
+        Route::get('','Admin\PurchaseinvoiceController@index')->name('home');
+        Route::post('','Admin\PurchaseinvoiceController@store')->name('store');
+        Route::get('list','Admin\PurchaseinvoiceController@list')->name('invoice.list');
+        Route::get('{id}/items','Admin\PurchaseinvoiceController@invoiceItems')->name('invoice.item');
+        Route::post('data-load','Admin\PurchaseinvoiceController@filterData')->name('load');
+        Route::get('{id}/expenses','Admin\PurchaseinvoiceController@purchaseExpense')->name('expense');
+
     });
 
     // manufacture
@@ -311,6 +329,44 @@ Route::group([ 'middleware' => 'role:admin','prefix'=>'admin'],function (){
             Route::match(['GET','POST'],'non-super-admin/change/password/{id}','Admin\UserController@nonSuperadminChangePassword')->name('non.super.admin.change.password');
         });
     });
+
+
+    /*-------------------------------------------
+        Retail route start form here
+    ----------------------------------------------*/
+
+
+    // XXX fiscal year
+
+    Route::prefix('fiscal-year')->name('fiscal.')->group(function () {
+        Route::match(['get', 'post'], '/','Admin\FiscalyearController@index')->name('index');
+        Route::get('/list','Admin\FiscalyearController@list')->name('list');
+        Route::post('/update','Admin\FiscalyearController@update')->name('update');
+        Route::get('/delete/{id}','Admin\FiscalyearController@delete');
+        Route::get('/default/{id}','Admin\FiscalyearController@makeDefault')->name('default');
+    });
+
+    // XXX day management
+
+    Route::prefix('day-management')->name('daymgmt.')->group(function(){
+        Route::match(['get', 'post'], '/','Admin\DaymgmtController@index')->name('index');
+        Route::get('/list','Admin\DaymgmtController@list')->name('list');
+        Route::post('/update','Admin\DaymgmtController@update')->name('update');
+        Route::get('/default/{id}','Admin\DaymgmtController@dayOpen')->name('default');
+        Route::get('/delete/{id}','Admin\DaymgmtController@delete');
+    });
+
+    Route::prefix('counter')->name('counter.')->group(function () {
+        Route::match(['get', 'post'], '/','Admin\CounterController@index')->name('index');
+        Route::get('/list','Admin\CounterController@list')->name('list');
+        Route::post('/update','Admin\CounterController@update')->name('update');
+        Route::get('/delete/{id}','Admin\CounterController@delete');
+        Route::get('/active/{id}','Admin\CounterController@counterActive')->name('active');
+        Route::get('/inactive/{id}','Admin\CounterController@counterInactive')->name('inactive');
+
+
+    });
+
 });
 
 

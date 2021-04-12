@@ -79,12 +79,20 @@
                 </ul>
             </li>
 
-            <li><a href="{{route('product.home')}}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a></li>
+
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Products</span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{ route('cat.index') }}" class="waves-effect waves-block">Product Category</a></li>
+                    <li><a href="{{route('product.home')}}" class="waves-effect waves-block"><span>Product</span></a></li>
+                    <li><a href="{{route('purchase.home')}}" class="waves-effect waves-block"><span>Purchase invoice</span></a></li>
+                    <li><a href="{{ route('purchase.invoice.list')}}" class="waves-effect waves-block"><span>Purchase invoice List</span></a></li>
+                </ul>
+            </li>
+
+
             @endif
 
-            @if(env('tierlevel',1)==1)
-               <li><a href="{{route('purchase.home')}}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Purchase Product</span></a></li>
-            @endif
+
             <li><a href="{{ route('report.home') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Report</span></a></li>
             <li><a href="{{ route('user.users') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Users</span></a></li>
             @if (env('tierlevel',1)==1)
@@ -95,6 +103,27 @@
                 </ul>
             </li>
             <li><a href="{{ url('admin/billing') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Billing</span></a></li>
+
+            <li><a href="{{ route('fiscal.index') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Fiscal Year</span></a></li>
+
+            <li><a href="{{ route('daymgmt.index') }}" class="waves-effect waves-block"><i class="zmdi zmdi-shopping-cart"></i><span>Day Management</span></a></li>
+
+
+            <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Counters</span></a>
+                <ul class="ml-menu">
+                   <li><a href="{{ route('counter.index') }}" class="waves-effect waves-block"><span>Counter</span></a></li>
+                   <li><a href="" class="waves-effect waves-block"><span>Counter Request</span></a></li>
+                </ul>
+            </li>
+
+
+
+
+
+
+
+
+
             @endif
             @if(env('tier',1) == 1)
             <li><a href="javascript:void(0);" class="waves-effect waves-block menu-toggle"><i class="zmdi zmdi-shopping-cart"></i><span>Home Page Setting</span></a>

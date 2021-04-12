@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-class Product extends Model
+
+class PurchaseInvoice extends Model
 {
     use HasFactory;
 
+    public function purchaseInvoiceItem(){
+        return $this->hasMany(PurchaseInvoiceItem::class);
+    }
 }
