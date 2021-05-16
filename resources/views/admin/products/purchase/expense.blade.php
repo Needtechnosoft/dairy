@@ -34,6 +34,4 @@
     <script src="{{ asset('backend/plugins/select2/select2.min.js') }}"></script>
     <script src="{{ asset('backend/js/pages/forms/advanced-form-elements.js') }}"></script>
     <script src="{{ asset('calender/nepali.datepicker.v3.2.min.js') }}"></script>
-
-
 @endsection
